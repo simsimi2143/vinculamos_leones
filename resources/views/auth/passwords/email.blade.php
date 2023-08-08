@@ -11,19 +11,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/reset.password.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/estilos.css') }}">
-    <link rel='shortcut icon' type='image/x-icon' href={{ '/img/aiep_chico.png' }} />
+    <link rel='shortcut icon' type='image/x-icon' href={{ '/img/logo_chico.png' }} />
     {{-- Logito de la pestaña --}}
 
 </head>
 
 <body
-    style=" background-color: #515151;border-color: #515151 /*background:  url({{ asset('/img/Imagen-auth.jpg') }}) */  ;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
+    style=" background-color: #515151;border-color: #515151; background:  url({{ asset('/img/fonologin.jpg') }})    ;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
     <section class="ftco-section" style="margin-right: 1%; display: flex; align-items:center;">
         <div class="container" style="background: rgba(255,255,255,0.50);  border-radius: 50px; width:500px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center" style="border-radius: 50px; margin: 0 auto;">
-                        <img src={{ '/img/logoaiep.png' }} alt="Imagen" class="img-fluid">
+                        <img src={{ '/img/logoleones.png' }} alt="Imagen" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <button style="background-color:#042344; color:white;margin-top:5%;" type="submit"
+                                <button style="background-color:#e76800; color:white;margin-top:5%;" type="submit"
                                     class="form-control btn rounded submit px-3">
                                     {{ __('Restablecer contraseña') }}
                                 </button>
