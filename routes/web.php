@@ -171,6 +171,12 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/editar-tipoiniciativa/{tmec_codigo}', [ParametrosController::class, 'actualizarTipoIniciativa'])->name('admin.actualizar.tipoiniciativa');
     Route::post('admin/crear-tipoiniciativa/', [ParametrosController::class, 'crearTipoIniciativa'])->name('admin.crear.tipoiniciativa');
 
+    // actividad
+    Route::get('admin/listar-actividad', [ParametrosController::class, 'listaractividad'])->name('admin.listar.actividad');
+    Route::delete('admin/eliminar-actividad/', [ParametrosController::class, 'eliminaractividad'])->name('admin.eliminar.actividad');
+    Route::put('admin/editar-actividad/{nombreprefijo_codigo}', [ParametrosController::class, 'actualizaractividad'])->name('admin.actualizar.actividad');
+    Route::post('admin/crear-actividad/', [ParametrosController::class, 'crearactividad'])->name('admin.crear.actividad');
+
     // fin rutas para gestionar parametros
 
 
