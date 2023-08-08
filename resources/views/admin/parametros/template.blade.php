@@ -227,7 +227,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </div>
                                 </div>
                                 <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="" autocomplete="off">
+                                    placeholder="" autocomplete="off" value="{{ old('care_nombre') }}">
                                 @if ($errors->has('nombre'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
