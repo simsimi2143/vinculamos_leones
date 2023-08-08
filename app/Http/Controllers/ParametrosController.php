@@ -527,6 +527,7 @@ class ParametrosController extends Controller
         $sede = new Sedes();
         $sede->sede_nombre = $request->input('sede_nombre');
         $sede->sede_descripcion = $request->input('sede_descripcion');
+        $sede->sede_direccion = $request->input('direccion');
         $sede->sede_meta_estudiantes = $request->input('sede_meta_estudiantes');
         $sede->sede_meta_docentes = $request->input('sede_meta_docentes');
         $sede->sede_meta_socios = $request->input('sede_meta_socios');
@@ -591,6 +592,7 @@ class ParametrosController extends Controller
 
         $sede->sede_nombre = $request->input('sede_nombre');
         $sede->sede_descripcion = $request->input('sede_descripcion');
+        $sede->sede_direccion = $request->input('direccion');
         $sede->sede_meta_estudiantes = $request->input('sede_meta_estudiantes');
         $sede->sede_meta_docentes = $request->input('sede_meta_docentes');
         $sede->sede_meta_socios = $request->input('sede_meta_socios');

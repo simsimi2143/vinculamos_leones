@@ -125,6 +125,21 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label>Dirección de la sede</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" id="direccion" name="direccion"
+                                    value="{{ old('direccion') }}" autocomplete="off">
+                            </div>
+                            @error('direccion')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                         {{-- <div class="form-group">
                             <label>Descripción</label>
                             <div class="input-group">
@@ -237,6 +252,19 @@
                                     </div>
                                     <input type="text" class="form-control" id="sede_nombre" name="sede_nombre"
                                         value="{{ $sede->sede_nombre }}" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Dirección de la sede</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="direccion"
+                                        name="direccion" value="{{ $sede->sede_direccion }}"
+                                        autocomplete="off">
                                 </div>
                             </div>
                             {{-- <div class="form-group">
