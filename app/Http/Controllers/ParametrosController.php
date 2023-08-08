@@ -25,6 +25,7 @@ use App\Models\Tematicas;
 use App\Models\TipoActividades;
 use App\Models\TipoIniciativas;
 use App\Models\TipoUnidades;
+use App\Models\MecanismosActividades;
 use App\Models\Unidades;
 use App\Models\SubUnidades;
 use Carbon\Carbon;
@@ -104,7 +105,8 @@ class ParametrosController extends Controller
         $ambito = Ambitos::find($amb_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.')->withInput();;
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.')->withInput();
+            ;
         }
 
         $ambito->amb_nombre = $request->input('nombre');
@@ -116,7 +118,8 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Impacto actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoAmbito', 'Impacto actualizado exitosamente')->withInput();
+        ;
     }
 
     //TODO: Ambito de acción
@@ -182,7 +185,8 @@ class ParametrosController extends Controller
         $ambito = AmbitosAccion::find($amac_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitosaccion')->with('errorAmbito', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();;
+            return redirect()->route('admin.listar.ambitosaccion')->with('errorAmbito', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();
+            ;
         }
 
         $ambito->amac_nombre = $request->input('nombre_aa');
@@ -194,7 +198,8 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  actualizado exitosamente')->withInput();
+        ;
     }
 
     //TODO: Programas
@@ -254,7 +259,8 @@ class ParametrosController extends Controller
         // Guardar el programa en la base de datos
         $programa->save();
 
-        return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();
+        ;
     }
 
     public function eliminarProgramas(Request $request)
@@ -303,7 +309,8 @@ class ParametrosController extends Controller
         $programa = Programas::find($prog_codigo);
 
         if (!$programa) {
-            return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.')->withInput();;
+            return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.')->withInput();
+            ;
         }
 
         $programa->prog_nombre = $request->input('nombre');
@@ -321,7 +328,8 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $programa->save();
 
-        return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente')->withInput();
+        ;
     }
 
     //TODO: Parametro Convenios
@@ -378,25 +386,29 @@ class ParametrosController extends Controller
         $rutaCompleta = str_replace("/", "\\", $rutaCompleta);
 
         if (!$validacion) {
-            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al actualizar el convenio.')->withInput();;
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al actualizar el convenio.')->withInput();
+            ;
         }
 
         $archivo = $request->file('archivo');
         //return redirect()->route('admin.listar.convenios')->with('errorConvenio', $archivo);
-        if($archivo){
+        if ($archivo) {
             $extension = $archivo->getClientOriginalExtension();
-            $rutaConvenio = 'files/convenios/' . $request->input('nombrearchivo') . '.'. $extension;
+            $rutaConvenio = 'files/convenios/' . $request->input('nombrearchivo') . '.' . $extension;
 
-            if (File::exists(public_path($rutaConvenio))) File::delete(public_path($rutaConvenio));
-            $moverArchivo = $archivo->move(public_path('files/convenios'), $request->input('nombrearchivo') . '.'. $extension);
+            if (File::exists(public_path($rutaConvenio)))
+                File::delete(public_path($rutaConvenio));
+            $moverArchivo = $archivo->move(public_path('files/convenios'), $request->input('nombrearchivo') . '.' . $extension);
             if (!$moverArchivo) {
-                return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del convenio, intente más tarde.')->withInput();;
+                return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del convenio, intente más tarde.')->withInput();
+                ;
             }
 
 
-            if (File::exists($rutaCompleta)) File::delete($rutaCompleta);
+            if (File::exists($rutaCompleta))
+                File::delete($rutaCompleta);
             $convenio = Convenios::where(['conv_codigo' => $conv_codigo])->update([
-                'conv_ruta_archivo' => 'files/convenios/' . $request->input('nombrearchivo') . '.'. $extension,
+                'conv_ruta_archivo' => 'files/convenios/' . $request->input('nombrearchivo') . '.' . $extension,
             ]);
         }
 
@@ -461,7 +473,8 @@ class ParametrosController extends Controller
                 'archivo.required' => 'El archivo del convenio es requerido.',
             ]
         );
-        if (!$validacion) return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al crear el copnvenio.');
+        if (!$validacion)
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al crear el copnvenio.');
 
         $convenio = new Convenios();
         $convenio->conv_nombre = $request->input('nombre');
@@ -480,15 +493,16 @@ class ParametrosController extends Controller
         //Obtener la extension del FILE subido
         $archivo = $request->file('archivo');
         $extension = $archivo->getClientOriginalExtension();
-        $rutaConvenio = 'files/convenios/' . $request->input('nombrearchivo') . '.'. $extension;
+        $rutaConvenio = 'files/convenios/' . $request->input('nombrearchivo') . '.' . $extension;
 
-        if (File::exists(public_path($rutaConvenio))) File::delete(public_path($rutaConvenio));
-        $moverArchivo = $archivo->move(public_path('files/convenios'), $request->input('nombrearchivo') . '.'. $extension);
+        if (File::exists(public_path($rutaConvenio)))
+            File::delete(public_path($rutaConvenio));
+        $moverArchivo = $archivo->move(public_path('files/convenios'), $request->input('nombrearchivo') . '.' . $extension);
         if (!$moverArchivo) {
             return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del convenio, intente más tarde.')->withInput();
         }
 
-        $convenio->conv_ruta_archivo = 'files/convenios/' . $request->input('nombrearchivo') . '.'. $extension;
+        $convenio->conv_ruta_archivo = 'files/convenios/' . $request->input('nombrearchivo') . '.' . $extension;
 
         $convenio->save();
 
@@ -664,7 +678,7 @@ class ParametrosController extends Controller
         $carrera->care_nombre = $request->input('care_nombre');
         $carrera->care_descripcion = $request->input('care_descripcion');
         $carrera->care_director = $request->input('care_director');
-        $carrera->care_institucion = $request->input('care_institucion',1);
+        $carrera->care_institucion = $request->input('care_institucion', 1);
         $carrera->escu_codigo = $request->input('escu_codigo');
 
         // Guardar los cambios en la carrera
@@ -778,10 +792,11 @@ class ParametrosController extends Controller
                 'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
             ]
         );
-        if (!$validacion) return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'Problemas al crear la escuela.');
+        if (!$validacion)
+            return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'Problemas al crear la escuela.');
 
         $escuela = new Escuelas();
-        /* $escuela->escu_codigo = Escuelas::count() + 1; */ //TODO: ERROR DE ESCUELA
+        /* $escuela->escu_codigo = Escuelas::count() + 1; *///TODO: ERROR DE ESCUELA
         $escuela->escu_nombre = $request->input('nombre');
         $escuela->escu_descripcion = $request->input('descripcion');
         $escuela->escu_director = $request->input('director');
@@ -808,7 +823,7 @@ class ParametrosController extends Controller
         $SedeSocios = SedesSocios::all();
         $grupos = GruposInteres::orderBy('grin_codigo', 'asc')->get();
 
-        return view('admin.parametros.socios', compact('sedesT', 'socios', 'SedeSocios','grupos'));
+        return view('admin.parametros.socios', compact('sedesT', 'socios', 'SedeSocios', 'grupos'));
 
     }
 
@@ -945,7 +960,8 @@ class ParametrosController extends Controller
 
             ]
         );
-        if (!$validacion) return redirect()->route('admin.listar.socios')->with('errorSocio', 'Problemas al crear el socio comunitario.');
+        if (!$validacion)
+            return redirect()->route('admin.listar.socios')->with('errorSocio', 'Problemas al crear el socio comunitario.');
 
         $socoCrear = SociosComunitarios::insertGetId([
             'soco_nombre_socio' => $request->nombre,
@@ -1026,7 +1042,7 @@ class ParametrosController extends Controller
             return redirect()->route('admin.mecanismos.listar')->withErrors($validacion)->withInput();
         }
 
-        Mecanismos::create([
+        $mecanismo = Mecanismos::create([
             'meca_nombre' => $request->input('meca_nombre'),
             'tmec_codigo' => $request->input('tipo'),
             // Añade el resto de los campos del modelo si son necesarios.
@@ -1035,6 +1051,7 @@ class ParametrosController extends Controller
         return redirect()->route('admin.listar.mecanismos')
             ->with('exitoMecanismo', 'Mecanismo creado exitosamente.');
     }
+
 
     public function eliminarMecanismos(Request $request)
     {
@@ -1251,201 +1268,215 @@ class ParametrosController extends Controller
         return redirect()->route('admin.listar.tematica')->with('errorTematica', 'La Tematica no fue encontrada.');
     }
 
-        /* $socio = new SociosComunitarios();
-        $socio->sugr_codigo = $request->input('grupo',1);
-        $socio->soco_nombre_socio = $request->input('nombre');
-        $socio->soco_nombre_contraparte = $request->input('nombre_contraparte');
-        $socio->soco_domicilio_socio = $request->input('domicilio');
-        $socio->soco_telefono_contraparte = $request->input('telefono');
-        $socio->soco_email_contraparte = $request->input('email'); */
+    /* $socio = new SociosComunitarios();
+    $socio->sugr_codigo = $request->input('grupo',1);
+    $socio->soco_nombre_socio = $request->input('nombre');
+    $socio->soco_nombre_contraparte = $request->input('nombre_contraparte');
+    $socio->soco_domicilio_socio = $request->input('domicilio');
+    $socio->soco_telefono_contraparte = $request->input('telefono');
+    $socio->soco_email_contraparte = $request->input('email'); */
 
-        /* $socio->soco_visible = $request->input('care_visible', 1);
-        //TODO: SI NO QUEREMOS MORIR, CAMBIAR ESTO
-        $socio->soco_creado = now();
-        $socio->soco_actualizado = now();
+    /* $socio->soco_visible = $request->input('care_visible', 1);
+    //TODO: SI NO QUEREMOS MORIR, CAMBIAR ESTO
+    $socio->soco_creado = now();
+    $socio->soco_actualizado = now();
 
-        $socio->soco_nikcname_mod = Session::get('admin')->usua_nickname;
-        $socio->soco_rol_mod = Session::get('admin')->rous_codigo; */
+    $socio->soco_nikcname_mod = Session::get('admin')->usua_nickname;
+    $socio->soco_rol_mod = Session::get('admin')->rous_codigo; */
 
     //TODO: Unidad
 //--------------------------------------
 //CAMBIAR NOMBRE MODELO POR: Unidades
 //--------------------------------------
 
-public function listarUnidades()
-{
+    public function listarUnidades()
+    {
 
-    $REGISTROS = Unidades::orderBy('unid_codigo', 'asc')->get();
-    $REGISTROS2 = TipoUnidades::orderBy('tuni_codigo', 'asc')->get();
+        $REGISTROS = Unidades::orderBy('unid_codigo', 'asc')->get();
+        $REGISTROS2 = TipoUnidades::orderBy('tuni_codigo', 'asc')->get();
 
-    return view('admin.parametros.unidades', [
-        'REGISTROS' => $REGISTROS,
-        'REGISTROS2' => $REGISTROS2
-    ]);
-}
-
-public function crearUnidades(Request $request)
-{
-    $validacion = Validator::make($request->all(), [
-        'nombre' => 'required|max:100',
-        /* 'idcampo1' => 'required', */
-    ], [
-        'nombre.required' => 'El nombre es requerido.',
-        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
-    ]);
-
-    if ($validacion->fails()) {
-        return redirect()->route('admin.listar.unidades')->withErrors($validacion)->withInput();
+        return view('admin.parametros.unidades', [
+            'REGISTROS' => $REGISTROS,
+            'REGISTROS2' => $REGISTROS2
+        ]);
     }
 
-    $nuevo = new Unidades();
-    $nuevo->unid_nombre = $request->input('nombre');
-    $nuevo->tuni_codigo = $request->input('select_join');
-    $nuevo->unid_descripcion = $request->input('descripcion');
-    $nuevo->unid_responsable = $request->input('responsable');
-    $nuevo->unid_nombre_cargo = $request->input('nombre_cargo');
-    $nuevo->unid_creado = Carbon::now()->format('Y-m-d H:i:s');
-    $nuevo->unid_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-    $nuevo->unid_visible = 1;
-    $nuevo->unid_nickname_mod = Session::get('admin')->usua_nickname;
-    $nuevo->unid_rol_mod = Session::get('admin')->rous_codigo;
+    public function crearUnidades(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
 
-    $nuevo->save();
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.unidades')->withErrors($validacion)->withInput();
+        }
 
-    return redirect()->back()->with('exito', 'Unidad creada exitosamente');
-}
+        $nuevo = new Unidades();
+        $nuevo->unid_nombre = $request->input('nombre');
+        $nuevo->tuni_codigo = $request->input('select_join');
+        $nuevo->unid_descripcion = $request->input('descripcion');
+        $nuevo->unid_responsable = $request->input('responsable');
+        $nuevo->unid_nombre_cargo = $request->input('nombre_cargo');
+        $nuevo->unid_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->unid_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->unid_visible = 1;
+        $nuevo->unid_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->unid_rol_mod = Session::get('admin')->rous_codigo;
 
-public function eliminarUnidades(Request $request)
-{
-    $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->first();
-    if (!$eliminado) {return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.');}
+        $nuevo->save();
 
-    $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->delete();
-    return redirect()->route('admin.listar.unidades')->with('exito', 'La Unidad fue eliminada correctamente.');
-}
+        return redirect()->back()->with('exito', 'Unidad creada exitosamente');
+    }
 
-public function actualizarUnidades(Request $request, $unid_codigo)
-{
-    $validacion = Validator::make($request->all(), [
-        'nombre' => 'required|max:100',
-        /* 'idcampo1' => 'required', */
-    ], [
-        'nombre.required' => 'El nombre es requerido.',
-        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
-    ]);
+    public function eliminarUnidades(Request $request)
+    {
+        $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->first();
+        if (!$eliminado) {
+            return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.');
+        }
 
-    if ($validacion->fails()) {return redirect()->route('admin.listar.unidades')->withErrors($validacion)->withInput();}
+        $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->delete();
+        return redirect()->route('admin.listar.unidades')->with('exito', 'La Unidad fue eliminada correctamente.');
+    }
 
-    $editado = Unidades::find($unid_codigo);
-    //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
-    if (!$editado) {return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.')->withInput();}
+    public function actualizarUnidades(Request $request, $unid_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
 
-    $editado->unid_nombre = $request->input('nombre');
-    $editado->tuni_codigo = $request->input('select_join');
-    $editado->unid_descripcion = $request->input('descripcion');
-    $editado->unid_responsable = $request->input('responsable');
-    $editado->unid_nombre_cargo = $request->input('nombre_cargo');
-    $editado->unid_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-    $editado->unid_visible = 1;
-    $editado->unid_nickname_mod = Session::get('admin')->usua_nickname;
-    $editado->unid_rol_mod = Session::get('admin')->rous_codigo;
-    $editado->save();
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.unidades')->withErrors($validacion)->withInput();
+        }
 
-    return redirect()->back()->with('exito', 'Unidad actualizada exitosamente')->withInput();;
-}
+        $editado = Unidades::find($unid_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        if (!$editado) {
+            return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.')->withInput();
+        }
+
+        $editado->unid_nombre = $request->input('nombre');
+        $editado->tuni_codigo = $request->input('select_join');
+        $editado->unid_descripcion = $request->input('descripcion');
+        $editado->unid_responsable = $request->input('responsable');
+        $editado->unid_nombre_cargo = $request->input('nombre_cargo');
+        $editado->unid_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $editado->unid_visible = 1;
+        $editado->unid_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->unid_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->save();
+
+        return redirect()->back()->with('exito', 'Unidad actualizada exitosamente')->withInput();
+        ;
+    }
     //TODO: SubUnidad
     //--------------------------------------
     //CAMBIAR NOMBRE MODELO POR: SubUnidades
     //--------------------------------------
 
     public function listarSubUnidades()
-        {
+    {
 
-            $REGISTROS = SubUnidades::orderBy('suni_codigo', 'asc')->get();
-            $REGISTROS2 = Unidades::orderBy('unid_codigo', 'asc')->get();
+        $REGISTROS = SubUnidades::orderBy('suni_codigo', 'asc')->get();
+        $REGISTROS2 = Unidades::orderBy('unid_codigo', 'asc')->get();
 
-            return view('admin.parametros.subunidades', [
-                'REGISTROS' => $REGISTROS,
-                'REGISTROS2' => $REGISTROS2
-            ]);
-        }
+        return view('admin.parametros.subunidades', [
+            'REGISTROS' => $REGISTROS,
+            'REGISTROS2' => $REGISTROS2
+        ]);
+    }
 
     public function crearSubUnidades(Request $request)
-        {
-            $validacion = Validator::make($request->all(), [
-                'nombre' => 'required|max:100',
-                'select_join' => 'required',
-                /* 'idcampo1' => 'required', */
-            ], [
-                'nombre.required' => 'El nombre es requerido.',
-                'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-                'select_join.required' => 'La unidad es requerida.',
-            ]);
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            'select_join' => 'required',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            'select_join.required' => 'La unidad es requerida.',
+        ]);
 
-            if ($validacion->fails()) {
-                return redirect()->route('admin.listar.subunidades')->withErrors($validacion)->withInput();
-            }
-
-            $nuevo = new SubUnidades();
-            $nuevo->suni_nombre = $request->input('nombre');
-            $nuevo->unid_codigo = $request->input('select_join');
-            $nuevo->suni_responsable = $request->input('responsable');
-            $nuevo->suni_descripcion = $request->input('descripcion');
-            /* $nuevo->suni_idcampo1 = $request->input('idcampo1'); */
-            $nuevo->suni_creado = Carbon::now()->format('Y-m-d H:i:s');
-            $nuevo->suni_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-            $nuevo->suni_visible = 1;
-            $nuevo->suni_nickname_mod = Session::get('admin')->usua_nickname;
-            $nuevo->suni_rol_mod = Session::get('admin')->rous_codigo;
-
-            $nuevo->save();
-
-            return redirect()->back()->with('exito', 'SubUnidad creada exitosamente');
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.subunidades')->withErrors($validacion)->withInput();
         }
+
+        $nuevo = new SubUnidades();
+        $nuevo->suni_nombre = $request->input('nombre');
+        $nuevo->unid_codigo = $request->input('select_join');
+        $nuevo->suni_responsable = $request->input('responsable');
+        $nuevo->suni_descripcion = $request->input('descripcion');
+        /* $nuevo->suni_idcampo1 = $request->input('idcampo1'); */
+        $nuevo->suni_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->suni_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->suni_visible = 1;
+        $nuevo->suni_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->suni_rol_mod = Session::get('admin')->rous_codigo;
+
+        $nuevo->save();
+
+        return redirect()->back()->with('exito', 'SubUnidad creada exitosamente');
+    }
 
     public function eliminarSubUnidades(Request $request)
-        {
-            $eliminado = SubUnidades::where('suni_codigo', $request->suni_codigo)->first();
-            if (!$eliminado) {return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.');}
-
-            $eliminado = SubUnidades::where('suni_codigo', $request->suni_codigo)->delete();
-            return redirect()->route('admin.listar.subunidades')->with('exito', 'La SubUnidad fue eliminada correctamente.');
+    {
+        $eliminado = SubUnidades::where('suni_codigo', $request->suni_codigo)->first();
+        if (!$eliminado) {
+            return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.');
         }
+
+        $eliminado = SubUnidades::where('suni_codigo', $request->suni_codigo)->delete();
+        return redirect()->route('admin.listar.subunidades')->with('exito', 'La SubUnidad fue eliminada correctamente.');
+    }
 
     public function actualizarSubUnidades(Request $request, $suni_codigo)
-        {
-            $validacion = Validator::make($request->all(), [
-                'nombre' => 'required|max:100',
-                'select_join' => 'required',
-                /* 'idcampo1' => 'required', */
-            ], [
-                'nombre.required' => 'El nombre es requerido.',
-                'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-                'select_join.required' => 'La unidad es requerida.',
-            ]);
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            'select_join' => 'required',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            'select_join.required' => 'La unidad es requerida.',
+        ]);
 
 
-            if ($validacion->fails()) {return redirect()->route('admin.listar.subunidades')->withErrors($validacion)->withInput();}
-
-            $editado = SubUnidades::find($suni_codigo);
-            //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
-            if (!$editado) {return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.')->withInput();}
-
-            $editado->suni_nombre = $request->input('nombre');
-            $editado->unid_codigo = $request->input('select_join');
-            $editado->suni_responsable = $request->input('responsable');
-            $editado->suni_descripcion = $request->input('descripcion');
-            $editado->suni_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-            $editado->suni_visible = 1;
-            $editado->suni_nickname_mod = Session::get('admin')->usua_nickname;
-            $editado->suni_rol_mod = Session::get('admin')->rous_codigo;
-            $editado->save();
-
-            return redirect()->back()->with('exito', 'SubUnidad actualizada exitosamente')->withInput();;
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.subunidades')->withErrors($validacion)->withInput();
         }
-        //TODO: Tipo de iniciativa
+
+        $editado = SubUnidades::find($suni_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        if (!$editado) {
+            return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.')->withInput();
+        }
+
+        $editado->suni_nombre = $request->input('nombre');
+        $editado->unid_codigo = $request->input('select_join');
+        $editado->suni_responsable = $request->input('responsable');
+        $editado->suni_descripcion = $request->input('descripcion');
+        $editado->suni_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $editado->suni_visible = 1;
+        $editado->suni_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->suni_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->save();
+
+        return redirect()->back()->with('exito', 'SubUnidad actualizada exitosamente')->withInput();
+        ;
+    }
+    //TODO: Tipo de iniciativa
 //--------------------------------------
 //CAMBIAR NOMBRE MODELO POR: TipoIniciativas
 //--------------------------------------
@@ -1486,7 +1517,9 @@ public function actualizarUnidades(Request $request, $unid_codigo)
     public function eliminarTipoIniciativa(Request $request)
     {
         $eliminado = TipoIniciativas::where('tmec_codigo', $request->tmec_codigo)->first();
-        if (!$eliminado) {return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.');}
+        if (!$eliminado) {
+            return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.');
+        }
 
         $eliminado = TipoIniciativas::where('tmec_codigo', $request->tmec_codigo)->delete();
         return redirect()->route('admin.listar.tipoiniciativa')->with('exito', 'El Tipo de iniciativa fue eliminado correctamente.');
@@ -1503,11 +1536,15 @@ public function actualizarUnidades(Request $request, $unid_codigo)
             /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
         ]);
 
-        if ($validacion->fails()) {return redirect()->route('admin.listar.tipoiniciativa')->withErrors($validacion)->withInput();}
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.tipoiniciativa')->withErrors($validacion)->withInput();
+        }
 
         $editado = TipoIniciativas::find($tmec_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
-        if (!$editado) {return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.')->withInput();}
+        if (!$editado) {
+            return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.')->withInput();
+        }
 
         $editado->tmec_nombre = $request->input('nombre');
         $editado->tmec_actualizado = Carbon::now()->format('Y-m-d H:i:s');
@@ -1516,8 +1553,108 @@ public function actualizarUnidades(Request $request, $unid_codigo)
         $editado->tmec_rol_mod = Session::get('admin')->rous_codigo;
         $editado->save();
 
-        return redirect()->back()->with('exito', 'Tipo de iniciativa actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exito', 'Tipo de iniciativa actualizado exitosamente')->withInput();
+        ;
     }
 
+    //Todo: funciones de actividades
+    public function listarActividad()
+    {
+        $ACTIVIDADES = Actividades::all();
+        return view('admin.parametros.actividades', compact('ACTIVIDADES'));
+    }
+
+    public function crearActividad(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:200',
+            'fecha' => 'required|date',
+            'fecha_cumplimiento' => 'required|date',
+            'acuerdos' => 'required|max:255',
+        ], [
+            'nombre.required' => 'El nombre de la actividad es requerido.',
+            'nombre.max' => 'El nombre de la actividad excede el máximo de caracteres permitidos (100).',
+            'fecha.required' => 'La fecha de creación es requerida.',
+            'fecha.date' => 'La fecha de creación no tiene un formato válido.',
+            'fecha_cumplimiento.required' => 'La fecha de cumplimiento es requerida.',
+            'fecha_cumplimiento.date' => 'La fecha de cumplimiento no tiene un formato válido.',
+            'acuerdos.required' => 'Los acuerdos son requeridos.',
+            'acuerdos.max' => 'Los acuerdos exceden el máximo de caracteres permitidos (255).',
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.actividades')->withErrors($validacion)->withInput();
+        }
+
+        $nuevaActividad = new Actividades();
+        $nuevaActividad->acti_nombre = $request->input('nombre');
+        $nuevaActividad->acti_acuerdos = $request->input('acuerdos');
+        $nuevaActividad->acti_fecha = Carbon::createFromFormat('Y-m-d', $request->input('fecha'));
+        $nuevaActividad->acti_fecha_cumplimiento = Carbon::createFromFormat('Y-m-d', $request->input('fecha_cumplimiento'));
+        // Otros campos si es necesario
+        $nuevaActividad->acti_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevaActividad->acti_visible = 1;
+        $nuevaActividad->acti_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevaActividad->acti_rol_mod = Session::get('admin')->rous_codigo;
+        $nuevaActividad->save();
+
+        return redirect()->back()->with('exitoActividades', 'Actividad creada exitosamente');
+    }
+
+    public function editarActividad(Request $request, $acti_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:200',
+            'fecha' => 'required|date',
+            'fecha_cumplimiento' => 'required|date',
+            'acuerdos' => 'required|max:255',
+        ], [
+            'nombre.required' => 'El nombre de la actividad es requerido.',
+            'nombre.max' => 'El nombre de la actividad excede el máximo de caracteres permitidos (100).',
+            'fecha.required' => 'La fecha de creación es requerida.',
+            'fecha.date' => 'La fecha de creación no tiene un formato válido.',
+            'fecha_cumplimiento.required' => 'La fecha de cumplimiento es requerida.',
+            'fecha_cumplimiento.date' => 'La fecha de cumplimiento no tiene un formato válido.',
+            'acuerdos.required' => 'Los acuerdos son requeridos.',
+            'acuerdos.max' => 'Los acuerdos exceden el máximo de caracteres permitidos (255).',
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.actividades')->withErrors($validacion)->withInput();
+        }
+
+        $actividad = Actividades::find($acti_codigo);
+        if (!$actividad) {
+            return redirect()->back()->with('errorActividades', 'La actividad no existe');
+        }
+
+        $actividad->acti_nombre = $request->input('nombre');
+        $actividad->acti_acuerdos = $request->input('acuerdos');
+        $actividad->acti_fecha = Carbon::createFromFormat('Y-m-d', $request->input('fecha'));
+        $actividad->acti_fecha_cumplimiento = Carbon::createFromFormat('Y-m-d', $request->input('fecha_cumplimiento'));
+        // Otros campos si es necesario
+        $actividad->acti_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $actividad->acti_nickname_mod = Session::get('admin')->usua_nickname;
+        $actividad->acti_rol_mod = Session::get('admin')->rous_codigo;
+        $actividad->save();
+
+        return redirect()->back()->with('exitoActividades', 'Actividad actualizada exitosamente');
+    }
+
+
+
+    public function eliminarActividad(Request $request)
+    {
+        $acti_codigo = $request->input('acti_codigo');
+
+        $actividad = Actividades::find($acti_codigo);
+        if (!$actividad) {
+            return redirect()->back()->with('errorActividades', 'La actividad no existe');
+        }
+
+        $actividad->delete();
+
+        return redirect()->back()->with('exitoActividades', 'Actividad eliminada exitosamente');
+    }
 
 }

@@ -43,8 +43,8 @@
 
                                             <th>Nombre</th>
                                             <th>Mecanismo</th>
-                                            <th>Sedes</th>
                                             <th>Escuelas</th>
+                                            <th>Carreras</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
