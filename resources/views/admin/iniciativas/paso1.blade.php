@@ -103,92 +103,30 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size: 110%">Pertinencia local</label> <label for=""
-                                            style="color: red;">*</label>
-                                        <div class="input-group">
-                                            <textarea class="formbold-form-input" id="pertinencial" name="pertinencial" rows="5" style="width: 100%;">{{ old('pertinencial') ?? @$iniciativa->inic_pertinencia_local }}</textarea>
-                                        </div>
-                                        @if ($errors->has('pertinencial'))
-                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                                <div class="alert-body">
-                                                    <button class="close"
-                                                        data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('pertinencial') }}</strong>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
 
-                                <div class="col-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size: 110%">Pertinencia disciplinar</label> <label for=""
-                                            style="color: red;">*</label>
-                                        <div class="input-group">
-                                            <textarea class="formbold-form-input" id="pertinenciat" name="pertinenciat" rows="5" style="width: 100%;">{{ old('pertinenciat') ?? @$iniciativa->inic_pertinencia_territorial }}</textarea>
-                                        </div>
-                                        @if ($errors->has('pertinenciat'))
-                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                                <div class="alert-body">
-                                                    <button class="close"
-                                                        data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('pertinenciat') }}</strong>
-                                                </div>
-                                            </div>
-                                        @endif
+                            </div>
+                            <div class="">
+                                <div class="form-group">
+                                    <label style="font-size: 110%">Descripción</label> <label for=""
+                                        style="color: red;">*</label>
+                                    <div class="input-group">
+                                        <textarea class="formbold-form-input" id="description" name="description" rows="5" style="width: 100%;">{{ old('description') ?? @$iniciativa->inic_pertinencia_territorial }}</textarea>
                                     </div>
+                                    @if ($errors->has('description'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('description') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Sede</label> <label for=""
-                                            style="color: red;">*</label><input type="checkbox" id="selectAllSedes"
-                                            style="margin-left: 60%"> <label for="selectAllSedes">Todas</label>
-                                        <select class="form-control select2" multiple="" id="sedes" name="sedes[]"
-                                            style="width: 100%">
-                                            @if (isset($iniciativa))
-                                                @forelse ($sedes as $sede)
-                                                    <option value="{{ $sede->sede_codigo }}"
-                                                        {{ in_array($sede->sede_codigo, $sedesSec) ? 'selected' : '' }}>
-                                                        {{ $sede->sede_nombre }}
-                                                    </option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
-                                                {{-- </select> --}}
-                                            @else
-                                                {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
-                                                @forelse ($sedes as $sede)
-                                                    <option value="{{ $sede->sede_codigo }}""
-                                                        {{ collect(old('sedes'))->contains($sede->sede_codigo) ? 'selected' : '' }}>
-                                                        {{ $sede->sede_nombre }}</option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
-                                            @endif
-                                        </select>
-
-                                        @if ($errors->has('sedes'))
-                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                                <div class="alert-body">
-                                                    <button class="close"
-                                                        data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('sedes') }}</strong>
-                                                </div>
-                                            </div>
-                                        @endif
-
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size: 110%">Escuela</label> <label for=""
+                                        <label style="font-size: 110%">Escuelas</label> <label for=""
                                             style="color: red;">*</label>
                                         <input type="checkbox" id="selectAllEscuelas" style="margin-left: 60%"> <label
                                             for="selectAllEscuelas">Todas</label>
@@ -205,7 +143,7 @@
                                                 @endforelse
                                             </select>
                                         @else
-                                            <select class="form-control select2" name="escuelas[]" multiple
+                                            <select class="form-control select2" name="escuelas[]" multiple=""
                                                 style="width: 100%" id="escuelas">
                                                 @forelse ($escuelas as $escuela)
                                                     <option value="{{ $escuela->escu_codigo }}"
@@ -228,6 +166,50 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label style="font-size: 110%">Carreras</label> <label for=""
+                                            style="color: red;">*</label><input type="checkbox" id="selectAllCarreras"
+                                            style="margin-left: 60%"> <label for="selectAllCarreras">Todas</label>
+                                        <select class="form-control select2" multiple id="carreras"
+                                            name="carreras[]" style="width: 100%">
+                                            @if (isset($iniciativa))
+                                                @forelse ($carreras as $carrera)
+                                                    <option value="{{ $carrera->care_codigo }}"
+                                                        {{ in_array($carrera->care_codigo, $carrerasSec) ? 'selected' : '' }}>
+                                                        {{ $carrera->care_nombre }}
+                                                    </option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                                {{-- </select> --}}
+                                            @else
+                                                {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
+                                                @forelse ($carreras as $carrera)
+                                                    <option value="{{ $carrera->care_codigo }}""
+                                                        {{ collect(old('carreras'))->contains($carrera->care_codigo) ? 'selected' : '' }}>
+                                                        {{ $carrera->care_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            @endif
+                                        </select>
+
+                                        @if ($errors->has('carreras'))
+                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                                <div class="alert-body">
+                                                    <button class="close"
+                                                        data-dismiss="alert"><span>&times;</span></button>
+                                                    <strong>{{ $errors->first('carreras') }}</strong>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                    </div>
+                                </div>
+
+
+
                             </div>
 
                             <div class="row">
@@ -344,9 +326,8 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="territorio" name="territorio"
                                             style="width: 100%" onchange="seleccionarTerritorio()">
-                                            <option value="" selected disabled>Seleccione...</option>
                                             @if (isset($iniciativa))
-                                                <option value="nacional"
+                                                <option selected value="nacional"
                                                     {{ $iniciativa->inic_territorio == 'nacional' ? 'selected' : '' }}>
                                                     Nacional
                                                 </option>
@@ -423,7 +404,7 @@
                                         {{-- <input type="checkbox"
                                             id="selectAllRegiones" style="margin-left: 50%"> <label
                                             for="selectAllRegiones">Todas</label> --}}
-                                        <select class="form-control select2" id="region" multiple name="region[]"
+                                        <select class="form-control select2" id="region" multiple="" name="region[]"
                                             style="width: 100%">
                                             @if (isset($iniciativa))
                                                 @forelse ($regiones as $region)
@@ -462,7 +443,7 @@
                                         {{-- <input type="checkbox"
                                             id="selectAllComunas" style="margin-left: 50%"> <label
                                             for="selectAllComunas">Todas</label> --}}
-                                        <select class="form-control select2" id="comuna" name="comuna[]" multiple
+                                        <select class="form-control select2" id="comuna" name="comuna[]" multiple=""
                                             style="width: 100%">
                                             {{-- <option value="" disabled>Seleccione...</option> --}}
                                             @if (isset($iniciativa))
@@ -520,8 +501,8 @@
             comunasByRegiones();
             selectAllRegiones();
             selectAllComunas();
-            selectAllSedes();
             selectAllEscuelas();
+            selectAllCarreras()
         });
 
         function selectAllRegiones() {
@@ -540,11 +521,12 @@
             });
         }
 
-        function selectAllSedes() {
-            $('#selectAllSedes').change(function() {
+        
+        function selectAllCarreras() {
+            $('#selectAllCarreras').change(function() {
                 const selectAll = $(this).prop('checked');
-                $('#sedes option').prop('selected', selectAll);
-                $('#sedes').trigger('change');
+                $('#carreras option').prop('selected', selectAll);
+                $('#carreras').trigger('change');
             });
         }
 
