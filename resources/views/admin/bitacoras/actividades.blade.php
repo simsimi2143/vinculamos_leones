@@ -130,9 +130,14 @@
                                     </div>
                                 </div>
                                 <input type="text" class="form-control" id="nombre" name="nombre"
-                                    value="{{ $actividad->nombre }}" autocomplete="off">
+                                    value="{{ $actividad->acti_nombre }}" autocomplete="off">
                             </div>
                         </div>
+                        @error('nombre')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <div class="form-group">
                             <label>Acuerdos</label>
                             <div class="input-group">
@@ -142,9 +147,14 @@
                                     </div>
                                 </div>
                                 <input type="text" class="form-control" id="acuerdos" name="acuerdos"
-                                    value="{{ $actividad->acuerdos }}" autocomplete="off">
+                                    value="{{ $actividad->acti_acuerdos }}" autocomplete="off">
                             </div>
                         </div>
+                        @error('acuerdos')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <div class="form-group">
                             <label>Fecha creación</label>
                             <div class="input-group">
@@ -154,9 +164,15 @@
                                     </div>
                                 </div>
                                 <input type="date" class="form-control" id="fecha" name="fecha"
-                                    value="{{ $actividad->fecha ? $actividad->fecha->format('Y-m-d') : '' }}" autocomplete="off">
+                                    value="{{ $actividad->acti_fecha ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $actividad->acti_fecha)->format('Y-m-d') : '' }}"
+                                    autocomplete="off">
                             </div>
                         </div>
+                        @error('fecha')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
                         <div class="form-group">
                             <label>Fecha cumplimiento</label>
@@ -167,10 +183,51 @@
                                     </div>
                                 </div>
                                 <input type="date" class="form-control" id="fecha_cumplimiento" name="fecha_cumplimiento"
-                                    value="{{ $actividad->fecha_cumplimiento ? $actividad->fecha_cumplimiento->format('Y-m-d') : '' }}" autocomplete="off">
-                            </div>
+                                    value="{{ $actividad->acti_fecha_cumplimiento ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $actividad->acti_fecha_cumplimiento)->format('Y-m-d') : '' }}"
+                                    autocomplete="off">
+                                </div>
                         </div>
+                        @error('fecha_cumplimiento')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
+                        <div class="form-group">
+                            <label>Avance</label> <label for="" style="color: red;">*</label>
+                            @if (isset($actividad))
+                                <select class="form-control" id="avance" name="avance">
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="Ejecutada" {{ $actividad->acti_avance=='Ejecutada' ? 'selected' : '' }}>Ejecutada</option>
+                                    <option value="En avance conforme a plazo" {{ $actividad->acti_avance=='En avance conforme a plazo' ? 'selected' : '' }}>En avance conforme a plazo</option>
+                                    <option value="En avance con retraso" {{ $actividad->acti_avance=='En avance con retraso' ? 'selected' : '' }}>En avance con retraso</option>
+                                    <option value="Suspendida" {{ $actividad->acti_avance=='Suspendida' ? 'selected' : '' }}>Suspendida</option>
+                                    <option value="Descartada" {{ $actividad->acti_avance=='Descartada' ? 'selected' : '' }}>Descartada</option>
+                                </select>
+                            @else
+                                <select class="form-control" id="avance" name="avance">
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="Ejecutada" {{ old('avance')=='Ejecutada' ? 'selected' : '' }}>Ejecutada</option>
+                                    <option value="En avance conforme a plazo" {{ old('avance')=='En avance conforme a plazo' ? 'selected' : '' }}>En avance conforme a plazo</option>
+                                    <option value="En avance con retraso" {{ old('avance')=='En avance con retraso' ? 'selected' : '' }}>En avance con retraso</option>
+                                    <option value="Suspendida" {{ old('avance')=='Suspendida' ? 'selected' : '' }}>Suspendida</option>
+                                    <option value="Descartada" {{ old('avance')=='Descartada' ? 'selected' : '' }}>Descartada</option>
+                                </select>
+                            @endif
+                            @if($errors->has('avance'))
+                                <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        <strong>{{ $errors->first('avance') }}</strong>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        @error('avance')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
 
 
@@ -196,7 +253,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.crear.actividad') }} " method="POST">
+                <form action="{{ route('admin.crear.actividades') }} " method="POST">
                     @csrf
                     <div class="form-group">
                         <label>Nombre de la Actividade</label>
@@ -210,6 +267,12 @@
                                 value="{{ old('nombre') }}" autocomplete="off">
                         </div>
                     </div>
+                    @error('nombre')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
                     <div class="form-group">
                         <label>Acuerdos</label>
                         <div class="input-group">
@@ -222,6 +285,11 @@
                                 value="{{ old('acuerdos') }}" autocomplete="off">
                         </div>
                     </div>
+                    @error('acuerdos')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                     <div class="form-group">
                         <label>Fecha creación</label>
                         <div class="input-group">
@@ -234,6 +302,11 @@
                                 value="{{old('fecha')  }}" autocomplete="off">
                         </div>
                     </div>
+                    @error('fecha')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
                     <div class="form-group">
                         <label>Fecha cumplimiento</label>
@@ -247,8 +320,33 @@
                                 value="{{old('fecha_cumplimiento')   }}" autocomplete="off">
                         </div>
                     </div>
-
-
+                    @error('fecha_cumplimiento')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <div class="form-group">
+                        <label>Avance</label> <label for="" style="color: red;">*</label>
+                        <div class="input-group">
+                            <select class="form-control" id="avance" name="avance">
+                                <option value="Ejecutada" {{ old('avance')=='Ejecutada' ? 'selected' : '' }}>Ejecutada</option>
+                                <option value="En avance conforme a plazo" {{ old('avance')=='En avance conforme a plazo' ? 'selected' : '' }} selected>En avance conforme a plazo</option>
+                                <option value="En avance con retraso" {{ old('avance')=='En avance con retraso' ? 'selected' : '' }}>En avance con retraso</option>
+                                <option value="Suspendida" {{ old('avance')=='Suspendida' ? 'selected' : '' }}>Suspendida</option>
+                                <option value="Descartada" {{ old('avance')=='Descartada' ? 'selected' : '' }}>Descartada</option>
+                            </select>
+                            @error('avance')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    @error('avance')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary waves-effect">Guardar</button>
                     </div>
@@ -262,7 +360,7 @@
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="{{ route('admin.eliminar.actividad') }} " method="POST">
+            <form action="{{ route('admin.eliminar.actividades') }} " method="POST">
                 @method('DELETE')
                 @csrf
                 <div class="modal-header">

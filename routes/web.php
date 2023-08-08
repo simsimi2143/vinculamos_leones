@@ -6,6 +6,7 @@ use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\IniciativasController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\BitacoraController;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
@@ -172,10 +173,10 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/crear-tipoiniciativa/', [ParametrosController::class, 'crearTipoIniciativa'])->name('admin.crear.tipoiniciativa');
 
     // actividad
-    Route::get('admin/listar-actividad', [ParametrosController::class, 'listaractividad'])->name('admin.listar.actividad');
-    Route::delete('admin/eliminar-actividad/', [ParametrosController::class, 'eliminaractividad'])->name('admin.eliminar.actividad');
-    Route::put('admin/editar-actividad/{nombreprefijo_codigo}', [ParametrosController::class, 'actualizaractividad'])->name('admin.actualizar.actividad');
-    Route::post('admin/crear-actividad/', [ParametrosController::class, 'crearactividad'])->name('admin.crear.actividad');
+    Route::get('admin/listar-actividad', [BitacoraController::class, 'listarActividad'])->name('admin.listar.actividades');
+    Route::delete('admin/eliminar-actividad/', [BitacoraController::class, 'eliminarActividad'])->name('admin.eliminar.actividades');
+    Route::put('admin/editar-actividad/{nombreprefijo_codigo}', [BitacoraController::class, 'actualizarActividad'])->name('admin.actualizar.actividades');
+    Route::post('admin/crear-actividad/', [BitacoraController::class, 'crearActividad'])->name('admin.crear.actividades');
 
     // fin rutas para gestionar parametros
 
