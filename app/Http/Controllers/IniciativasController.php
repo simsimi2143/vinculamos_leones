@@ -19,6 +19,7 @@ use App\Models\TipoActividades;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Escuelas;
+use App\Models\Carreras;
 use App\Models\Iniciativas;
 use App\Models\Mecanismos;
 use App\Models\MecanismosActividades;
@@ -102,18 +103,18 @@ class IniciativasController extends Controller
             ->where('iniciativas_comunas.inic_codigo', $inic_codigo)
             ->get();
 
-        $grupos = IniciativasGrupos::join('grupos','grupos.grup_codigo','iniciativas_grupos.grup_codigo')
-        // ->select(DB::raw('GROUP_CONCAT(grupos.grup_nombre SEPARATOR ", " ) as grupos'))
-        // ->groupBy('iniciativas_grupos.inic_codigo')
-        ->where('iniciativas_grupos.inic_codigo', $inic_codigo)->get();
+        $grupos = IniciativasGrupos::join('grupos', 'grupos.grup_codigo', 'iniciativas_grupos.grup_codigo')
+            // ->select(DB::raw('GROUP_CONCAT(grupos.grup_nombre SEPARATOR ", " ) as grupos'))
+            // ->groupBy('iniciativas_grupos.inic_codigo')
+            ->where('iniciativas_grupos.inic_codigo', $inic_codigo)->get();
 
-        $tematicas = IniciativasTematicas::join('tematicas','tematicas.tema_codigo','iniciativas_tematicas.tema_codigo')
-        ->where('inic_codigo', $inic_codigo)->get();
+        $tematicas = IniciativasTematicas::join('tematicas', 'tematicas.tema_codigo', 'iniciativas_tematicas.tema_codigo')
+            ->where('inic_codigo', $inic_codigo)->get();
 
-        $participantes_externos = IniciativasParticipantes::join('sub_grupos_interes','sub_grupos_interes.sugr_codigo','iniciativas_participantes.sugr_codigo')
-        ->join('socios_comunitarios','socios_comunitarios.soco_codigo','iniciativas_participantes.soco_codigo')
-        ->join('grupos_interes','grupos_interes.grin_codigo','sub_grupos_interes.grin_codigo')
-        ->where('iniciativas_participantes.inic_codigo', $inic_codigo)->get();
+        $participantes_externos = IniciativasParticipantes::join('sub_grupos_interes', 'sub_grupos_interes.sugr_codigo', 'iniciativas_participantes.sugr_codigo')
+            ->join('socios_comunitarios', 'socios_comunitarios.soco_codigo', 'iniciativas_participantes.soco_codigo')
+            ->join('grupos_interes', 'grupos_interes.grin_codigo', 'sub_grupos_interes.grin_codigo')
+            ->where('iniciativas_participantes.inic_codigo', $inic_codigo)->get();
 
 
         return view('admin.iniciativas.mostrar', [
@@ -126,79 +127,91 @@ class IniciativasController extends Controller
         ]);
     }
 
-    public function listarEvidencia($inic_codigo){
-        $inicVerificar = Iniciativas::where('inic_codigo',$inic_codigo)->first();
-        if(!$inicVerificar) return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+    public function listarEvidencia($inic_codigo)
+    {
+        $inicVerificar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+        if (!$inicVerificar)
+            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
 
         $inevListar = IniciativasEvidencias::where(['inic_codigo' => $inic_codigo])->get();
-        return view('admin.iniciativas.evidencias',[
+        return view('admin.iniciativas.evidencias', [
             'iniciativas' => $inicVerificar,
             'evidencias' => $inevListar
         ]);
     }
 
-    public function guardarEvidencia(Request $request,$inic_codigo){
+    public function guardarEvidencia(Request $request, $inic_codigo)
+    {
 
-            $inicVerificar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
-            if (!$inicVerificar) return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+        $inicVerificar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+        if (!$inicVerificar)
+            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
 
-            $validarEntradas = Validator::make($request->all(),
-                [
-                    'inev_nombre' => 'required|max:50',
-                    // 'inev_descripcion' => 'required|max:500',
-                    'inev_archivo' => 'required|mimes:png,jpg,jpeg,pdf,xls,xlsx,ppt,pptx,doc,docx,csv,mp3,mp4,avi|max:10000',
-                ],
-                [
-                    'inev_nombre.required' => 'El nombre de la evidencia es requerido.',
-                    'inev_nombre.max' => 'El nombre de la evidencia excede el máximo de caracteres permitidos (50).',
-                    // 'inev_descripcion.required' => 'La descripción de la evidencia es requerida.',
-                    // 'inev_descripcion.max' => 'La descripción de la evidencia excede el máximo de caracteres permitidos (500).',
-                    'inev_archivo.required' => 'El archivo de la evidencia es requerido.',
-                    'inev_archivo.mimes' => 'El tipo de archivo no está permitido, intente con un formato de archivo tradicional.',
-                    'inev_archivo.max' => 'El archivo excede el tamaño máximo permitido (10 MB).'
-                ]
-            );
-            if ($validarEntradas->fails()) return redirect()->route('admin.evidencia.listar', $inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
+        $validarEntradas = Validator::make(
+            $request->all(),
+            [
+                'inev_nombre' => 'required|max:50',
+                // 'inev_descripcion' => 'required|max:500',
+                'inev_archivo' => 'required|mimes:png,jpg,jpeg,pdf,xls,xlsx,ppt,pptx,doc,docx,csv,mp3,mp4,avi|max:10000',
+            ],
+            [
+                'inev_nombre.required' => 'El nombre de la evidencia es requerido.',
+                'inev_nombre.max' => 'El nombre de la evidencia excede el máximo de caracteres permitidos (50).',
+                // 'inev_descripcion.required' => 'La descripción de la evidencia es requerida.',
+                // 'inev_descripcion.max' => 'La descripción de la evidencia excede el máximo de caracteres permitidos (500).',
+                'inev_archivo.required' => 'El archivo de la evidencia es requerido.',
+                'inev_archivo.mimes' => 'El tipo de archivo no está permitido, intente con un formato de archivo tradicional.',
+                'inev_archivo.max' => 'El archivo excede el tamaño máximo permitido (10 MB).'
+            ]
+        );
+        if ($validarEntradas->fails())
+            return redirect()->route('admin.evidencia.listar', $inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
 
-            $inevGuardar = IniciativasEvidencias::insertGetId([
-                'inic_codigo' => $inic_codigo,
-                'inev_nombre' => $request->inev_nombre,
-                'inev_descripcion' => $request->inev_descripcion,
-                'inev_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'inev_rol_mod' => Session::get('admin')->rous_codigo,
-                'inev_nickname_mod' => Session::get('admin')->usua_nickname
-            ]);
-            if (!$inevGuardar) redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
+        $inevGuardar = IniciativasEvidencias::insertGetId([
+            'inic_codigo' => $inic_codigo,
+            'inev_nombre' => $request->inev_nombre,
+            'inev_descripcion' => $request->inev_descripcion,
+            'inev_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'inev_rol_mod' => Session::get('admin')->rous_codigo,
+            'inev_nickname_mod' => Session::get('admin')->usua_nickname
+        ]);
+        if (!$inevGuardar)
+            redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
 
-            $archivo = $request->file('inev_archivo');
-            $rutaEvidencia = 'files/evidencias/'.$inevGuardar;
-            if (File::exists(public_path($rutaEvidencia))) File::delete(public_path($rutaEvidencia));
-            $moverArchivo = $archivo->move(public_path('files/evidencias'), $inevGuardar);
-            if (!$moverArchivo) {
-                IniciativasEvidencias::where('inev_codigo', $inevGuardar)->delete();
-                return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
-            }
+        $archivo = $request->file('inev_archivo');
+        $rutaEvidencia = 'files/evidencias/' . $inevGuardar;
+        if (File::exists(public_path($rutaEvidencia)))
+            File::delete(public_path($rutaEvidencia));
+        $moverArchivo = $archivo->move(public_path('files/evidencias'), $inevGuardar);
+        if (!$moverArchivo) {
+            IniciativasEvidencias::where('inev_codigo', $inevGuardar)->delete();
+            return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
+        }
 
-            $inevActualizar = IniciativasEvidencias::where('inev_codigo', $inevGuardar)->update([
-                'inev_ruta' => 'files/evidencias/'.$inevGuardar,
-                'inev_mime' => $archivo->getClientMimeType(),
-                'inev_nombre_origen' => $archivo->getClientOriginalName(),
-                'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'inev_rol_mod' => Session::get('admin')->rous_codigo,
-                'inev_nickname_mod' => Session::get('admin')->usua_nickname
-            ]);
-            if (!$inevActualizar) return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
-            return redirect()->route('admin.evidencias.listar', $inic_codigo)->with('exitoEvidencia', 'La evidencia fue registrada correctamente.');
+        $inevActualizar = IniciativasEvidencias::where('inev_codigo', $inevGuardar)->update([
+            'inev_ruta' => 'files/evidencias/' . $inevGuardar,
+            'inev_mime' => $archivo->getClientMimeType(),
+            'inev_nombre_origen' => $archivo->getClientOriginalName(),
+            'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'inev_rol_mod' => Session::get('admin')->rous_codigo,
+            'inev_nickname_mod' => Session::get('admin')->usua_nickname
+        ]);
+        if (!$inevActualizar)
+            return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
+        return redirect()->route('admin.evidencias.listar', $inic_codigo)->with('exitoEvidencia', 'La evidencia fue registrada correctamente.');
 
     }
 
-    public function actualizarEvidencia(Request $request, $inev_codigo) {
+    public function actualizarEvidencia(Request $request, $inev_codigo)
+    {
         try {
             $evidencia = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->first();
-            if (!$evidencia) return redirect()->back()->with('errorEvidencia', 'La evidencia no se encuentra registrada o vigente en el sistema.');
+            if (!$evidencia)
+                return redirect()->back()->with('errorEvidencia', 'La evidencia no se encuentra registrada o vigente en el sistema.');
 
-            $validarEntradas = Validator::make($request->all(),
+            $validarEntradas = Validator::make(
+                $request->all(),
                 [
                     'inev_nombre_edit' => 'required|max:50',
                     // 'inev_descripcion_edit' => 'required|max:500',
@@ -210,7 +223,8 @@ class IniciativasController extends Controller
                     // 'inev_descripcion_edit.max' => 'La descripción de la evidencia excede el máximo de caracteres permitidos (500).'
                 ]
             );
-            if ($validarEntradas->fails()) return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
+            if ($validarEntradas->fails())
+                return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
 
             $inevActualizar = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->update([
                 'inev_nombre' => $request->inev_nombre_edit,
@@ -219,7 +233,8 @@ class IniciativasController extends Controller
                 'inev_rol_mod' => Session::get('admin')->rous_codigo,
                 'inev_nickname_mod' => Session::get('admin')->usua_nickname
             ]);
-            if (!$inevActualizar) return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al actualizar la evidencia, intente más tarde.');
+            if (!$inevActualizar)
+                return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al actualizar la evidencia, intente más tarde.');
             return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('exitoEvidencia', 'La evidencia fue actualizada correctamente.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorEvidencia', 'Ocurrió un problema al actualizar la evidencia, intente más tarde.');
@@ -227,14 +242,16 @@ class IniciativasController extends Controller
     }
 
 
-    public function descargarEvidencia($inev_codigo) {
+    public function descargarEvidencia($inev_codigo)
+    {
         try {
             $evidencia = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->first();
-            if (!$evidencia) return redirect()->back()->with('errorEvidencia', 'La evidencia no se encuentra registrada o vigente en el sistema.');
+            if (!$evidencia)
+                return redirect()->back()->with('errorEvidencia', 'La evidencia no se encuentra registrada o vigente en el sistema.');
 
             $archivo = public_path($evidencia->inev_ruta);
             $cabeceras = array(
-                'Content-Type: '.$evidencia->inev_mime,
+                'Content-Type: ' . $evidencia->inev_mime,
                 'Cache-Control: no-cache, no-store, must-revalidate',
                 'Pragma: no-cache'
             );
@@ -244,14 +261,18 @@ class IniciativasController extends Controller
         }
     }
 
-    public function eliminarEvidencia($inev_codigo) {
+    public function eliminarEvidencia($inev_codigo)
+    {
         try {
             $evidencia = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->first();
-            if (!$evidencia) return redirect()->back()->with('errorEvidencia', 'La evidencia no se encuentra registrada o vigente en el sistema.');
+            if (!$evidencia)
+                return redirect()->back()->with('errorEvidencia', 'La evidencia no se encuentra registrada o vigente en el sistema.');
 
-            if (File::exists(public_path($evidencia->inev_ruta))) File::delete(public_path($evidencia->inev_ruta));
+            if (File::exists(public_path($evidencia->inev_ruta)))
+                File::delete(public_path($evidencia->inev_ruta));
             $inevEliminar = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->delete();
-            if (!$inevEliminar) return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al eliminar la evidencia, intente más tarde.');
+            if (!$inevEliminar)
+                return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al eliminar la evidencia, intente más tarde.');
             return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('exitoEvidencia', 'La evidencia fue eliminada correctamente.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorEvidencia', 'Ocurrió un problema al eliminar la evidencia, intente más tarde.');
@@ -260,14 +281,22 @@ class IniciativasController extends Controller
 
     public function crearPaso1()
     {
-        $sedes = Sedes::all();
         $convenios = Convenios::all();
         $mecanismo = Mecanismos::all();
         $paises = Pais::all();
         $regiones = Region::all();
         $escuelas = Escuelas::all();
         $comunas = Comuna::all();
-        return view('admin.iniciativas.paso1', ['sedes' => $sedes, 'convenios' => $convenios, 'mecanismo' => $mecanismo, 'paises' => $paises, 'regiones' => $regiones, 'escuelas' => $escuelas, 'comunas' => $comunas]);
+        $carreras = Carreras::all();
+        return view('admin.iniciativas.paso1', [
+            'convenios' => $convenios,
+            'mecanismo' => $mecanismo,
+            'paises' => $paises,
+            'regiones' => $regiones,
+            'escuelas' => $escuelas,
+            'comunas' => $comunas,
+            'carreras' => $carreras
+        ]);
     }
 
     public function verificarPaso1(Request $request)
@@ -276,9 +305,8 @@ class IniciativasController extends Controller
         $request->validate([
             'nombre' => 'required|max:255',
             'anho' => 'required',
-            'pertinencial' => 'required',
-            'pertinenciat' => 'required',
-            'sedes' => 'required',
+            'description' => 'required',
+            'carreras' => 'required',
             'escuelas' => 'required',
             'mecanismo' => 'required',
             'tactividad' => 'required',
@@ -289,10 +317,9 @@ class IniciativasController extends Controller
             'nombre.required' => 'El nombre de la iniciativa es requerido.',
             'nombre.max' => 'El nombre de la iniciativa no puede superar los 250 carácteres.',
             'anho.required' => 'Es necesario ingresar un año para la iniciativa.',
-            'pertinencial.required' => 'La pertinencia local es requerida.',
-            'pertinenciat.required' => 'La pertinencia territorial es requerida.',
-            'sedes.required' => 'Es necesario que seleccione al menos una sede en donde se ejecutará la iniciativa.',
-            'escuelas.required' => 'Es necesario que seleccione al menos una escuela en donde se ejecutará la iniciativa.',
+            'description.required' => 'La Descripción es requerida.',
+            'carreras.required' => 'Es necesario que seleccione al menos una Carrera en donde se ejecutará la iniciativa.',
+            'escuelas.required' => 'Es necesario que seleccione al menos una Escuela en donde se ejecutará la iniciativa.',
             'mecanismo.required' => 'Es necesario que seleccione un mecanismo.',
             'tactividad.required' => 'Es necesario que seleccione el tipo de actividad a realizar.',
             'convenio.required' => 'Es necesario que escoja un convenio para asociar la iniciativa.',
@@ -306,8 +333,7 @@ class IniciativasController extends Controller
             'tiac_codigo' => $request->tactividad,
             'meca_codigo' => $request->mecanismo,
             'inic_territorio' => $request->territorio,
-            'inic_pertinencia_local' => $request->pertinencial,
-            'inic_pertinencia_territorial' => $request->pertinenciat,
+            'inic_descripcion' => $request->description,
             'inic_visible' => 1,
             'inic_anho' => $request->anho,
             'inic_creado' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -323,6 +349,7 @@ class IniciativasController extends Controller
         $pain = [];
         $sedes = $request->input('sedes', []);
         $escuelas = $request->input('escuelas', []);
+        $carreras = $request->input('carreras', []);
 
         IniciativasPais::create([
             'inic_codigo' => $inic_codigo,
@@ -378,23 +405,21 @@ class IniciativasController extends Controller
             return redirect()->back()->with('comuError', 'Ocurrió un error durante el registro de las comunas, intente más tarde.')->withInput();
         }
 
-
-        foreach ($sedes as $sede) {
-            foreach ($escuelas as $escuela) {
-                $sede_escuela = SedesEscuelas::where('sede_codigo', $sede)
+        foreach ($escuelas as $escuela) {
+            foreach ($carreras as $carrera) {
+                $sede_carrera = Carreras::where('care_codigo', $carrera)
                     ->where('escu_codigo', $escuela)
                     ->exists();
-                if ($sede_escuela) {
+                if ($sede_carrera) {
                     array_push($pain, [
                         'inic_codigo' => $inic_codigo,
-                        'sede_codigo' => $sede,
                         'escu_codigo' => $escuela,
+                        'care_codigo' => $carrera,
                     ]);
                 }
 
             }
         }
-
 
 
         $painCrear = ParticipantesInternos::insert($pain);
