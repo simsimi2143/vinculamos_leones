@@ -133,10 +133,10 @@
                                 <label>Tipo del documento de colaboración</label>
                                 <div class="input-group">
                                     <select class="form-control" id="tipo" name="tipo">
-                                        <option value="Convenio" {{ "Convenio" == $dato->unid_codigo ? 'selected' : '' }}>
+                                        <option value="Convenio" {{ "Convenio" == $conv->conv_tipo ? 'selected' : '' }}>
                                             Convenio
                                         </option>
-                                        <option value="CartaAdhesion" {{ "CartaAdhesion" == $dato->unid_codigo ? 'selected' : '' }}>
+                                        <option value="CartaAdhesion" {{ "CartaAdhesion" == $conv->conv_tipo ? 'selected' : '' }}>
                                             Carta de adhesión
                                         </option>
                                     </select>
@@ -237,28 +237,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Tipo del documento de colaboración</label>
-                            <div class="input-group">
-                                <select class="form-control" id="tipo" name="tipo">
-                                    <option value="Convenio">
-                                        Convenio
-                                    </option>
-                                    <option value="CartaAdhesion">
-                                        Carta de adhesión
-                                    </option>
-                                </select>
-                                @if ($errors->has('tipo'))
-                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
-                                        style="width:100%">
-                                        <div class="alert-body">
-                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('tipo') }}</strong>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label>Descripción del documento de colaboración</label>
                             <div class="input-group">
@@ -278,7 +257,7 @@
                         <div class="form-group">
                                 <label>Tipo del documento de colaboración</label>
                                 <div class="input-group">
-                                    <select class="form-control" id="select_join" name="select_join">
+                                    <select class="form-control" id="tipo" name="tipo">
                                         <option value="Convenio">
                                             Convenio
                                         </option>
