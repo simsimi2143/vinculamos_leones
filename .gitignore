@@ -3,7 +3,7 @@
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
+#/vendor
 /.phpunit.result.cache
 /.env
 /.env.*

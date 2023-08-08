@@ -143,8 +143,7 @@
                                 <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
                                     <option value="" selected disable d>Seleccione...</option>
                                     @forelse ($tipos as $tip)
-                                        <option value="{{ $tip->amac_codigo }}"
-                                            {{ old('tipo') == $tip->amac_codigo ? 'selected' : '' }}>
+                                        <option value="{{ $tip->amac_codigo }}">
                                             {{ $tip->amac_nombre }}</option>
                                     @empty
                                         <option value="-1">No existen registros</option>
