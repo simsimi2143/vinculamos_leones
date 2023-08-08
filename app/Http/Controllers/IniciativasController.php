@@ -288,6 +288,7 @@ class IniciativasController extends Controller
         $escuelas = Escuelas::all();
         $comunas = Comuna::all();
         $carreras = Carreras::all();
+        $tipoActividad = TipoActividades::all();
         return view('admin.iniciativas.paso1', [
             'convenios' => $convenios,
             'mecanismo' => $mecanismo,
@@ -295,7 +296,8 @@ class IniciativasController extends Controller
             'regiones' => $regiones,
             'escuelas' => $escuelas,
             'comunas' => $comunas,
-            'carreras' => $carreras
+            'carreras' => $carreras,
+            'tipoActividad' => $tipoActividad
         ]);
     }
 

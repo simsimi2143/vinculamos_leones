@@ -171,8 +171,8 @@
                                         <label style="font-size: 110%">Carreras</label> <label for=""
                                             style="color: red;">*</label><input type="checkbox" id="selectAllCarreras"
                                             style="margin-left: 60%"> <label for="selectAllCarreras">Todas</label>
-                                        <select class="form-control select2" multiple id="carreras"
-                                            name="carreras[]" style="width: 100%">
+                                        <select class="form-control select2" multiple id="carreras" name="carreras[]"
+                                            style="width: 100%">
                                             @if (isset($iniciativa))
                                                 @forelse ($carreras as $carrera)
                                                     <option value="{{ $carrera->care_codigo }}"
@@ -257,16 +257,17 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="tactividad" name="tactividad"
                                             style="width: 100%">
-                                            @if (isset($iniciativa))
-                                                @forelse ($tipo_actividad as $tiac)
-                                                    <option value="{{ $tiac->tiac_codigo }}"
-                                                        {{ $iniciativa->tiac_codigo == $tiac->tiac_codigo ? 'selected' : '' }}>
-                                                        {{ $tiac->tiac_nombre }}</option>
+                                            @if (isset($tipoActividad))
+                                                {{-- @forelse ($tipoActividad as $t)
+                                                    <option value="{{ $t->tiac_codigo }}"
+                                                        {{ collect(old('tipoActividad'))->contains($t->tiac_codigo) ? 'selected' : '' }}>
+                                                        {{ $t->tiac_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
-                                                @endforelse
+                                                @endforelse --}}
+                                                <option value="-1" disabled selected>Selecciona 1 Mecanismo</option>
                                             @else
-                                                <option disabled selected>Seleccione...</option>
+                                                <option value="-1">No existen registros</option>
                                             @endif
                                         </select>
 
@@ -288,25 +289,18 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="convenio" name="convenio"
                                             style="width: 100%">
-                                            <option value="" disabled selected>Seleccione...</option>
-                                            @if (isset($iniciativa))
-                                                @forelse ($convenios as $convenio)
+                                            @if (count($convenios) > 0)
+                                                <option value="" disabled selected>Seleccione...</option>
+                                                @foreach ($convenios as $convenio)
                                                     <option value="{{ $convenio->conv_codigo }}"
                                                         {{ $iniciativa->conv_codigo == $convenio->conv_codigo ? 'selected' : '' }}>
                                                         {{ $convenio->conv_nombre }}</option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
+                                                @endforeach
                                             @else
-                                                @forelse ($convenios as $convenio)
-                                                    <option value="{{ $convenio->conv_codigo }}"
-                                                        {{ old('convenio') == $convenio->conv_codigo ? 'selected' : '' }}>
-                                                        {{ $convenio->conv_nombre }}</option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
+                                                <option value="-1" selected disabled>No existen registros</option>
                                             @endif
                                         </select>
+
 
                                         @if ($errors->has('convenio'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
@@ -404,8 +398,8 @@
                                         {{-- <input type="checkbox"
                                             id="selectAllRegiones" style="margin-left: 50%"> <label
                                             for="selectAllRegiones">Todas</label> --}}
-                                        <select class="form-control select2" id="region" multiple="" name="region[]"
-                                            style="width: 100%">
+                                        <select class="form-control select2" id="region" multiple=""
+                                            name="region[]" style="width: 100%">
                                             @if (isset($iniciativa))
                                                 @forelse ($regiones as $region)
                                                     <option value="{{ $region->regi_codigo }}"
@@ -443,8 +437,8 @@
                                         {{-- <input type="checkbox"
                                             id="selectAllComunas" style="margin-left: 50%"> <label
                                             for="selectAllComunas">Todas</label> --}}
-                                        <select class="form-control select2" id="comuna" name="comuna[]" multiple=""
-                                            style="width: 100%">
+                                        <select class="form-control select2" id="comuna" name="comuna[]"
+                                            multiple="" style="width: 100%">
                                             {{-- <option value="" disabled>Seleccione...</option> --}}
                                             @if (isset($iniciativa))
                                                 @forelse ($comunas as $comuna)
@@ -521,7 +515,7 @@
             });
         }
 
-        
+
         function selectAllCarreras() {
             $('#selectAllCarreras').change(function() {
                 const selectAll = $(this).prop('checked');
