@@ -344,7 +344,7 @@ class ParametrosController extends Controller
     {
         $verificarDrop = Convenios::where('conv_codigo', $request->conv_codigo)->first();
         if (!$verificarDrop) {
-            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'El convenio no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'El documento de colaboración no se encuentra registrado en el sistema.');
         }
 
         try {
@@ -355,10 +355,10 @@ class ParametrosController extends Controller
 
         $Drop = Convenios::where('conv_codigo', $request->conv_codigo)->delete();
         if (!$Drop) {
-            return redirect()->back()->with('errorConvenio', 'El convenio no se pudo eliminar, intente más tarde.');
+            return redirect()->back()->with('errorConvenio', 'El documento de colaboración no se pudo eliminar, intente más tarde.');
         }
 
-        return redirect()->route('admin.listar.convenios')->with('exitoConvenio', 'El convenio fue eliminado correctamente.');
+        return redirect()->route('admin.listar.convenios')->with('exitoConvenio', 'El documento de colaboración fue eliminado correctamente.');
     }
 
     public function actualizarConvenios(Request $request, $conv_codigo)
@@ -386,7 +386,7 @@ class ParametrosController extends Controller
         $rutaCompleta = str_replace("/", "\\", $rutaCompleta);
 
         if (!$validacion) {
-            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al actualizar el convenio.')->withInput();
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al actualizar el documento de colaboración.')->withInput();
             ;
         }
 
@@ -400,7 +400,7 @@ class ParametrosController extends Controller
                 File::delete(public_path($rutaConvenio));
             $moverArchivo = $archivo->move(public_path('files/convenios'), $request->input('nombrearchivo') . '.' . $extension);
             if (!$moverArchivo) {
-                return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del convenio, intente más tarde.')->withInput();
+                return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del documento de colaboración, intente más tarde.')->withInput();
                 ;
             }
 
@@ -454,7 +454,7 @@ class ParametrosController extends Controller
 
         } */
 
-        return redirect()->back()->with('exitoConvenio', 'Convenio actualizado existosamente')->withInput();
+        return redirect()->back()->with('exitoConvenio', 'Documentos de colaboración actualizado existosamente')->withInput();
     }
 
     public function crearConvenios(Request $request)
@@ -474,7 +474,7 @@ class ParametrosController extends Controller
             ]
         );
         if (!$validacion)
-            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al crear el copnvenio.');
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al crear el documento de colaboración.');
 
         $convenio = new Convenios();
         $convenio->conv_nombre = $request->input('nombre');
@@ -499,14 +499,14 @@ class ParametrosController extends Controller
             File::delete(public_path($rutaConvenio));
         $moverArchivo = $archivo->move(public_path('files/convenios'), $request->input('nombrearchivo') . '.' . $extension);
         if (!$moverArchivo) {
-            return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del convenio, intente más tarde.')->withInput();
+            return redirect()->back()->with('errorConvenio', 'Ocurrió un error durante el registro del documento de colaboración, intente más tarde.')->withInput();
         }
 
         $convenio->conv_ruta_archivo = 'files/convenios/' . $request->input('nombrearchivo') . '.' . $extension;
 
         $convenio->save();
 
-        return redirect()->back()->with('exitoConvenio', 'Convenio creado existosamente')->withInput();
+        return redirect()->back()->with('exitoConvenio', 'Documento de colaboración creado existosamente')->withInput();
     }
 
     //TODO: Parametro Sedes
