@@ -242,8 +242,8 @@ class ParametrosController extends Controller
         $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
         $programa->prog_meta_docentes = $request->input('meta_docentes');
         $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
-        $programa->amac_codigo = $request->input('tipo');
-        $programa->meca_codigo = $request->input('tipo');
+        $programa->amac_codigo = $request->input('ambito');
+        $programa->meca_codigo = $request->input('mecanismo');
         $programa->prog_creado = now();
         $programa->prog_actualizado = now();
 
