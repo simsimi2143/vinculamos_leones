@@ -75,14 +75,12 @@
                                                 <td>{{ $meca->meca_nombre }}</td>
                                                 <td>{{ $meca->tmec_nombre }}</td>
                                                 <td>
-                                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger"
-                                                        onclick="eliminarMeca({{ $meca->meca_codigo }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Eliminar mecanismo"><i class="fas fa-trash"></i></a>
-
-
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
                                                     onclick="editarMeca({{ $meca->meca_codigo }})"
                                                     data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger"
+                                                        onclick="eliminarMeca({{ $meca->meca_codigo }})"
+                                                        data-toggle="tooltip" data-placement="top" title="Eliminar mecanismo"><i class="fas fa-trash"></i></a>
 
                                                 </td>
                                             </tr>

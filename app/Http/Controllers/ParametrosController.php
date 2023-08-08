@@ -22,6 +22,7 @@ use App\Models\SociosComunitarios;
 use App\Models\SubGruposInteres;
 use App\Models\Tematicas;
 use App\Models\TipoActividades;
+use App\Models\TipoIniciativas;
 use App\Models\TipoUnidades;
 use App\Models\Unidades;
 use App\Models\SubUnidades;
@@ -210,7 +211,8 @@ class ParametrosController extends Controller
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             /* 'director' => 'required|max:100', */
-            'tipo' => 'required',
+            'mecanismo' => 'required',
+            'ambito' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
             'meta_estudiantes' => 'required',
@@ -221,7 +223,8 @@ class ParametrosController extends Controller
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             /* 'director.required' => 'El nombre del director es requerido.',
             'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            'tipo.required' => 'Seleccione un ámbito de acción.',
+            'mecanismo.required' => 'Seleccione un ámbito de acción.',
+            'ambito.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
             'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
@@ -271,7 +274,8 @@ class ParametrosController extends Controller
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             /* 'director' => 'required|max:100', */
-            'tipo' => 'required',
+            'mecanismo' => 'required',
+            'ambito' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
             'meta_estudiantes' => 'required',
@@ -282,7 +286,8 @@ class ParametrosController extends Controller
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             /* 'director.required' => 'El nombre del director es requerido.',
             'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            'tipo.required' => 'Seleccione un ámbito de acción.',
+            'mecanismo.required' => 'Seleccione un ámbito de acción.',
+            'ambito.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
             'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
@@ -308,8 +313,8 @@ class ParametrosController extends Controller
         $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
         $programa->prog_meta_docentes = $request->input('meta_docentes');
         $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
-        $programa->amac_codigo = $request->input('tipo');
-        $programa->meca_codigo = $request->input('tipo2');
+        $programa->amac_codigo = $request->input('ambito');
+        $programa->meca_codigo = $request->input('mecanismo');
         $programa->prog_actualizado = now();
 
         // Guardar la actualización del programa en la base de datos
@@ -998,7 +1003,7 @@ class ParametrosController extends Controller
             ->orderBy('mecanismos.meca_codigo', 'asc')
             ->get();
 
-        $tipos = TipoIniciativa::orderBy('tmec_codigo', 'asc')->get();
+        $tipos = TipoIniciativas::orderBy('tmec_codigo', 'asc')->get();
 
         return view('admin.parametros.mecanismos', compact('mecanismos', 'tipos'));
     }
@@ -1437,4 +1442,77 @@ public function actualizarUnidades(Request $request, $unid_codigo)
 
             return redirect()->back()->with('exito', 'SubUnidad actualizada exitosamente')->withInput();;
         }
+        //TODO: Tipo de iniciativa
+//--------------------------------------
+//CAMBIAR NOMBRE MODELO POR: TipoIniciativas
+//--------------------------------------
+
+    public function listarTipoIniciativa()
+    {
+        return view('admin.parametros.tipoiniciativas', ['REGISTROS' => TipoIniciativas::orderBy('tmec_codigo', 'asc')->get()]);
+    }
+
+    public function crearTipoIniciativa(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.tipoiniciativa')->withErrors($validacion)->withInput();
+        }
+
+        $nuevo = new TipoIniciativas();
+        $nuevo->tmec_nombre = $request->input('nombre');
+        $nuevo->tmec_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->tmec_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->tmec_visible = 1;
+        $nuevo->tmec_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->tmec_rol_mod = Session::get('admin')->rous_codigo;
+
+        $nuevo->save();
+
+        return redirect()->back()->with('exito', 'Tipo de iniciativa creado exitosamente');
+    }
+
+    public function eliminarTipoIniciativa(Request $request)
+    {
+        $eliminado = TipoIniciativas::where('tmec_codigo', $request->tmec_codigo)->first();
+        if (!$eliminado) {return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.');}
+
+        $eliminado = TipoIniciativas::where('tmec_codigo', $request->tmec_codigo)->delete();
+        return redirect()->route('admin.listar.tipoiniciativa')->with('exito', 'El Tipo de iniciativa fue eliminado correctamente.');
+    }
+
+    public function actualizarTipoIniciativa(Request $request, $tmec_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
+
+        if ($validacion->fails()) {return redirect()->route('admin.listar.tipoiniciativa')->withErrors($validacion)->withInput();}
+
+        $editado = TipoIniciativas::find($tmec_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        if (!$editado) {return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.')->withInput();}
+
+        $editado->tmec_nombre = $request->input('nombre');
+        $editado->tmec_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $editado->tmec_visible = 1;
+        $editado->tmec_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->tmec_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->save();
+
+        return redirect()->back()->with('exito', 'Tipo de iniciativa actualizado exitosamente')->withInput();;
+    }
     }
