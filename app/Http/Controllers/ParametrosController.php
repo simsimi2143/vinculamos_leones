@@ -1339,7 +1339,7 @@ public function actualizarUnidades(Request $request, $unid_codigo)
 
     $editado = Unidades::find($unid_codigo);
     //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
-    if (!$ambito) {return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.')->withInput();}
+    if (!$editado) {return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.')->withInput();}
 
     $editado->unid_nombre = $request->input('nombre');
     $editado->tuni_codigo = $request->input('select_join');
