@@ -155,9 +155,9 @@
                                         <select class="form-control select2" style="width: 100%" id="grupo"
                                             name="grupo">
                                             @foreach ($grupos as $grupo)
-                                                <option value="{{ $grupo->sugr_codigo }}"
-                                                    {{ $soci->sugr_codigo == $grupo->sugr_codigo ? 'selected' : '' }}>
-                                                    {{ $grupo->sugr_nombre }}
+                                                <option value="{{ $grupo->grin_codigo }}"
+                                                    {{ $soci->grin_codigo == $grupo->grin_codigo ? 'selected' : '' }}>
+                                                    {{ $grupo->grin_nombre }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -347,9 +347,11 @@
                             <div class="input-group">
                                 <select class="form-control select2" style="width: 100%" id="grupo" name="grupo">
                                     <option value="" disabled>Seleccione...</option>
-                                    @foreach ($grupos as $gp)
-                                        <option value="{{ $gp->sugr_codigo }}">{{ $gp->sugr_nombre }}</option>
-                                    @endforeach
+                                    @foreach ($grupos as $grupo)
+                                    <option value="{{ $grupo->grin_codigo }}">
+                                        {{ $grupo->grin_nombre }}
+                                    </option>
+                                @endforeach
                                 </select>
                                 @if ($errors->has('grupo'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"

@@ -803,7 +803,7 @@ class ParametrosController extends Controller
         $socios = SociosComunitarios::orderBy('soco_codigo', 'asc')->get();
         $sedesT = Sedes::orderBy('sede_codigo', 'asc')->get();
         $SedeSocios = SedesSocios::all();
-        $grupos = SubGruposInteres::orderBy('sugr_codigo', 'asc')->get();
+        $grupos = GruposInteres::orderBy('grin_codigo', 'asc')->get();
 
         return view('admin.parametros.socios', compact('sedesT', 'socios', 'SedeSocios','grupos'));
 
@@ -867,7 +867,7 @@ class ParametrosController extends Controller
             return redirect()->back()->with('errorSocio', $soco_codigo);
         } */
         $socio = SociosComunitarios::where(['soco_codigo' => $soco_codigo])->update([
-            'sugr_codigo' => $request->input('grupo',1),
+            'grin_codigo' => $request->input('grupo'),
             'soco_nombre_socio' => $request->input('nombre'),
             'soco_nombre_contraparte' => $request->input('nombre_contraparte'),
             'soco_domicilio_socio' => $request->input('domicilio'),
@@ -950,7 +950,7 @@ class ParametrosController extends Controller
             'soco_domicilio_socio' => $request->domicilio,
             'soco_telefono_contraparte' => $request->telefono,
             'soco_email_contraparte' => $request->email,
-            'sugr_codigo' => $request->grupo,
+            'grin_codigo' => $request->grupo,
         ]);
 
         /* if (!$socoCrear) {
