@@ -13,6 +13,8 @@ class SubGruposInteres extends Model
 
     public $timestamps = false;
 
+    protected $primaryKey ='sugr_codigo';
+
     protected $fillable = [
         'sugr_codigo',
         'grin_codigo',

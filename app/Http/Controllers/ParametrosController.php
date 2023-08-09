@@ -1657,4 +1657,86 @@ class ParametrosController extends Controller
         return redirect()->back()->with('exitoActividades', 'Actividad eliminada exitosamente');
     }
 
+    //TODO: Sub-grupo de interés
+//--------------------------------------
+//CAMBIAR NOMBRE MODELO POR: SubGruposInteres
+//--------------------------------------
+
+public function listarSubGrupoInteres()
+{
+    // EN CASO DE NECESITAR OTROS DATOS AL ENRUTAR
+    $REGISTROS = SubGruposInteres::orderBy('sugr_codigo', 'asc')->get();
+    $REGISTROS2 = GruposInteres::orderBy('grin_codigo', 'asc')->get();
+
+    return view('admin.parametros.subgrupo', [
+        'REGISTROS' => $REGISTROS,
+        'REGISTROS2' => $REGISTROS2
+    ]);
+}
+
+public function crearSubGrupoInteres(Request $request)
+{
+    $validacion = Validator::make($request->all(), [
+        'nombre' => 'required|max:100',
+        /* 'idcampo1' => 'required', */
+    ], [
+        'nombre.required' => 'El nombre es requerido.',
+        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+    ]);
+
+    if ($validacion->fails()) {
+        return redirect()->route('admin.listar.subgrupos')->withErrors($validacion)->withInput();
+    }
+
+    $nuevo = new SubGruposInteres();
+    $nuevo->sugr_nombre = $request->input('nombre');
+    $nuevo->grin_codigo = $request->input('select_join');
+    $nuevo->sugr_creado = Carbon::now()->format('Y-m-d H:i:s');
+    $nuevo->sugr_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+    $nuevo->sugr_visible = 1;
+    $nuevo->sugr_nickname_mod = Session::get('admin')->usua_nickname;
+    $nuevo->sugr_rol_mod = Session::get('admin')->rous_codigo;
+
+    $nuevo->save();
+
+    return redirect()->back()->with('exito', 'Sub-grupo de interés creado exitosamente');
+}
+
+public function eliminarSubGrupoInteres(Request $request)
+{
+    $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->first();
+    if (!$eliminado) {return redirect()->route('admin.listar.subgrupos')->with('error', 'El Sub-grupo de interés no se encuentra registrado en el sistema.');}
+
+    $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->delete();
+    return redirect()->route('admin.listar.subgrupos')->with('exito', 'El Sub-grupo de interés fue eliminado correctamente.');
+}
+
+public function actualizarSubGrupoInteres(Request $request, $sugr_codigo)
+{
+    $validacion = Validator::make($request->all(), [
+        'nombre' => 'required|max:100',
+        /* 'idcampo1' => 'required', */
+    ], [
+        'nombre.required' => 'El nombre es requerido.',
+        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+    ]);
+
+    if ($validacion->fails()) {return redirect()->route('admin.listar.subgrupos')->withErrors($validacion)->withInput();}
+
+    $editado = SubGruposInteres::find($sugr_codigo);
+    if (!$editado) {return redirect()->route('admin.listar.subgrupos')->with('error', 'El Sub-grupo de interés no se encuentra registrado en el sistema.')->withInput();}
+
+    $editado->sugr_nombre = $request->input('nombre');
+    $editado->grin_codigo = $request->input('select_join');
+    $editado->sugr_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+    $editado->sugr_visible = 1;
+    $editado->sugr_nickname_mod = Session::get('admin')->usua_nickname;
+    $editado->sugr_rol_mod = Session::get('admin')->rous_codigo;
+    $editado->save();
+
+    return redirect()->back()->with('exito', 'Sub-grupo de interés actualizado exitosamente')->withInput();;
+}
+
 }

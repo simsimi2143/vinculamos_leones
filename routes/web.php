@@ -134,6 +134,12 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/grupos/actualizar/{grin_codigo}', [ParametrosController::class, 'actualizarGrupos'])
     ->name('admin.actualizar.grupos');
 
+    // SubGrupoInteres
+    Route::get('admin/listar-subgrupos', [ParametrosController::class,'listarSubGrupoInteres'])->name('admin.listar.subgrupos');
+    Route::delete('admin/eliminar-subgrupos/', [ParametrosController::class,'eliminarSubGrupoInteres'])->name('admin.eliminar.subgrupos');
+    Route::put('admin/editar-subgrupos/{sugr_codigo}', [ParametrosController::class,'actualizarSubGrupoInteres'])->name('admin.actualizar.subgrupos');
+    Route::post('admin/crear-subgrupos/', [ParametrosController::class,'crearSubGrupoInteres'])->name('admin.crear.subgrupos');
+
    //Tipos de actividad
     Route::get('/admin/listar/tipoact', [ParametrosController::class,'listarTipoact'])
     ->name('admin.listar.tipoact');
