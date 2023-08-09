@@ -20,7 +20,6 @@
                     data-feather="clipboard"></i><span>Bitácora</span></a>
             <ul class="dropdown-menu">
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.listar.actividades')}}">Listar actividades</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.ingresar.actividades')}}" --}}>Ingresar actividades</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.listar.donaciones')}}" --}}>Listar donación</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.ingresar.donaciones')}}" --}}>Ingresar donación</a></li>
             </ul>
