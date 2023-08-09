@@ -19,10 +19,10 @@
             <a href="#" class="menu-toggle nav-link has-dropdown"><i
                     data-feather="clipboard"></i><span>Bitácora</span></a>
             <ul class="dropdown-menu">
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.listar.actividades')}}" --}}>Listar actividades</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.ingresar.actividades')}}" --}}>Ingresar actividades</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.listar.donaciones')}}" --}}>Listar donación</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.ingresar.donaciones')}}" --}}>Ingresar donación</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.listar.actividades')}}">Listar actividades</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.ingresar.actividades')}}" --}}>Ingresar actividades</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.listar.donaciones')}}" --}}>Listar donación</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.ingresar.donaciones')}}" --}}>Ingresar donación</a></li>
             </ul>
         </li>
         <li class="dropdown">
@@ -30,7 +30,6 @@
                     data-feather="command"></i><span>Parámetros</span></a>
             <ul class="dropdown-menu">
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.sedes")}}">Sedes</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.actividad")}}">Actividades</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.escuelas")}}">Escuelas</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.carreras")}}">Carreras</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.ambitos")}}">Impactos</a></li>
