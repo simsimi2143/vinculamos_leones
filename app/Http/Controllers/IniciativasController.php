@@ -281,6 +281,7 @@ class IniciativasController extends Controller
 
     public function crearPaso1()
     {
+        $iniciativa = Iniciativas::all(); 
         $convenios = Convenios::all();
         $mecanismo = Mecanismos::all();
         $paises = Pais::all();
@@ -290,6 +291,7 @@ class IniciativasController extends Controller
         $carreras = Carreras::all();
         $tipoActividad = TipoActividades::all();
         return view('admin.iniciativas.paso1', [
+            'iniciativa' => $iniciativa,
             'convenios' => $convenios,
             'mecanismo' => $mecanismo,
             'paises' => $paises,
@@ -307,6 +309,7 @@ class IniciativasController extends Controller
         $request->validate([
             'nombre' => 'required|max:255',
             'anho' => 'required',
+            'inic_formato' => 'required',
             'description' => 'required',
             'carreras' => 'required',
             'escuelas' => 'required',
@@ -319,6 +322,7 @@ class IniciativasController extends Controller
             'nombre.required' => 'El nombre de la iniciativa es requerido.',
             'nombre.max' => 'El nombre de la iniciativa no puede superar los 250 carácteres.',
             'anho.required' => 'Es necesario ingresar un año para la iniciativa.',
+            'inic_formato.required' => 'Es necesario que seleccione un formato para la iniciativa.',
             'description.required' => 'La Descripción es requerida.',
             'carreras.required' => 'Es necesario que seleccione al menos una Carrera en donde se ejecutará la iniciativa.',
             'escuelas.required' => 'Es necesario que seleccione al menos una Escuela en donde se ejecutará la iniciativa.',
@@ -338,6 +342,7 @@ class IniciativasController extends Controller
             'inic_descripcion' => $request->description,
             'inic_visible' => 1,
             'inic_anho' => $request->anho,
+            'inic_formato' => $request->inic_formato,
             'inic_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'inic_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'inic_nickname_mod' => Session::get('admin')->usua_nickname,
@@ -349,7 +354,6 @@ class IniciativasController extends Controller
 
         $inic_codigo = $inicCrear;
         $pain = [];
-        $sedes = $request->input('sedes', []);
         $escuelas = $request->input('escuelas', []);
         $carreras = $request->input('carreras', []);
 
@@ -409,10 +413,10 @@ class IniciativasController extends Controller
 
         foreach ($escuelas as $escuela) {
             foreach ($carreras as $carrera) {
-                $sede_carrera = Carreras::where('care_codigo', $carrera)
-                    ->where('escu_codigo', $escuela)
+                $escu_carrera = Carreras::where('escu_codigo', $escuela)
+                    ->where('care_codigo', $carrera)
                     ->exists();
-                if ($sede_carrera) {
+                if ($escu_carrera) {
                     array_push($pain, [
                         'inic_codigo' => $inic_codigo,
                         'escu_codigo' => $escuela,
@@ -499,7 +503,7 @@ class IniciativasController extends Controller
 
     }
 
-    public function actualizarPaso1(Request $request, $inic_codigo)
+    public function actualizarPaso1(Request$request, $inic_codigo)
     {
         $request->validate([
             'nombre' => 'required|max:255',
@@ -644,10 +648,14 @@ class IniciativasController extends Controller
     public function editarPaso2($inic_codigo)
     {
         $iniciativaActual = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+
+
         $sedes = ParticipantesInternos::where('inic_codigo', $inic_codigo)
-            ->join('sedes', 'sedes.sede_codigo', '=', 'participantes_internos.sede_codigo')
-            ->select('sedes.sede_codigo', 'sedes.sede_nombre')
+            ->join('escuelas', 'escuelas.escu_codigo', '=', 'participantes_internos.escu_codigo')
+            ->select('escuelas.escu_codigo', 'escuelas.escu_nombre')
             ->distinct()->get();
+
+
         $sedesTotal = Sedes::all();
         $subGrupos = SubGruposInteres::all();
         $grupos = Grupos::all();
