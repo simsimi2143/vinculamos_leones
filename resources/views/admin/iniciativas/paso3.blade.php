@@ -60,7 +60,6 @@
                                         <tr>
                                             <th></th>
                                             <th class="text-center">Dinero</th>
-                                            <th class="text-center">Especies</th>
                                             <th class="text-center">Infraestructura</th>
                                             <th class="text-center">Recursos Humanos</th>
                                             <th class="text-center">Total</th>
@@ -70,7 +69,7 @@
                                             <td>
                                                 <div class="row mb-2">
                                                     <div class="col-12 col-md-12 col-lg-12 text-center" id="empresadinero">
-                                                        
+
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -84,29 +83,8 @@
                                             </td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="empresa-especies-total">
-                                                        
-                                                    </div>
-                                                    <div class="col-3 col-md-3 col-lg-3">
-                                                        <button type="button" class="btn btn-icon btn-primary" onclick="crearEspecie(1)"><i class="fas fa-plus"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2 mr-1 ml-1">
-                                                    <table class="table table-bordered table-hover small table-sm">
-                                                        <tr>
-                                                            <th>Nombre</th>
-                                                            <th>Valorización</th>
-                                                            <th></th>
-                                                        </tr>
-                                                        <tbody id="tabla-empresa-especies">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="row">
                                                     <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="empresa-infra-total">
-                                                        
+
                                                     </div>
                                                     <div class="col-3 col-md-3 col-lg-3">
                                                         <button type="button" class="btn btn-icon btn-primary" onclick="crearInfra(1)"><i class="fas fa-plus"></i></button>
@@ -128,7 +106,7 @@
                                             <td>
                                                 <div class="row">
                                                     <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="empresa-rrhh-total">
-                                                        
+
                                                     </div>
                                                     <div class="col-3 col-md-3 col-lg-3">
                                                         <button type="button" class="btn btn-icon btn-primary" onclick="crearRrhh(1)"><i class="fas fa-plus"></i></button>
@@ -150,7 +128,7 @@
                                             <td>
                                                 <div class="row text-center">
                                                     <div class="col-12 col-md-12 col-lg-12" id="empresa-total">
-                                                        
+
                                                     </div>
                                                 </div>
                                             </td>
@@ -160,7 +138,7 @@
                                             <td>
                                                 <div class="row mb-2">
                                                     <div class="col-12 col-md-12 col-lg-12 text-center" id="externodinero">
-                                                        
+
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -174,29 +152,8 @@
                                             </td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="externo-especies-total">
-                                                        
-                                                    </div>
-                                                    <div class="col-3 col-md-3 col-lg-3">
-                                                        <button type="button" class="btn btn-icon btn-primary" onclick="crearEspecie(2)"><i class="fas fa-plus"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2 mr-1 ml-1">
-                                                    <table class="table table-bordered table-hover small table-sm">
-                                                        <tr>
-                                                            <th>Nombre</th>
-                                                            <th>Valorización</th>
-                                                            <th></th>
-                                                        </tr>
-                                                        <tbody id="tabla-externo-especies">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="row">
                                                     <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="externo-infra-total">
-                                                        
+
                                                     </div>
                                                     <div class="col-3 col-md-3 col-lg-3">
                                                         <button type="button" class="btn btn-icon btn-primary" onclick="crearInfra(2)"><i class="fas fa-plus"></i></button>
@@ -218,7 +175,7 @@
                                             <td>
                                                 <div class="row">
                                                     <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="externo-rrhh-total">
-                                                        
+
                                                     </div>
                                                     <div class="col-3 col-md-3 col-lg-3">
                                                         <button type="button" class="btn btn-icon btn-primary" onclick="crearRrhh(2)"><i class="fas fa-plus"></i></button>
@@ -240,7 +197,7 @@
                                             <td>
                                                 <div class="row text-center">
                                                     <div class="col-12 col-md-12 col-lg-12" id="externo-total">
-                                                        
+
                                                     </div>
                                                 </div>
                                             </td>
@@ -251,7 +208,7 @@
                             <div class="row mt-4">
                                 <div class="col-12 col-md-12 col-lg-12">
                                     <div class="text-right">
-                                        <a href="{{ route('admin.editar.paso2', $iniciativa->inic_codigo) }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-chevron-left"></i> Volver al paso anterior</a>                                      
+                                        <a href="{{ route('admin.editar.paso2', $iniciativa->inic_codigo) }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-chevron-left"></i> Volver al paso anterior</a>
                                         <button type="button" class="btn btn-primary mr-1 waves-effect" data-toggle="modal" data-target="#modalFinalizar"><i class="fas fa-check"></i> Finalizar</button>
                                         <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}" type="button" class="btn btn-warning waves-effect">Recargar</a>
                                     </div>
@@ -262,54 +219,9 @@
                 </div>
             </div>
         @endif
-        
+
     </div>
 </section>
-
-<div class="modal fade" id="modalEspecies" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formModal">Agregar especie</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="text-center" id="div-alert-especie">
-                    </div>
-                    <div class="form-group">
-                        <label>Nombre especie</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-fish"></i>
-                                </div>
-                            </div>
-                            <input type="text" class="form-control" id="nombreespecie" name="nombreespecie" placeholder="" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Valorización</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-dollar-sign"></i>
-                                </div>
-                            </div>
-                            <input type="number" class="form-control" id="valorespecie" name="valorespecie" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <input type="hidden" id="entidadespecie" name="entidadespecie">
-                        <button type="button" class="btn btn-primary waves-effect" onclick="guardarEspecie()">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="modalInfraestructura" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -333,7 +245,7 @@
                                 </div>
                             </div>
                             <select class="form-control" id="codigoinfra" name="codigoinfra" onchange="buscarTipoInfra()">
-                                <option value="" selected disabled>Seleccione...</option>                                          
+                                <option value="" selected disabled>Seleccione...</option>
                             </select>
                         </div>
                     </div>
@@ -392,7 +304,7 @@
                                 </div>
                             </div>
                             <select class="form-control" id="codigorrhh" name="codigorrhh" onchange="buscarTipoRrhh()">
-                                <option value="" selected disabled>Seleccione...</option>                                          
+                                <option value="" selected disabled>Seleccione...</option>
                             </select>
                         </div>
                     </div>
