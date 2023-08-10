@@ -69,10 +69,12 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-md-2 col-lg-3">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Subgrupos</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="subgrupo" name="subgrupo" style="width: 100%">
+                                        <label style="font-size: 110%">Subgrupos</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="subgrupo" name="subgrupo"
+                                            style="width: 100%">
                                             <option value="">Seleccione...</option>
                                             @forelse ($subgrupos as $subgrupo)
                                                 <option value="{{ $subgrupo->sugr_codigo }}">{{ $subgrupo->sugr_nombre }}
@@ -96,9 +98,17 @@
 
                                 <div class="col-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Socio comunitario</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="socio" name="socio" style="width: 100%">
+                                        <label style="font-size: 110%">Socio comunitario</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="socio" name="socio"
+                                            style="width: 100%">
                                             <option value="">Seleccione...</option>
+                                            @forelse ($socios as $socio)
+                                                <option value="{{ $socio->soco_codigo }}">{{ $socio->soco_nombre_socio }}
+                                                </option>
+                                            @empty
+                                                <option value="-1">No existen registros</option>
+                                            @endforelse
                                         </select>
 
                                         @if ($errors->has('socio'))
@@ -134,7 +144,8 @@
                                 <div class="col-2 col-md-2 col-lg-2" style="position: relative;">
 
                                     <button style="position: absolute; top: 52%; transform: translateY(-50%);"
-                                        class="btn btn-primary mr-1 waves-effect" onclick="AgregarParticipantesExternos()"><i class="fas fa-plus"></i>
+                                        class="btn btn-primary mr-1 waves-effect"
+                                        onclick="AgregarParticipantesExternos()"><i class="fas fa-plus"></i>
                                         Agregar</button>
 
                                 </div>
@@ -164,39 +175,51 @@
                             </div>
 
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <h5>Sección 3 - Participantes internos</h5>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 div-col-md-2 col-lg-2">
+
+                                <div class="col-4 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Sede</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="sedes" name="sedes" style="width: 100%">
+                                        <label style="font-size: 110%">Escuela</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="escuelas" name="escuelas"
+                                            style="width: 100%">
                                             <option value="" selected disabled>Seleccione...</option>
-                                            @forelse ($sedes as $sede)
-                                                <option value="{{ $sede->sede_codigo }}">
-                                                    {{ $sede->sede_nombre }}
+                                            @forelse ($escuelas as $escuela)
+                                                <option value="{{ $escuela->escu_codigo }}">
+                                                    {{ $escuela->escu_nombre }}
+                                                </option>
+                                            @empty
+                                                <option value="-1">No existen registros</option>
+                                            @endforelse
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-2 div-col-md-2 col-lg-3">
+                                    <div class="form-group">
+                                        <label style="font-size: 110%">Carreras</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="carreras" name="carreras"
+                                            style="width: 100%">
+                                            <option value="" selected disabled>Seleccione...</option>
+                                            @forelse ($carreras as $carrera)
+                                                <option value="{{ $carrera->care_codigo }}">
+                                                    {{ $carrera->care_nombre }}
                                                 </option>
                                             @empty
                                                 <option value="-1">No existen registros</option>
                                             @endforelse
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-4 col-md-4 col-lg-4">
-                                    <div class="form-group">
-                                        <label style="font-size: 110%">Escuela</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="escuelas" name="escuelas" style="width: 100%">
-                                            <option value="" selected disabled>Seleccione...</option>
 
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- <div class="col-2 col-md-2 col-lg-2">
+                                 {{-- <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label>N° de participantes totales</label> <label for=""
                                             style="color: red;">*</label>
@@ -212,9 +235,9 @@
                                             </div>
                                         @endif
                                     </div>
-                                </div> --}}
+                                </div>  --}}
 
-                                <div class="col-2 col-md-2 col-lg-2">
+                                {{-- <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Estudiantes</label> <label for=""
                                             style="color: red;">*</label>
@@ -235,7 +258,8 @@
 
                                 <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Docentes</label> <label for="" style="color: red;">*</label>
+                                        <label style="font-size: 110%">Docentes</label> <label for=""
+                                            style="color: red;">*</label>
                                         <input type="number" class="form-control" id="ndocentes" name="ndocentes">
 
                                         @if ($errors->has('ndocentes'))
@@ -267,11 +291,11 @@
                                             <div class="table-responsive">
                                                 <table class="table table-bored table-md">
                                                     <thead>
-                                                        <th>Sedes</th>
                                                         <th>Escuelas</th>
+                                                        <th>Carreras</th>
                                                         <th>Estudiantes</th>
                                                         <th>Docentes</th>
-                                                        {{-- <th>Total</th> --}}
+                                                        <th>Total</th>
                                                     </thead>
                                                     <tbody id="body-tabla-internos">
 
@@ -281,25 +305,28 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <form action="{{ route('admin.paso2.verificar', $iniciativa->inic_codigo) }}" method="POST">
+                            {{-- <form action="{{ route('admin.paso2.verificar', $iniciativa->inic_codigo) }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-6 col-md-6 col-lg-6">
                                         <div class="row">
                                             <div class="col-2"></div>
-                                            <h4 class="font-weight-light">¿La iniciativa se desarrolla con <br>alguno de los siguientes grupos?</h4>
+                                            <h4 class="font-weight-light">¿La iniciativa se desarrolla con <br>alguno de
+                                                los siguientes grupos?</h4>
                                         </div>
 
                                         <div class="row" style="margin-top: 5%">
                                             <div class="col-2"></div>
                                             <div class="form-grup">
+                                                {{$grupos}}
                                                 @foreach ($grupos as $grupo)
                                                     <div class="form-check">
                                                         <input type="checkbox" name=grupos[] class="form-check-input"
                                                             id="check{{ $grupo->grup_codigo }}"
-                                                            value="{{ $grupo->grup_codigo }}" @if(in_array($grupo->grup_codigo,$gruposSec)) checked @endif>
+                                                            value="{{ $grupo->grup_codigo }}"
+                                                            @if (in_array($grupo->grup_codigo, $gruposSec)) checked @endif>
                                                         <label for="check{{ $grupo->grup_codigo }}"
                                                             class="form-check-label">
                                                             <h6 class="font-weight-light">{{ $grupo->grup_nombre }}</h6>
@@ -314,7 +341,8 @@
                                     <div class="col-6 col-md-6 col-lg-6">
                                         <div class="row">
                                             <div class="col-2"></div>
-                                            <h4 class="font-weight-light"class="font-weight-light">¿La iniciativa aborda alguna de <br>las siguientes temáticas?</h4>
+                                            <h4 class="font-weight-light"class="font-weight-light">¿La iniciativa aborda
+                                                alguna de <br>las siguientes temáticas?</h4>
                                         </div>
 
                                         <div class="row" style="margin-top: 5%">
@@ -324,10 +352,12 @@
                                                     <div class="form-check">
                                                         <input type="checkbox" name=tematicas[] class="form-check-input"
                                                             id="check{{ $tematica->tema_codigo }}t"
-                                                            value="{{ $tematica->tema_codigo }}" @if(in_array($tematica->tema_codigo,$tematicasSec)) checked @endif>
+                                                            value="{{ $tematica->tema_codigo }}"
+                                                            @if (in_array($tematica->tema_codigo, $tematicasSec)) checked @endif>
                                                         <label for="check{{ $tematica->tema_codigo }}t"
                                                             class="form-check-label">
-                                                            <h6 class="font-weight-light">{{ $tematica->tema_nombre }}</h6>
+                                                            <h6 class="font-weight-light">{{ $tematica->tema_nombre }}
+                                                            </h6>
                                                         </label>
                                                     </div>
                                                 @endforeach
@@ -341,7 +371,8 @@
                                         <div class="text-right">
                                             <strong>
                                                 <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
-                                                    type="button" class="btn mr-1 waves-effect" style="background-color:#042344; color:white"><i
+                                                    type="button" class="btn mr-1 waves-effect"
+                                                    style="background-color:#042344; color:white"><i
                                                         class="fas fa-chevron-left"></i>
                                                     Paso anterior</a>
                                             </strong>
@@ -350,7 +381,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </form> --}}
 
                         </div>
                     </div>
@@ -456,7 +487,8 @@
 
                             <label>Subgrupo</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="subgrupo" name="subgrupo" style="width: 100%">
+                                <select class="form-control select2" style="width: 100%" id="subgrupo" name="subgrupo"
+                                    style="width: 100%">
                                     <option value="" selected disabled>Seleccione...</option>
                                     @foreach ($subgrupos as $subgrupo)
                                         <option value="{{ $subgrupo->sugr_codigo }}">{{ $subgrupo->sugr_nombre }}
@@ -476,8 +508,8 @@
 
                             <label>Sedes Asociadas</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]" style="width: 100%"
-                                    multiple>
+                                <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]"
+                                    style="width: 100%" multiple>
                                     <option value="" disabled>Seleccione...</option>
                                     @foreach ($sedesT as $sede)
                                         <option value="{{ $sede->sede_codigo }}">{{ $sede->sede_nombre }}</option>
@@ -585,20 +617,28 @@
         }
 
         function modificar() {
+            console.log($("#idIniciativa").text())
+            console.log( $("#escuelas").val())
+            console.log($("#carreras").val())
+            console.log($("#ndocentes").val())
+            console.log($("#nestudiantes").val())
+       
             $.ajax({
                 type: 'POST',
                 url: `${window.location.origin}/admin/actualizar/participantes-internos`,
                 data: {
                     _token: '{{ csrf_token() }}',
                     inic_codigo: $("#idIniciativa").text(),
-                    sede_codigo: $("#sedes").val(),
                     escu_codigo: $("#escuelas").val(),
+                    care_codigo: $("#carreras").val(),
                     pain_docentes: $("#ndocentes").val(),
                     pain_estudiantes: $("#nestudiantes").val(),
+                    
                     // pain_total: $("#ntotal").val()
                 },
                 success: function(resConsultar) {
                     respuesta = JSON.parse(resConsultar);
+                    console.log(respuesta)
                     $('#body-tabla-internos').empty();
 
                     datosInternos = respuesta.resultado;
@@ -617,14 +657,16 @@
 
                         // <td>${registro.pain_total}</td>
                         fila = `<tr>
-                                <td>${registro.sede_nombre}</td>
                                 <td>${registro.escu_nombre}</td>
+                                <td>${registro.care_nombre}</td>
                                 <td>${registro.pain_estudiantes}</td>
                                 <td>${registro.pain_docentes}</td>
                                 </tr>`
                         $('#body-tabla-internos').append(fila)
+                        listarInterno()
                     })
                 }
+               
 
             })
         }
@@ -683,27 +725,28 @@
             })
         }
 
-        function eliminarExterno(inic_codigo,sugr_codigo,soco_codigo){
+        function eliminarExterno(inic_codigo, sugr_codigo, soco_codigo) {
             $.ajax({
-                type:'POST',
-                url : `${window.location.origin}/admin/inicitiativa/eliminar-externo`,
+                type: 'POST',
+                url: `${window.location.origin}/admin/inicitiativa/eliminar-externo`,
                 data: {
-                    _token:'{{csrf_token()}}',
-                    inic_codigo:inic_codigo,
-                    sugr_codigo:sugr_codigo,
-                    soco_codigo:soco_codigo
+                    _token: '{{ csrf_token() }}',
+                    inic_codigo: inic_codigo,
+                    sugr_codigo: sugr_codigo,
+                    soco_codigo: soco_codigo
                 },
-                success: function(resEliminar){
+                success: function(resEliminar) {
                     respuesta = JSON.parse(resEliminar);
                     listarExterno();
                 },
-                error:function(error){
+                error: function(error) {
                     console.log(error);
                 }
             })
         }
 
         function listarInterno() {
+            console.log($('#idIniciativa').text())
 
             $.ajax({
                 type: 'GET',
@@ -715,6 +758,7 @@
 
                 success: function(resConsultar) {
                     respuesta = JSON.parse(resConsultar);
+                    console.log(respuesta);
                     $('#body-tabla-internos').empty();
 
                     datosInternos = respuesta.resultado;
@@ -731,8 +775,8 @@
                         // }
                         // <td>${registro.pain_total}</td>
                         fila = `<tr>
-                                    <td>${registro.sede_nombre}</td>
                                     <td>${registro.escu_nombre}</td>
+                                    <td>${registro.care_nombre}</td>
                                     <td>${registro.pain_estudiantes}</td>
                                     <td>${registro.pain_docentes}</td>
                                 </tr>`

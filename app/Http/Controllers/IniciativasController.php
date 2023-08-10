@@ -281,7 +281,7 @@ class IniciativasController extends Controller
 
     public function crearPaso1()
     {
-        $iniciativa = Iniciativas::all(); 
+        $iniciativa = Iniciativas::all();
         $convenios = Convenios::all();
         $mecanismo = Mecanismos::all();
         $paises = Pais::all();
@@ -503,7 +503,7 @@ class IniciativasController extends Controller
 
     }
 
-    public function actualizarPaso1(Request$request, $inic_codigo)
+    public function actualizarPaso1(Request $request, $inic_codigo)
     {
         $request->validate([
             'nombre' => 'required|max:255',
@@ -660,7 +660,11 @@ class IniciativasController extends Controller
         $subGrupos = SubGruposInteres::all();
         $grupos = Grupos::all();
         $gruposIni = IniciativasGrupos::select('grup_codigo')->where('inic_codigo', $inic_codigo)->get();
-        // $socios = SociosComunitarios::all();
+        $socios = SociosComunitarios::all();
+        $escuelas = Escuelas::all();
+        $carreras = Carreras::all();
+
+
         $grupoIniCod = [];
 
         $tematicas = Tematicas::all();
@@ -685,7 +689,9 @@ class IniciativasController extends Controller
             'sedesT' => $sedesTotal,
             'gruposSec' => $grupoIniCod,
             'tematicasSec' => $temaIniCod,
-            // 'socios' => $socios,
+            'escuelas' => $escuelas,
+            'carreras' => $carreras,
+            'socios' => $socios,
 
         ]);
 
@@ -880,7 +886,7 @@ class IniciativasController extends Controller
     public function listarInternos(Request $request)
     {
 
-        $internos = ParticipantesInternos::join('sedes', 'sedes.sede_codigo', '=', 'participantes_internos.sede_codigo')
+        $internos = ParticipantesInternos::join('carreras', 'carreras.care_codigo', '=', 'participantes_internos.care_codigo')
             ->join('escuelas', 'escuelas.escu_codigo', '=', 'participantes_internos.escu_codigo')
             ->where('inic_codigo', $request->inic_codigo)
             ->get();
@@ -889,17 +895,23 @@ class IniciativasController extends Controller
 
     public function actualizarInternos(Request $request)
     {
-        $actualizarInternos = ParticipantesInternos::where(['inic_codigo' => $request->inic_codigo, 'sede_codigo' => $request->sede_codigo, 'escu_codigo' => $request->escu_codigo])->update([
-            'pain_docentes' => $request->pain_docentes,
-            'pain_estudiantes' => $request->pain_estudiantes,
-            'pain_total' => $request->pain_total
-        ]);
+        $actualizarInternos = ParticipantesInternos::where(
+            [
+                'inic_codigo' => $request->inic_codigo,
+                'escu_codigo' => $request->escu_codigo,
+                'care_codigo' => $request->care_codigo
+            ]
+        )->update([
+                    'pain_docentes' => $request->pain_docentes,
+                    'pain_estudiantes' => $request->pain_estudiantes,
+                    'pain_total' => $request->pain_total
+                ]);
 
-        $internos = ParticipantesInternos::join('sedes', 'sedes.sede_codigo', '=', 'participantes_internos.sede_codigo')
+        $internos = ParticipantesInternos::join('carreras', 'carreras.care_codigo', '=', 'participantes_internos.care_codigo')
             ->join('escuelas', 'escuelas.escu_codigo', '=', 'participantes_internos.escu_codigo')
             ->where('inic_codigo', $request->inic_codigo)
             ->get();
-        return json_encode(["estado" => true, "resultado" => $internos]);
+        return json_encode(["estado" => true, "resultado" => $internos, "internos" => $actualizarInternos]);
     }
 
     public function escuelasBySede(Request $request)
