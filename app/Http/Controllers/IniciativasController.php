@@ -38,7 +38,9 @@ use Illuminate\Support\Facades\Response;
 class IniciativasController extends Controller
 {
     public function listarIniciativas()
+
     {
+        $iniciativa2 = Iniciativas::all();
         $iniciativas = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
             ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
             ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
@@ -54,7 +56,7 @@ class IniciativasController extends Controller
             ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'mecanismos.meca_nombre')
             ->get();
 
-        return view('admin.iniciativas.listar', ["iniciativas" => $iniciativas]);
+        return view('admin.iniciativas.listar', ["iniciativas" => $iniciativa2]);
     }
 
     public function mostrarDetalles($inic_codigo)
@@ -961,5 +963,31 @@ class IniciativasController extends Controller
             $pais = Pais::where('pais_codigo', '!=', 1)->get();
         }
         return response()->json($pais);
+    }
+
+
+
+
+
+    // FUNCIONES PARA EL PASO 3
+    public function editarPaso3($inic_codigo) {
+        $iniciativa = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+        // $inicEditar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+        // // $listarRegiones = Regiones::select('regi_codigo', 'regi_nombre')->orderBy('regi_codigo')->get();
+        // $listarParticipantes = DB::table('participantes')
+        //     ->select('inic_codigo', 'participantes.sube_codigo', 'sube_nombre')
+        //     ->join('subentornos', 'subentornos.sube_codigo', '=', 'participantes.sube_codigo')
+        //     ->where('inic_codigo', $inic_codigo)
+        //     ->orderBy('part_creado', 'asc')
+        //     ->get();
+        return view('admin.iniciativas.paso3',[
+            'iniciativa' => $iniciativa
+        ]);
+
+    }
+
+    public function crearPaso3(){
+        return view('admin.iniciativas.paso3');
+
     }
 }

@@ -176,7 +176,7 @@
                             </div>
 
 
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <h5>Sección 3 - Participantes internos</h5>
                                 </div>
@@ -217,10 +217,10 @@
                                             @endforelse
                                         </select>
                                     </div>
-                                </div> --}}
+                                </div>
 
-
-                                 {{-- <div class="col-2 col-md-2 col-lg-2">
+{{-- 
+                                  <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label>N° de participantes totales</label> <label for=""
                                             style="color: red;">*</label>
@@ -236,9 +236,9 @@
                                             </div>
                                         @endif
                                     </div>
-                                </div>  --}}
+                                </div>   --}}
 
-                                {{-- <div class="col-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Estudiantes</label> <label for=""
                                             style="color: red;">*</label>
@@ -296,7 +296,7 @@
                                                         <th>Carreras</th>
                                                         <th>Estudiantes</th>
                                                         <th>Docentes</th>
-                                                        <th>Total</th>
+                                                        {{-- <th>Total</th> --}}
                                                     </thead>
                                                     <tbody id="body-tabla-internos">
 
@@ -306,7 +306,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             {{-- <form action="{{ route('admin.paso2.verificar', $iniciativa->inic_codigo) }}" method="POST">
                                 @csrf
@@ -393,11 +393,11 @@
                                                     class="fas fa-chevron-left"></i>
                                                 Paso anterior</a>
                                         </strong>
-                                        <a href="http://losleones.demo.localhost/admin/iniciativas/listar"
+                                        <a href="{{route('admin.editar.paso3', $iniciativa->inic_codigo)}}"
                                             type="button" class="btn btn-primary mr-1 waves-effect"
-                                            ><i
-                                            class="fas fa-save"></i>
-                                            Guardar</a>
+                                            >
+                                            Paso siguiente <i
+                                            class="fas fa-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>

@@ -33,6 +33,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Listado de Iniciativas</h4>
+                            {{-- {{$iniciativas}} --}}
 
                         </div>
                         <div class="card-body">
@@ -54,8 +55,8 @@
                                             <tr>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
                                                 <td>{{ $iniciativa->meca_nombre }}</td>
-                                                <td>{{ $iniciativa->sedes }}</td>
                                                 <td>{{ $iniciativa->escuelas }}</td>
+                                                <td>{{ $iniciativa->carreras }}</td>
                                                 <td>
                                                     @if ($iniciativa->inic_estado == 1)
                                                         <div class="badge badge-light badge-shadow">
