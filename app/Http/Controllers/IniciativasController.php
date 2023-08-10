@@ -41,15 +41,15 @@ class IniciativasController extends Controller
     {
         $iniciativas = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
             ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
-            ->join('sedes', 'sedes.sede_codigo', 'participantes_internos.sede_codigo')
+            ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
             ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
             ->select(
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
                 'iniciativas.inic_estado',
                 'mecanismos.meca_nombre',
-                DB::raw('GROUP_CONCAT(DISTINCT sedes.sede_nombre SEPARATOR ", ") as sedes'),
-                DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas')
+                DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas'),
+                DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras')
             )
             ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'mecanismos.meca_nombre')
             ->get();
@@ -66,8 +66,7 @@ class IniciativasController extends Controller
             ->select(
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
-                'iniciativas.inic_pertinencia_local',
-                'iniciativas.inic_pertinencia_territorial',
+                'iniciativas.inic_descripcion',
                 'iniciativas.inic_anho',
                 'iniciativas.inic_estado',
                 'mecanismos.meca_nombre',

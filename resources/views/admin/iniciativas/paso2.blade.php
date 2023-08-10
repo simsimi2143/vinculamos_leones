@@ -172,6 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
 
 
@@ -382,6 +383,24 @@
                                     </div>
                                 </div>
                             </form> --}}
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-log-12">
+                                    <div class="text-right">
+                                        <strong>
+                                            <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                                type="button" class="btn mr-1 waves-effect"
+                                                style="background-color:#042344; color:white"><i
+                                                    class="fas fa-chevron-left"></i>
+                                                Paso anterior</a>
+                                        </strong>
+                                        <a href="http://losleones.demo.localhost/admin/iniciativas/listar"
+                                            type="button" class="btn btn-primary mr-1 waves-effect"
+                                            ><i
+                                            class="fas fa-save"></i>
+                                            Guardar</a>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
