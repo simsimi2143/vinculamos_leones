@@ -172,7 +172,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Descripción de la subunidad</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
@@ -187,7 +187,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                         </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label>Responsable de la subunidad</label>
                                 <div class="input-group">
@@ -291,7 +291,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Descripción de la subunidad</label>
                             <div class="input-group">
                                 <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
@@ -306,7 +306,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label>Responsable de la subunidad</label>
                             <div class="input-group">

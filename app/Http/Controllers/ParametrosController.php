@@ -244,6 +244,7 @@ class ParametrosController extends Controller
 
         $programa = new Programas();
         $programa->prog_nombre = $request->input('nombre');
+        $programa->prog_ano = $request->input('ano');
         $programa->prog_descripcion = $request->input('descripcion');
         $programa->prog_director = $request->input('director');
         $programa->prog_meta_socios = $request->input('meta_socios');
@@ -315,6 +316,7 @@ class ParametrosController extends Controller
 
         $programa->prog_nombre = $request->input('nombre');
         $programa->prog_descripcion = $request->input('descripcion');
+        $programa->prog_ano = $request->input('ano');
         $programa->prog_director = $request->input('director');
         $programa->prog_meta_socios = $request->input('meta_socios');
         $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');

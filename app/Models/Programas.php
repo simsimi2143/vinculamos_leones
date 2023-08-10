@@ -19,6 +19,7 @@ class Programas extends Model
         'prog_codigo',
         'tmec_codigo',
         'prog_nombre',
+        'prog_ano',
         'prog_descripcion',
         'prog_director',
         'prog_meta_socios',

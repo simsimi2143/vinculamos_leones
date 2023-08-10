@@ -115,13 +115,13 @@
                                         value="{{ $ambi->amac_nombre }}" autocomplete="off">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Descripción del ámbito de acción</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="formbold-form-input" id="descripcion_aa" name="descripcion_aa" autocomplete="off"
                                         style="width:100%">{{ $ambi->amac_descripcion }}</textarea>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="form-group">
                                 <label>Director/a del ámbito de acción</label>
                                 <div class="input-group">
@@ -179,7 +179,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Descripción del ámbito de acción</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -196,7 +196,7 @@
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- <div class="form-group">
                             <label>Director/a del ámbito de acción</label>
                             <div class="input-group">

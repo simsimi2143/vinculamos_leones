@@ -19,9 +19,9 @@
             <a href="#" class="menu-toggle nav-link has-dropdown"><i
                     data-feather="clipboard"></i><span>Bitácora</span></a>
             <ul class="dropdown-menu">
-                <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.listar.actividades')}}">Listar actividades</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.listar.donaciones')}}" --}}>Listar donación</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.ingresar.donaciones')}}" --}}>Ingresar donación</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.listar.actividades')}}">Actividades</a></li>
+                {{-- <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.listar.donaciones')}}">Listar donación</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.ingresar.donaciones')}}">Ingresar donación</a></li> --}}
             </ul>
         </li>
         <li class="dropdown">
@@ -40,7 +40,7 @@
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.grupos_int")}}">Grupos de interes</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.subgrupos")}}">Sub-Grupos de interes</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.tipoact")}}">Tipos de actividad</a></li>
-                <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.tipoiniciativa")}}">Tipos de iniciativa</a></li>
+                {{-- <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.tipoiniciativa")}}">Tipos de iniciativa</a></li> --}}
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.unidades")}}">Unidades</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.subunidades")}}">SubUnidades</a></li>
                 {{-- <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.tematica")}}">Tematicas</a></li> --}}

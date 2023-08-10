@@ -54,11 +54,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de socios comunitarios</h4>
+                            <h4>Listado de socios/as comunitarios/as</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Nuevo socio
-                                    comunitario</button>
+                                    data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Nuevo socio/a comunitario/a</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -67,7 +66,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nombre del Socio Comunitario</th>
+                                            <th>Nombre del Socio/a Comunitario/a</th>
                                             <th>Nombre de la contraparte</th>
                                             <th>Teléfono de la contraparte</th>
                                             <th>Correo de la contraparte</th>
@@ -116,7 +115,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modaleditarSocio">Editar socio comunitario</h5>
+                        <h5 class="modal-title" id="modaleditarSocio">Editar socio/a comunitario/a</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -127,7 +126,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label>Nombre del socio comunitario</label>
+                                <label>Nombre del socio/a comunitario/a</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -170,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="form-group" style="">
-                                <label>Domicilio del socio comunitario</label>
+                                <label>Domicilio del socio/a comunitario/a</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -313,7 +312,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal">Nuevo socio comunitario</h5>
+                    <h5 class="modal-title" id="formModal">Nuevo socio/a comunitario/a</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -322,7 +321,7 @@
                     <form action="{{ route('admin.crear.socios') }} " method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del socio comunitario</label>
+                            <label>Nombre del socio/a comunitario/a</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -366,7 +365,7 @@
                         </div>
 
                         <div class="form-group" style="">
-                            <label>Domicilio del socio comunitario</label>
+                            <label>Domicilio del socio/a comunitario/a</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -494,14 +493,14 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEliminar">Eliminar Socio Comunitario</h5>
+                        <h5 class="modal-title" id="modalEliminar">Eliminar Socio/a Comunitario/a</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El socio comunitario dejará de existir dentro del sistema. <br> ¿Desea continuar
+                        <h6 class="mt-2">EL/La socio/a comunitario/a dejará de existir dentro del sistema. <br> ¿Desea continuar
                             de todos
                             modos?</h6>
                         <input type="hidden" id="soco_codigo" name="soco_codigo" value="">

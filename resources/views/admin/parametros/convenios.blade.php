@@ -122,13 +122,13 @@
                                         value="{{ $conv->conv_nombre }}" autocomplete="off">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Descripción del documento de colaboración</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
                                         style="width:100%">{{ $conv->conv_descripcion }}</textarea>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label>Tipo del documento de colaboración</label>
                                 <div class="input-group">
@@ -238,7 +238,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Descripción del documento de colaboración</label>
                             <div class="input-group">
                                 <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
@@ -253,7 +253,7 @@
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                                 <label>Tipo del documento de colaboración</label>
                                 <div class="input-group">

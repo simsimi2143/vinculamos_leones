@@ -71,7 +71,7 @@
                                             <th>#</th>
                                             <th>Nombre</th>
                                             {{-- <th>Descripción</th> --}}
-                                            <th>Director/a</th>
+                                            <th>Año</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -88,7 +88,7 @@
                                                 <td>{{ $contador }}</td>
                                                 <td>{{ $prog->prog_nombre }}</td>
                                                 {{-- <td>{{ $prog->prog_descripcion }}</td> --}}
-                                                <td>{{ $prog->prog_director }}</td>
+                                                <td>{{ $prog->prog_ano }}</td>
                                                 <td>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
                                                         onclick="editarProg('{{ $prog->prog_codigo }}')"
@@ -178,6 +178,29 @@
                                     @endforelse
                                 </select>
                                 @error('mecanismo')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Año de inicio del Programa</label>
+                            <div class="input-group">
+                                <select class="form-control @error('ano') is-invalid @enderror" id="ano"
+                                    name="ano">
+                                    <option value="" selected disable d>Seleccione...</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                                    <option value="2030">2030</option>
+                                </select>
+                                @error('ano')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -367,6 +390,29 @@
                                         @endforelse
                                     </select>
                                     @error('mecanismo')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Año de inicio del Programa</label>
+                                <div class="input-group">
+                                    <select class="form-control @error('ano') is-invalid @enderror" id="ano"
+                                        name="ano">
+                                        <option value="" selected disable d>Seleccione...</option>
+                                        <option value="2022" {{ "2022" == $prog->prog_ano ? 'selected' : '' }}>2022</option>
+                                        <option value="2023" {{ "2023" == $prog->prog_ano ? 'selected' : '' }}>2023</option>
+                                        <option value="2024" {{ "2024" == $prog->prog_ano ? 'selected' : '' }}>2024</option>
+                                        <option value="2025" {{ "2025" == $prog->prog_ano ? 'selected' : '' }}>2025</option>
+                                        <option value="2026" {{ "2026" == $prog->prog_ano ? 'selected' : '' }}>2026</option>
+                                        <option value="2027" {{ "2027" == $prog->prog_ano ? 'selected' : '' }}>2027</option>
+                                        <option value="2028" {{ "2028" == $prog->prog_ano ? 'selected' : '' }}>2028</option>
+                                        <option value="2029" {{ "2029" == $prog->prog_ano ? 'selected' : '' }}>2029</option>
+                                        <option value="2030" {{ "2030" == $prog->prog_ano ? 'selected' : '' }}>2030</option>
+                                    </select>
+                                    @error('ano')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
