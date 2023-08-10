@@ -393,11 +393,11 @@
                                                     class="fas fa-chevron-left"></i>
                                                 Paso anterior</a>
                                         </strong>
-                                        <a href="http://losleones.demo.localhost/admin/iniciativas/listar"
+                                        <a href="{{route('admin.editar.paso3', $iniciativa->inic_codigo)}}"
                                             type="button" class="btn btn-primary mr-1 waves-effect"
-                                            ><i
-                                            class="fas fa-save"></i>
-                                            Guardar</a>
+                                            >
+                                            Paso siguiente <i
+                                            class="fas fa-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>

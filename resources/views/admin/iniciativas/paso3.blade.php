@@ -5,7 +5,7 @@
 <section class="section">
     <div class="section-body">
 
-        {{-- <div class="row">
+        <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
                 @if(Session::has('exitoPaso2'))
@@ -26,7 +26,7 @@
                     </div>
                 @endif
             </div>
-        </div> --}}
+        </div>
 
         @if (false)
             <div class="row">
@@ -46,7 +46,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            <h4>{{-- $iniciativa->inic_nombre --}} - Paso 3 de 3</h4>
+                            <h4>{{ $iniciativa->inic_nombre }} - Paso 3 de 3</h4>
                         </div>
                         <div class="card-body">
                             <h6>Recursos</h6>
@@ -54,7 +54,7 @@
                                 <div class="col-3 col-md-3 col-lg-3"></div>
                                 <div class="col-6 col-md-6 col-lg-6 text-center" id="div-alert-recursos"></div>
                                 <div class="col-3 col-md-3 col-lg-3"></div>
-                                {{-- <input type="hidden" id="codigo" name="codigo" value="{{ $iniciativa->inic_codigo }}"> --}}
+                                <input type="hidden" id="codigo" name="codigo" value="{{ $iniciativa->inic_codigo }}">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-md small">
                                         <tr>
@@ -251,9 +251,9 @@
                             <div class="row mt-4">
                                 <div class="col-12 col-md-12 col-lg-12">
                                     <div class="text-right">
-                                        <a href="{{-- route('admin.paso2.editar', $iniciativa->inic_codigo) ---}}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-chevron-left"></i> Volver al paso anterior</a>                                      
+                                        <a href="{{ route('admin.editar.paso2', $iniciativa->inic_codigo) }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-chevron-left"></i> Volver al paso anterior</a>                                      
                                         <button type="button" class="btn btn-primary mr-1 waves-effect" data-toggle="modal" data-target="#modalFinalizar"><i class="fas fa-check"></i> Finalizar</button>
-                                        <a href="{{-- route('admin.paso3.editar', $iniciativa->inic_codigo) --}}" type="button" class="btn btn-warning waves-effect">Recargar</a>
+                                        <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}" type="button" class="btn btn-warning waves-effect">Recargar</a>
                                     </div>
                                 </div>
                             </div>
