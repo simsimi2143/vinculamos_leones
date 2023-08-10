@@ -1,0 +1,25 @@
+# Laravel-specific
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/.phpunit.result.cache
+/.env
+/.env.*
+.env.*
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+yarn.lock
+/webpack.mix.js
+/webpack.mix.js.map
+/hot
+/.idea
+/.vscode
+
+# OS generated files
+.DS_Store
+Thumbs.db
