@@ -197,6 +197,10 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/iniciativas/crear/paso1',[IniciativasController::class,'verificarPaso1'])->name('admin.paso1.verificar');
     Route::post('admin/iniciativas/crear/{inic_codigo}/paso2',[IniciativasController::class,'verificarPaso2'])->name('admin.paso2.verificar');
     Route::get('admin/iniciativas/{inic_codigo}/paso2',[IniciativasController::class,'editarPaso2'])->name('admin.editar.paso2');
+
+    Route::get('admin/iniciativa/crear/editar/paso3', [IniciativasController::class, 'crearPaso3'])->name('admin.editar.paso3');
+    Route::get('admin/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('admin.editar.paso3');
+    
     Route::post('admin/iniciativas/crear/socio',[IniciativasController::class,'guardarSocioComunitario'])->name('admin.iniciativas.crear.socio');
     Route::get('admin/crear/iniciativa/listar-internos',[IniciativasController::class,'listarInternos']);
     Route::get('admin/crear/iniciativa/listar-externos',[IniciativasController::class,'listarExternos']);

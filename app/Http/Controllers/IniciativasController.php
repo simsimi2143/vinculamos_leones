@@ -962,4 +962,26 @@ class IniciativasController extends Controller
         }
         return response()->json($pais);
     }
+
+
+
+
+
+    // FUNCIONES PARA EL PASO 3
+    public function editarPaso3($inic_codigo) {
+        // $inicEditar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+        // // $listarRegiones = Regiones::select('regi_codigo', 'regi_nombre')->orderBy('regi_codigo')->get();
+        // $listarParticipantes = DB::table('participantes')
+        //     ->select('inic_codigo', 'participantes.sube_codigo', 'sube_nombre')
+        //     ->join('subentornos', 'subentornos.sube_codigo', '=', 'participantes.sube_codigo')
+        //     ->where('inic_codigo', $inic_codigo)
+        //     ->orderBy('part_creado', 'asc')
+        //     ->get();
+        return view('admin.iniciativas.paso3');
+    }
+
+    public function crearPaso3(){
+        return view('admin.iniciativas.paso3');
+
+    }
 }
