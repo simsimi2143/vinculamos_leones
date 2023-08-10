@@ -14,7 +14,7 @@ class MecanismosActividades extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'meca_codigo',
+        'prog_codigo',
         'tiac_codigo',
         'meac_creado',
         'meac_actualizado',

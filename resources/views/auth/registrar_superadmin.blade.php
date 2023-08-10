@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Registro Superadministrador Viculamos AIEP</title>
+    <title>Registro Superadministrador Viculamos</title>
     <link rel="stylesheet" href="{{ asset('/css/app.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/jquery-selectric/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">

@@ -207,9 +207,11 @@ class ParametrosController extends Controller
     {
         $programas = Programas::orderBy('prog_codigo', 'asc')->get();
         $tipos = AmbitosAccion::orderBy('amac_codigo', 'asc')->get();
-        $mecanismos = Mecanismos::orderBy('meca_codigo', 'asc')->get();
+        /* $mecanismos = Mecanismos::orderBy('meca_codigo', 'asc')->get(); */
+        $ACTIVIDADES = TipoActividades::all();
+        $PROGRA_ACTI = MecanismosActividades::all();
 
-        return view('admin.parametros.programs', compact('programas', 'tipos', 'mecanismos'));
+        return view('admin.parametros.programs', compact('programas', 'tipos','ACTIVIDADES','PROGRA_ACTI'));
     }
 
     public function crearProgramas(Request $request)
@@ -217,31 +219,75 @@ class ParametrosController extends Controller
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             /* 'director' => 'required|max:100', */
-            'mecanismo' => 'required',
+            /* 'mecanismo' => 'required', */
             'ambito' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
             'meta_estudiantes' => 'required',
             'meta_docentes' => 'required',
             'meta_beneficiarios' => 'required',
+            'actividades' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             /* 'director.required' => 'El nombre del director es requerido.',
             'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            'mecanismo.required' => 'Seleccione un ámbito de acción.',
+            /* 'mecanismo.required' => 'Seleccione un ámbito de acción.', */
             'ambito.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
             'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
             'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
-            'meta_beneficiarios.required' => 'Una meta de beneficiarios de socios es necesaria.',
+            'meta_beneficiarios.required' => 'Una meta de beneficiarios es necesaria.',
+            'actividades.required' => 'Un tipo de actividad es necesaria.',
         ]);
 
         if ($validacion->fails()) {
             return redirect()->route('admin.listar.programas')->withErrors($validacion)->withInput();
         }
 
+        $MacaActi = Programas::insertGetId([
+            'prog_nombre' => $request->nombre,
+            'prog_ano' => $request->ano,
+            'prog_descripcion' => $request->descripcion,
+            'prog_director' => $request->director,
+            'prog_meta_socios' => $request->meta_socios,
+            'prog_meta_iniciativas' => $request->meta_iniciativas,
+            'prog_meta_estudiantes' => $request->meta_estudiantes,
+            'prog_meta_docentes' => $request->meta_docentes,
+            'prog_meta_beneficiarios' => $request->meta_beneficiarios,
+            'amac_codigo' => $request->ambito,
+            'meca_codigo' => $request->mecanismo,
+            'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'prog_nickname_mod' => Session::get('admin')->usua_nickname,
+            'prog_rol_mod' => Session::get('admin')->rous_codigo,
+        ]);
+
+        if (!$MacaActi) {return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();}
+
+        $soco_codigo = $MacaActi;
+        $seso = [];
+
+        $activis = $request->input('actividades', []);
+        foreach ($activis as $activ) {
+            array_push($seso, [
+                'prog_codigo' => $MacaActi,
+                'tiac_codigo' => $activ,
+                'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_nickname_mod' => Session::get('admin')->usua_nickname,
+                'meac_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+
+        $sesoCrear = MecanismosActividades::insert($seso);
+        if (!$sesoCrear) {
+            MecanismosActividades::where('inic_codigo', $soco_codigo)->delete();
+            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
+        }
+/*
         $programa = new Programas();
         $programa->prog_nombre = $request->input('nombre');
         $programa->prog_ano = $request->input('ano');
@@ -259,7 +305,7 @@ class ParametrosController extends Controller
 
         // Guardar el programa en la base de datos
         $programa->save();
-
+ */
         return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();
         ;
     }
@@ -271,7 +317,7 @@ class ParametrosController extends Controller
         if (!$programa) {
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.');
         }
-
+        $Drop = MecanismosActividades::where('prog_codigo', $request->prog_codigo)->delete();
         $programa->delete();
 
         return redirect()->route('admin.listar.programas')->with('exitoPrograma', 'El programa fue eliminado correctamente.');
@@ -282,25 +328,27 @@ class ParametrosController extends Controller
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             /* 'director' => 'required|max:100', */
-            'mecanismo' => 'required',
+            /* 'mecanismo' => 'required', */
             'ambito' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
             'meta_estudiantes' => 'required',
             'meta_docentes' => 'required',
             'meta_beneficiarios' => 'required',
+            'actividades' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             /* 'director.required' => 'El nombre del director es requerido.',
             'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            'mecanismo.required' => 'Seleccione un ámbito de acción.',
+            /* 'mecanismo.required' => 'Seleccione un ámbito de acción.', */
             'ambito.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
             'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
             'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
-            'meta_beneficiarios.required' => 'Una meta de beneficiarios de socios es necesaria.',
+            'meta_beneficiarios.required' => 'Una meta de beneficiarios es necesaria.',
+            'actividades.required' => 'Un tipo de actividad es necesaria.',
         ]);
 
         if ($validacion->fails()) {
@@ -314,7 +362,50 @@ class ParametrosController extends Controller
             ;
         }
 
-        $programa->prog_nombre = $request->input('nombre');
+
+        $MacaActi = Programas::where(['prog_codigo' => $prog_codigo])->update([
+            'prog_nombre' => $request->nombre,
+            'prog_ano' => $request->ano,
+            'prog_descripcion' => $request->descripcion,
+            'prog_director' => $request->director,
+            'prog_meta_socios' => $request->meta_socios,
+            'prog_meta_iniciativas' => $request->meta_iniciativas,
+            'prog_meta_estudiantes' => $request->meta_estudiantes,
+            'prog_meta_docentes' => $request->meta_docentes,
+            'prog_meta_beneficiarios' => $request->meta_beneficiarios,
+            'amac_codigo' => $request->ambito,
+            'meca_codigo' => $request->mecanismo,
+            'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'prog_nickname_mod' => Session::get('admin')->usua_nickname,
+            'prog_rol_mod' => Session::get('admin')->rous_codigo,
+        ]);
+
+        if (!$MacaActi) {return redirect()->back()->with('errorPrograma', 'Ocurrió un error al actualizar el programa, intente más tarde.')->withInput();}
+
+        $soco_codigo = $MacaActi;
+        $seso = [];
+
+
+        $activis = $request->input('actividades', []);
+        foreach ($activis as $activ) {
+            array_push($seso, [
+                'prog_codigo' => $MacaActi,
+                'tiac_codigo' => $activ,
+                'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_nickname_mod' => Session::get('admin')->usua_nickname,
+                'meac_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+        $Drop = MecanismosActividades::where('prog_codigo', $request->prog_codigo)->delete();
+        $sesoCrear = MecanismosActividades::insert($seso);
+        if (!$sesoCrear) {
+            MecanismosActividades::where('inic_codigo', $soco_codigo)->delete();
+            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
+        }
+
+        /* $programa->prog_nombre = $request->input('nombre');
         $programa->prog_descripcion = $request->input('descripcion');
         $programa->prog_ano = $request->input('ano');
         $programa->prog_director = $request->input('director');
@@ -328,7 +419,7 @@ class ParametrosController extends Controller
         $programa->prog_actualizado = now();
 
         // Guardar la actualización del programa en la base de datos
-        $programa->save();
+        $programa->save(); */
 
         return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente')->withInput();
         ;
@@ -965,7 +1056,7 @@ class ParametrosController extends Controller
         if (!$validacion)
             return redirect()->route('admin.listar.socios')->with('errorSocio', 'Problemas al crear el socio comunitario.');
 
-        $socoCrear = SociosComunitarios::insertGetId([
+        $MacaActi = SociosComunitarios::insertGetId([
             'soco_nombre_socio' => $request->nombre,
             'soco_nombre_contraparte' => $request->nombre_contraparte,
             'soco_domicilio_socio' => $request->domicilio,
@@ -974,12 +1065,12 @@ class ParametrosController extends Controller
             'grin_codigo' => $request->grupo,
         ]);
 
-        /* if (!$socoCrear) {
+        /* if (!$MacaActi) {
             return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
         }
 
 
-        $soco_codigo = $socoCrear;
+        $soco_codigo = $MacaActi;
         $seso = [];
 
         if ($request->has('nacional')) {
