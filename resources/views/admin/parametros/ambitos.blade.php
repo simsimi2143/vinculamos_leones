@@ -8,18 +8,16 @@
                     <div class="row">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @if (
-                                $errors->has('nombre')
-                                )
-                            <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                                <div class="alert-body">
-                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    @if ($errors->has('nombre'))
-                                        <strong>{{ $errors->first('nombre') }}</strong><br>
-                                    @endif
+                            @if ($errors->has('nombre'))
+                                <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        @if ($errors->has('nombre'))
+                                            <strong>{{ $errors->first('nombre') }}</strong><br>
+                                        @endif
 
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                             @if (Session::has('exitoAmbito'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
@@ -147,6 +145,26 @@
                                         value="{{ $ambi->amb_nombre }}" autocomplete="off">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Tipo de impacto</label>
+                                <div class="input-group">
+                                    <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
+                                        name="descripcion">
+                                        <option value="" selected disable d>Seleccione...</option>
+                                        <option value="Impacto Interno"
+                                            {{ 'Impacto Interno' == $ambi->amb_descripcion ? 'selected' : '' }}>Impacto
+                                            Interno</option>
+                                        <option value="Impacto Externo"
+                                            {{ 'Impacto Externo' == $ambi->amb_descripcion ? 'selected' : '' }}>Impacto
+                                            Externo</option>
+                                    </select>
+                                    @error('descripcion')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
                             {{-- <div class="form-group">
                                 <label>Descripción del impacto</label>
                                 <div class="input-group">
@@ -198,8 +216,8 @@
                                         <i class="fas fa-pen-nib"></i>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="" autocomplete="off">
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder=""
+                                    autocomplete="off">
                                 @if ($errors->has('nombre'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
@@ -209,6 +227,22 @@
                                         </div>
                                     </div>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de impacto</label>
+                            <div class="input-group">
+                                <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
+                                    name="descripcion">
+                                    <option value="" selected disable d>Seleccione...</option>
+                                    <option value="Impacto Interno">Impacto Interno</option>
+                                    <option value="Impacto Externo">Impacto Externo</option>
+                                </select>
+                                @error('descripcion')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- <div class="form-group">
@@ -249,14 +283,15 @@
                                     </div>
                                 @endif
                             </div> --}}
-                        </div>
+
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect">Guardar</button>
                         </div>
-                    </form>
                 </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="modal fade" id="modalEliminaAmbito" tabindex="-1" role="dialog" aria-labelledby="modalEliminar"
@@ -297,7 +332,7 @@
             $('#modalEditarAmbito-' + amb_codigo).modal('show');
         }
     </script>
-{{--
+    {{--
     <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
