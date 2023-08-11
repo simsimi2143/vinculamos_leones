@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProgramasActividades;
 
 class Programas extends Model
 {
@@ -30,4 +31,9 @@ class Programas extends Model
         'prog_nickname_mod',
         'prog_rol_mod'
     ];
+
+    public function actividades()
+    {
+        return $this->hasMany(ProgramasActividades::class, 'prog_codigo');
+    }
 }

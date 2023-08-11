@@ -13,7 +13,7 @@ class TipoActividades extends Model
 
     public $timestamps = false;
 
-    protected $primaryKey ='tiac_codigo';
+    protected $primaryKey = 'tiac_codigo';
 
 
     protected $fillable = [

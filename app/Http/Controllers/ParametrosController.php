@@ -26,6 +26,7 @@ use App\Models\TipoActividades;
 use App\Models\TipoIniciativas;
 use App\Models\TipoUnidades;
 use App\Models\MecanismosActividades;
+use App\Models\ProgramasActividades;
 use App\Models\Unidades;
 use App\Models\SubUnidades;
 use Carbon\Carbon;
@@ -211,7 +212,7 @@ class ParametrosController extends Controller
         $ACTIVIDADES = TipoActividades::all();
         $PROGRA_ACTI = MecanismosActividades::all();
 
-        return view('admin.parametros.programs', compact('programas', 'tipos','ACTIVIDADES','PROGRA_ACTI'));
+        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI'));
     }
 
     public function crearProgramas(Request $request)
@@ -246,7 +247,7 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.programas')->withErrors($validacion)->withInput();
         }
 
-        $MacaActi = Programas::insertGetId([
+        $programas = Programas::insertGetId([
             'prog_nombre' => $request->nombre,
             'prog_ano' => $request->ano,
             'prog_descripcion' => $request->descripcion,
@@ -257,55 +258,56 @@ class ParametrosController extends Controller
             'prog_meta_docentes' => $request->meta_docentes,
             'prog_meta_beneficiarios' => $request->meta_beneficiarios,
             'amac_codigo' => $request->ambito,
-            'meca_codigo' => $request->mecanismo,
             'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'prog_nickname_mod' => Session::get('admin')->usua_nickname,
             'prog_rol_mod' => Session::get('admin')->rous_codigo,
         ]);
 
-        if (!$MacaActi) {return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();}
+        if (!$programas) {
+            return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
+        }
 
-        $soco_codigo = $MacaActi;
+        $prog_codigo = $programas;
         $seso = [];
 
         $activis = $request->input('actividades', []);
         foreach ($activis as $activ) {
             array_push($seso, [
-                'prog_codigo' => $MacaActi,
+                'prog_codigo' => $prog_codigo,
                 'tiac_codigo' => $activ,
-                'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'meac_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'meac_nickname_mod' => Session::get('admin')->usua_nickname,
-                'meac_rol_mod' => Session::get('admin')->rous_codigo,
+                'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'prog_nickname_mod' => Session::get('admin')->usua_nickname,
+                'prog_rol_mod' => Session::get('admin')->rous_codigo,
             ]);
         }
 
 
-        $sesoCrear = MecanismosActividades::insert($seso);
+        $sesoCrear = ProgramasActividades::insert($seso);
         if (!$sesoCrear) {
-            MecanismosActividades::where('inic_codigo', $soco_codigo)->delete();
+            ProgramasActividades::where('inic_codigo', $prog_codigo)->delete();
             return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
         }
-/*
-        $programa = new Programas();
-        $programa->prog_nombre = $request->input('nombre');
-        $programa->prog_ano = $request->input('ano');
-        $programa->prog_descripcion = $request->input('descripcion');
-        $programa->prog_director = $request->input('director');
-        $programa->prog_meta_socios = $request->input('meta_socios');
-        $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');
-        $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
-        $programa->prog_meta_docentes = $request->input('meta_docentes');
-        $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
-        $programa->amac_codigo = $request->input('ambito');
-        $programa->meca_codigo = $request->input('mecanismo');
-        $programa->prog_creado = now();
-        $programa->prog_actualizado = now();
+        /*
+                $programa = new Programas();
+                $programa->prog_nombre = $request->input('nombre');
+                $programa->prog_ano = $request->input('ano');
+                $programa->prog_descripcion = $request->input('descripcion');
+                $programa->prog_director = $request->input('director');
+                $programa->prog_meta_socios = $request->input('meta_socios');
+                $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');
+                $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
+                $programa->prog_meta_docentes = $request->input('meta_docentes');
+                $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
+                $programa->amac_codigo = $request->input('ambito');
+                $programa->meca_codigo = $request->input('mecanismo');
+                $programa->prog_creado = now();
+                $programa->prog_actualizado = now();
 
-        // Guardar el programa en la base de datos
-        $programa->save();
- */
+                // Guardar el programa en la base de datos
+                $programa->save();
+         */
         return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();
         ;
     }
@@ -313,13 +315,17 @@ class ParametrosController extends Controller
     public function eliminarProgramas(Request $request)
     {
         $programa = Programas::where('prog_codigo', $request->prog_codigo)->first();
-
+    
         if (!$programa) {
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.');
         }
-        $Drop = MecanismosActividades::where('prog_codigo', $request->prog_codigo)->delete();
+    
+        // Eliminar actividades relacionadas
+        ProgramasActividades::where('prog_codigo', $request->prog_codigo)->delete();
+    
+        // Eliminar el programa
         $programa->delete();
-
+    
         return redirect()->route('admin.listar.programas')->with('exitoPrograma', 'El programa fue eliminado correctamente.');
     }
 
@@ -355,7 +361,7 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.programas')->withErrors($validacion)->withInput();
         }
 
-        $programa = Programas::find($prog_codigo);
+        $programa = Programas::with('actividades')->find($prog_codigo);
 
         if (!$programa) {
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.')->withInput();
@@ -363,7 +369,7 @@ class ParametrosController extends Controller
         }
 
 
-        $MacaActi = Programas::where(['prog_codigo' => $prog_codigo])->update([
+        $programa->update([
             'prog_nombre' => $request->nombre,
             'prog_ano' => $request->ano,
             'prog_descripcion' => $request->descripcion,
@@ -374,55 +380,28 @@ class ParametrosController extends Controller
             'prog_meta_docentes' => $request->meta_docentes,
             'prog_meta_beneficiarios' => $request->meta_beneficiarios,
             'amac_codigo' => $request->ambito,
-            'meca_codigo' => $request->mecanismo,
             'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'prog_nickname_mod' => Session::get('admin')->usua_nickname,
             'prog_rol_mod' => Session::get('admin')->rous_codigo,
         ]);
 
-        if (!$MacaActi) {return redirect()->back()->with('errorPrograma', 'Ocurrió un error al actualizar el programa, intente más tarde.')->withInput();}
+        // Eliminar actividades existentes
+        $programa->actividades()->delete();
 
-        $soco_codigo = $MacaActi;
-        $seso = [];
-
-
-        $activis = $request->input('actividades', []);
-        foreach ($activis as $activ) {
-            array_push($seso, [
-                'prog_codigo' => $MacaActi,
-                'tiac_codigo' => $activ,
-                'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'meac_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'meac_nickname_mod' => Session::get('admin')->usua_nickname,
-                'meac_rol_mod' => Session::get('admin')->rous_codigo,
-            ]);
+        $actividades = $request->input('actividades', []);
+        $nuevasActividades = [];
+        foreach ($actividades as $actividad) {
+            $nuevasActividades[] = [
+                'tiac_codigo' => $actividad,
+                'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'prog_nickname_mod' => Session::get('admin')->usua_nickname,
+                'prog_rol_mod' => Session::get('admin')->rous_codigo,
+            ];
         }
-
-        $Drop = MecanismosActividades::where('prog_codigo', $request->prog_codigo)->delete();
-        $sesoCrear = MecanismosActividades::insert($seso);
-        if (!$sesoCrear) {
-            MecanismosActividades::where('inic_codigo', $soco_codigo)->delete();
-            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
-        }
-
-        /* $programa->prog_nombre = $request->input('nombre');
-        $programa->prog_descripcion = $request->input('descripcion');
-        $programa->prog_ano = $request->input('ano');
-        $programa->prog_director = $request->input('director');
-        $programa->prog_meta_socios = $request->input('meta_socios');
-        $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');
-        $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
-        $programa->prog_meta_docentes = $request->input('meta_docentes');
-        $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
-        $programa->amac_codigo = $request->input('ambito');
-        $programa->meca_codigo = $request->input('mecanismo');
-        $programa->prog_actualizado = now();
-
-        // Guardar la actualización del programa en la base de datos
-        $programa->save(); */
-
-        return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente')->withInput();
-        ;
+        $programa->actividades()->createMany($nuevasActividades);
+        return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente');
+    
     }
 
     //TODO: Parametro Convenios
@@ -1755,81 +1734,88 @@ class ParametrosController extends Controller
 //CAMBIAR NOMBRE MODELO POR: SubGruposInteres
 //--------------------------------------
 
-public function listarSubGrupoInteres()
-{
-    // EN CASO DE NECESITAR OTROS DATOS AL ENRUTAR
-    $REGISTROS = SubGruposInteres::orderBy('sugr_codigo', 'asc')->get();
-    $REGISTROS2 = GruposInteres::orderBy('grin_codigo', 'asc')->get();
+    public function listarSubGrupoInteres()
+    {
+        // EN CASO DE NECESITAR OTROS DATOS AL ENRUTAR
+        $REGISTROS = SubGruposInteres::orderBy('sugr_codigo', 'asc')->get();
+        $REGISTROS2 = GruposInteres::orderBy('grin_codigo', 'asc')->get();
 
-    return view('admin.parametros.subgrupo', [
-        'REGISTROS' => $REGISTROS,
-        'REGISTROS2' => $REGISTROS2
-    ]);
-}
-
-public function crearSubGrupoInteres(Request $request)
-{
-    $validacion = Validator::make($request->all(), [
-        'nombre' => 'required|max:100',
-        /* 'idcampo1' => 'required', */
-    ], [
-        'nombre.required' => 'El nombre es requerido.',
-        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
-    ]);
-
-    if ($validacion->fails()) {
-        return redirect()->route('admin.listar.subgrupos')->withErrors($validacion)->withInput();
+        return view('admin.parametros.subgrupo', [
+            'REGISTROS' => $REGISTROS,
+            'REGISTROS2' => $REGISTROS2
+        ]);
     }
 
-    $nuevo = new SubGruposInteres();
-    $nuevo->sugr_nombre = $request->input('nombre');
-    $nuevo->grin_codigo = $request->input('select_join');
-    $nuevo->sugr_creado = Carbon::now()->format('Y-m-d H:i:s');
-    $nuevo->sugr_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-    $nuevo->sugr_visible = 1;
-    $nuevo->sugr_nickname_mod = Session::get('admin')->usua_nickname;
-    $nuevo->sugr_rol_mod = Session::get('admin')->rous_codigo;
+    public function crearSubGrupoInteres(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
 
-    $nuevo->save();
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.subgrupos')->withErrors($validacion)->withInput();
+        }
 
-    return redirect()->back()->with('exito', 'Sub-grupo de interés creado exitosamente');
-}
+        $nuevo = new SubGruposInteres();
+        $nuevo->sugr_nombre = $request->input('nombre');
+        $nuevo->grin_codigo = $request->input('select_join');
+        $nuevo->sugr_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->sugr_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->sugr_visible = 1;
+        $nuevo->sugr_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->sugr_rol_mod = Session::get('admin')->rous_codigo;
 
-public function eliminarSubGrupoInteres(Request $request)
-{
-    $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->first();
-    if (!$eliminado) {return redirect()->route('admin.listar.subgrupos')->with('error', 'El Sub-grupo de interés no se encuentra registrado en el sistema.');}
+        $nuevo->save();
 
-    $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->delete();
-    return redirect()->route('admin.listar.subgrupos')->with('exito', 'El Sub-grupo de interés fue eliminado correctamente.');
-}
+        return redirect()->back()->with('exito', 'Sub-grupo de interés creado exitosamente');
+    }
 
-public function actualizarSubGrupoInteres(Request $request, $sugr_codigo)
-{
-    $validacion = Validator::make($request->all(), [
-        'nombre' => 'required|max:100',
-        /* 'idcampo1' => 'required', */
-    ], [
-        'nombre.required' => 'El nombre es requerido.',
-        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
-    ]);
+    public function eliminarSubGrupoInteres(Request $request)
+    {
+        $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->first();
+        if (!$eliminado) {
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El Sub-grupo de interés no se encuentra registrado en el sistema.');
+        }
 
-    if ($validacion->fails()) {return redirect()->route('admin.listar.subgrupos')->withErrors($validacion)->withInput();}
+        $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->delete();
+        return redirect()->route('admin.listar.subgrupos')->with('exito', 'El Sub-grupo de interés fue eliminado correctamente.');
+    }
 
-    $editado = SubGruposInteres::find($sugr_codigo);
-    if (!$editado) {return redirect()->route('admin.listar.subgrupos')->with('error', 'El Sub-grupo de interés no se encuentra registrado en el sistema.')->withInput();}
+    public function actualizarSubGrupoInteres(Request $request, $sugr_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
 
-    $editado->sugr_nombre = $request->input('nombre');
-    $editado->grin_codigo = $request->input('select_join');
-    $editado->sugr_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-    $editado->sugr_visible = 1;
-    $editado->sugr_nickname_mod = Session::get('admin')->usua_nickname;
-    $editado->sugr_rol_mod = Session::get('admin')->rous_codigo;
-    $editado->save();
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.subgrupos')->withErrors($validacion)->withInput();
+        }
 
-    return redirect()->back()->with('exito', 'Sub-grupo de interés actualizado exitosamente')->withInput();;
-}
+        $editado = SubGruposInteres::find($sugr_codigo);
+        if (!$editado) {
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El Sub-grupo de interés no se encuentra registrado en el sistema.')->withInput();
+        }
+
+        $editado->sugr_nombre = $request->input('nombre');
+        $editado->grin_codigo = $request->input('select_join');
+        $editado->sugr_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $editado->sugr_visible = 1;
+        $editado->sugr_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->sugr_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->save();
+
+        return redirect()->back()->with('exito', 'Sub-grupo de interés actualizado exitosamente')->withInput();
+        ;
+    }
 
 }
