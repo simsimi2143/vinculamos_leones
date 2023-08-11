@@ -162,7 +162,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                 </div>
                             @enderror
                             <div class="form-group">
-                                <label>Nombre del Sub-grupo de interés</label>
+                                <label>Nombre del grupo de interés</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -234,7 +234,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                         </div>
                     @enderror
                         <div class="form-group">
-                            <label>Nombre del Sub-grupo de interés</label>
+                            <label>Nombre del grupo de interés</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">

@@ -208,9 +208,8 @@ class ParametrosController extends Controller
     {
         $programas = Programas::orderBy('prog_codigo', 'asc')->get();
         $tipos = AmbitosAccion::orderBy('amac_codigo', 'asc')->get();
-        /* $mecanismos = Mecanismos::orderBy('meca_codigo', 'asc')->get(); */
         $ACTIVIDADES = TipoActividades::all();
-        $PROGRA_ACTI = MecanismosActividades::all();
+        $PROGRA_ACTI = ProgramasActividades::all();
 
         return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI'));
     }

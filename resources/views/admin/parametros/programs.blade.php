@@ -541,18 +541,22 @@
                                             @php
                                                 $selected = false;
                                             @endphp
+
                                             @foreach ($PROGRA_ACTI as $proacti)
-                                                @if ($proacti->tiac_codigo === $acti->tiac_codigo && $proacti->tiac_codigo === $prog->prog_codigo)
+                                                @if ($proacti->tiac_codigo === $acti->tiac_codigo && $proacti->prog_codigo === $prog->prog_codigo)
                                                     @php
                                                         $selected = true;
+                                                        break; // Salir del bucle interno si ya se encontró la actividad seleccionada
                                                     @endphp
                                                 @endif
                                             @endforeach
 
                                             <option value="{{ $acti->tiac_codigo }}" {{ $selected ? 'selected' : '' }}>
-                                                {{ $acti->tiac_nombre }}</option>
+                                                {{ $acti->tiac_nombre }}
+                                            </option>
                                         @endforeach
                                     </select>
+
                                     @if ($errors->has('actividades'))
                                         <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                             style="width:100%">
