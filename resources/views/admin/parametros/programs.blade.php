@@ -12,6 +12,7 @@
                                 $errors->has('nombre') ||
                                     $errors->has('tipo') ||
                                     $errors->has('director') ||
+                                    $errors->has('actividades') ||
                                     $errors->has('meta_socios') ||
                                     $errors->has('meta_iniciativas'))
                                 <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
@@ -25,6 +26,9 @@
                                         @endif
                                         @if ($errors->has('director'))
                                             <strong>{{ $errors->first('director') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('actividades'))
+                                            <strong>{{ $errors->first('actividades') }}</strong><br>
                                         @endif
                                         @if ($errors->has('meta_socios'))
                                             <strong>{{ $errors->first('meta_socios') }}</strong><br>
@@ -217,22 +221,18 @@
                             <label>Tipo de Actividades Asociadas</label>
                             <div class="input-group">
                                 <select class="form-control select2" style="width: 100%" id="actividades"
-                                    name="actividades[]" multiple>
+                                    name="actividades[]" multiple @error('actividades') is-invalid @enderror>
                                     <option value="" disabled>Seleccione...</option>
                                     @foreach ($ACTIVIDADES as $acti)
                                         <option value="{{ $acti->tiac_codigo }}">
                                             {{ $acti->tiac_nombre }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('actividades'))
-                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
-                                        style="width:100%">
-                                        <div class="alert-body">
-                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('actividades') }}</strong>
-                                        </div>
+                                @error('actividades')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
                                     </div>
-                                @endif
+                                @enderror
                             </div>
                         </div>
                         {{-- <div class="form-group" style="width: 100%">
@@ -557,15 +557,17 @@
                                         @endforeach
                                     </select>
 
+
                                     @if ($errors->has('actividades'))
-                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
-                                            style="width:100%">
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2">
                                             <div class="alert-body">
                                                 <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                                 <strong>{{ $errors->first('actividades') }}</strong>
                                             </div>
                                         </div>
                                     @endif
+
+
                                 </div>
                             </div>
                             <div class="row">
