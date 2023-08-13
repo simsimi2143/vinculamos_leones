@@ -52,9 +52,10 @@ class IniciativasController extends Controller
             DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras'),
             DB::raw('DATE_FORMAT(iniciativas.inic_creado, "%d/%m/%Y %H:%i:%s") as inic_creado')
         )
-        ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'programas.prog_nombre')
-        ->orderBy('iniciativas.inic_creado', 'desc') // Ordenar por fecha de creación en orden descendente
+        ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'programas.prog_nombre', 'inic_creado') // Agregamos inic_creado al GROUP BY
+        ->orderBy('inic_creado', 'desc') // Ordenar por fecha de creación formateada en orden descendente
         ->get();
+    
     
 
         return view('admin.iniciativas.listar', ["iniciativas" => $iniciativa]);
