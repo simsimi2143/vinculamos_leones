@@ -40,19 +40,23 @@ class IniciativasController extends Controller
     public function listarIniciativas()
     {
         $iniciativa = Iniciativas::join('programas', 'programas.prog_codigo', 'iniciativas.prog_codigo')
-            ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
-            ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
-            ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
-            ->select(
-                'iniciativas.inic_codigo',
-                'iniciativas.inic_nombre',
-                'iniciativas.inic_estado',
-                'programas.prog_nombre',
-                DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas'),
-                DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras')
-            )
-            ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'programas.prog_nombre')
-            ->get();
+        ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
+        ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
+        ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
+        ->select(
+            'iniciativas.inic_codigo',
+            'iniciativas.inic_nombre',
+            'iniciativas.inic_estado',
+            'programas.prog_nombre',
+            DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas'),
+            DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras'),
+            DB::raw('DATE_FORMAT(iniciativas.inic_creado, "%d/%m/%Y %H:%i:%s") as inic_creado')
+        )
+        ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'programas.prog_nombre')
+        ->orderBy('iniciativas.inic_creado', 'desc') // Ordenar por fecha de creación en orden descendente
+        ->get();
+    
+
         return view('admin.iniciativas.listar', ["iniciativas" => $iniciativa]);
     }
 
@@ -290,7 +294,8 @@ class IniciativasController extends Controller
         $carreras = Carreras::all();
         // $tipoActividad = TipoActividades::all();
         return view('admin.iniciativas.paso1', [
-            'editar' => false, //para saber si se esta editando o creando una nueva iniciativa
+            'editar' => false,
+            //para saber si se esta editando o creando una nueva iniciativa
             'iniciativa' => $iniciativa,
             'convenios' => $convenios,
             'programas' => $programas,
@@ -352,7 +357,7 @@ class IniciativasController extends Controller
         $inic_codigo = $inicCrear;
         $escuelas = $request->input('escuelas', []);
         $carreras = $request->input('carreras', []);
-        
+
         IniciativasPais::create([
             'inic_codigo' => $inic_codigo,
             'pais_codigo' => $request->pais,
@@ -361,7 +366,7 @@ class IniciativasController extends Controller
             'pais_nickname_mod' => Session::get('admin')->usua_nickname,
             'pain_rol_mod' => Session::get('admin')->rous_codigo,
         ]);
-        
+
         $regi = [];
         $regiones = $request->input('region', []);
 
@@ -388,7 +393,7 @@ class IniciativasController extends Controller
 
         $comu = [];
         $comunas = $request->input('comuna', []);
-        
+
         foreach ($comunas as $comuna) {
             array_push($comu, [
                 'inic_codigo' => $inic_codigo,
@@ -401,17 +406,17 @@ class IniciativasController extends Controller
         }
 
         $comuCrear = IniciativasComunas::insert($comu);
-        
-        
+
+
         if (!$comuCrear) {
             IniciativasComunas::where('inic_codigo', $inic_codigo)->delete();
             return redirect()->back()->with('comuError', 'Ocurrió un error durante el registro de las comunas, intente más tarde.')->withInput();
         }
-        
+
         $pain = [];
 
-    
-        
+
+
         foreach ($escuelas as $escuela) {
             foreach ($carreras as $carrera) {
                 $escu_carrera = Carreras::where('escu_codigo', $escuela)
@@ -424,11 +429,11 @@ class IniciativasController extends Controller
                         'care_codigo' => $carrera,
                     ]);
                 }
-                
+
             }
         }
 
- 
+
         $painCrear = ParticipantesInternos::insert($pain);
         if (!$painCrear) {
             ParticipantesInternos::where('inic_codigo', $inic_codigo)->delete();
@@ -464,14 +469,15 @@ class IniciativasController extends Controller
         $careSecCod = $careSec->pluck('care_codigo')->toArray();
         $regiSec = $iniciativaRegion->pluck('regi_codigo')->toArray();
         $comuSec = $iniciativaComuna->pluck('comu_codigo')->toArray();
-        
+
 
 
 
         $tipoActividades = TipoActividades::all();
 
         return view('admin.iniciativas.paso1', [
-            'editar' => true, //para que se muestre el boton de editar en el formulario
+            'editar' => true,
+            //para que se muestre el boton de editar en el formulario
             'iniciativa' => $iniciativa,
             'iniciativaData' => $iniciativaData[0],
             'iniciativaPais' => $iniciativaPais,

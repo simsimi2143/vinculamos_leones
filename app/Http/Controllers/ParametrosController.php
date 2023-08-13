@@ -218,61 +218,14 @@ class ParametrosController extends Controller
     {
         $request -> validate([
             'nombre' => 'required|max:255',
-            /* 'director' => 'required|max:100', */
-            /* 'mecanismo' => 'required', */
-
             'ambito' => 'required',
-            // 'meta_socios' => 'required',
-            // 'meta_iniciativas' => 'required',
-            // 'meta_estudiantes' => 'required',
-            // 'meta_docentes' => 'required',
-            // 'meta_beneficiarios' => 'required',
             'actividades' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-            /* 'director.required' => 'El nombre del director es requerido.',
-            'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            /* 'mecanismo.required' => 'Seleccione un ámbito de acción.', */
             'ambito.required' => 'Seleccione un ámbito de acción.',
-            // 'meta_socios.required' => 'Una meta de socios es necesaria.',
-            // 'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
-            // 'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
-            // 'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
-            // 'meta_beneficiarios.required' => 'Una meta de beneficiarios es necesaria.',
             'actividades[].required' => 'Un tipo de actividad es necesaria.',
         ]);
-
-        // $validacion = Validator::make($request->all(), [
-        //     'nombre' => 'required|max:255',
-        //     /* 'director' => 'required|max:100', */
-        //     /* 'mecanismo' => 'required', */
-
-        //     'ambito' => 'required',
-        //     'meta_socios' => 'required',
-        //     'meta_iniciativas' => 'required',
-        //     'meta_estudiantes' => 'required',
-        //     'meta_docentes' => 'required',
-        //     'meta_beneficiarios' => 'required',
-        //     'actividades' => 'required',
-        // ], [
-        //     'nombre.required' => 'El nombre es requerido.',
-        //     'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-        //     /* 'director.required' => 'El nombre del director es requerido.',
-        //     'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-        //     /* 'mecanismo.required' => 'Seleccione un ámbito de acción.', */
-        //     'ambito.required' => 'Seleccione un ámbito de acción.',
-        //     'meta_socios.required' => 'Una meta de socios es necesaria.',
-        //     'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
-        //     'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
-        //     'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
-        //     'meta_beneficiarios.required' => 'Una meta de beneficiarios es necesaria.',
-        //     'actividades[].required' => 'Un tipo de actividad es necesaria.',
-        // ]);
-
-        // if ($validacion->fails()) {
-        //     return redirect()->route('admin.listar.programas')->withErrors($validacion)->withInput();
-        // }
 
         $programas = Programas::insertGetId([
             'prog_nombre' => $request->nombre,
@@ -284,6 +237,9 @@ class ParametrosController extends Controller
             'prog_meta_estudiantes' => $request->meta_estudiantes,
             'prog_meta_docentes' => $request->meta_docentes,
             'prog_meta_beneficiarios' => $request->meta_beneficiarios,
+            'prog_meta_asignaturas'=> $request->meta_asignaturas,
+            'prog_meta_n_carreras' => $request->meta_n_carreras,
+            'prog_meta_n_asignaturas' => $request->meta_n_asignaturas,
             'amac_codigo' => $request->ambito,
             'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -360,21 +316,11 @@ class ParametrosController extends Controller
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            /* 'director' => 'required|max:100', */
-            /* 'mecanismo' => 'required', */
             'ambito' => 'required',
-            // 'meta_socios' => 'required',
-            // 'meta_iniciativas' => 'required',
-            // 'meta_estudiantes' => 'required',
-            // 'meta_docentes' => 'required',
-            // 'meta_beneficiarios' => 'required',
             'actividades' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-            /* 'director.required' => 'El nombre del director es requerido.',
-            'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            /* 'mecanismo.required' => 'Seleccione un ámbito de acción.', */
             'ambito.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
@@ -406,7 +352,11 @@ class ParametrosController extends Controller
             'prog_meta_estudiantes' => $request->meta_estudiantes,
             'prog_meta_docentes' => $request->meta_docentes,
             'prog_meta_beneficiarios' => $request->meta_beneficiarios,
+            'prog_meta_asignaturas'=> $request->meta_asignaturas,
+            'prog_meta_n_carreras' => $request->meta_n_carreras,
+            'prog_meta_n_asignaturas' => $request->meta_n_asignaturas,
             'amac_codigo' => $request->ambito,
+            'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'prog_nickname_mod' => Session::get('admin')->usua_nickname,
             'prog_rol_mod' => Session::get('admin')->rous_codigo,

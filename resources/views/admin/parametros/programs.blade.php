@@ -74,7 +74,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
-                                            {{-- <th>Descripción</th> --}}
                                             <th>Año</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -170,44 +169,23 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="form-group">
-                            <label>Mecanismo del programa</label>
-                            <div class="input-group">
-
-                                <select class="form-control @error('mecanismo') is-invalid @enderror" id="mecanismo"
-                                    name="mecanismo">
-                                    <option value="" selected disable d>Seleccione...</option>
-                                    @forelse ($mecanismos as $mecani)
-                                        <option value="{{ $mecani->meca_codigo }}">
-                                            {{ $mecani->meca_nombre }}</option>
-                                    @empty
-                                        <option value="-1">No existen registros</option>
-                                    @endforelse
-                                </select>
-                                @error('mecanismo')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div> --}}
                             <div class="col-5 col-md-5 col-lg-5">
                                 <div class="form-group">
                                     <label>Año de inicio del Programa</label>
                                     <div class="input-group">
                                         <select class="form-control @error('ano') is-invalid @enderror" id="ano"
                                             name="ano">
-                                            <option value="" selected disable d>Seleccione...</option>
-                                            <option value="2022">2022</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2025">2025</option>
-                                            <option value="2026">2026</option>
-                                            <option value="2027">2027</option>
-                                            <option value="2028">2028</option>
-                                            <option value="2029">2029</option>
-                                            <option value="2030">2030</option>
+                                            <option value="" selected disabled>Seleccione...</option>
+                                            @php
+                                                $currentYear = date('Y');
+                                                $yearsToShow = 10; // Puedes ajustar este valor según cuántos años quieres mostrar
+                                            @endphp
+                                            @for ($i = 0; $i < $yearsToShow; $i++)
+                                                @php $year = $currentYear + $i; @endphp
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endfor
                                         </select>
+
                                         @error('ano')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -235,43 +213,6 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- <div class="form-group" style="width: 100%">
-                                <div class="pretty p-switch p-fill">
-                                    <input type="checkbox" id="nacional" name="nacional"/>
-                                    <div class="state p-success">
-                                        <label><strong>Asociar a todas las actis (Socio nacional)</strong></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                        {{-- <div class="form-group">
-                            <label>Descripción del programa</label>
-                            <div class="input-group">
-                                <textarea rows="6" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" autocomplete="off" style="width:100%">{{ old('descripcion') }}</textarea>
-                                @error('descripcion')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div> --}}
-                        {{-- <div class="form-group">
-                            <label>Director/a del programa</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-user-tie"></i>
-                                    </div>
-                                </div>
-                                <input type="text" class="form-control @error('director') is-invalid @enderror" id="director" name="director"
-                                    placeholder="" autocomplete="off" value="{{ old('director') }}">
-                                @error('director')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
@@ -304,6 +245,63 @@
                                             autocomplete="off">
                                     </div>
                                     @error('meta_iniciativas')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="align-items: center;">
+                            <div class="form-group">
+                                <label>Meta asignaturas</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="meta_asignaturas"
+                                        name="meta_asignaturas" value="{{ old('meta_asignaturas') }}"
+                                        autocomplete="off">
+                                </div>
+                                @error('meta_asignaturas')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta Nº carreras</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_n_carreras"
+                                            name="meta_n_carreras" value="{{ old('meta_n_carreras') }}"
+                                            autocomplete="off">
+                                    </div>
+                                    @error('meta_n_carreras')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta Nº asignaturas</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_n_asignaturas"
+                                            name="meta_n_asignaturas" value="{{ old('meta_n_asignaturas') }}"
+                                            autocomplete="off">
+                                    </div>
+                                    @error('meta_n_asignaturas')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -441,35 +439,20 @@
                                         <div class="input-group">
                                             <select class="form-control @error('ano') is-invalid @enderror" id="ano"
                                                 name="ano">
-                                                <option value="" selected disable d>Seleccione...</option>
-                                                <option value="2022" {{ '2022' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2022
-                                                </option>
-                                                <option value="2023" {{ '2023' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2023
-                                                </option>
-                                                <option value="2024" {{ '2024' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2024
-                                                </option>
-                                                <option value="2025" {{ '2025' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2025
-                                                </option>
-                                                <option value="2026" {{ '2026' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2026
-                                                </option>
-                                                <option value="2027" {{ '2027' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2027
-                                                </option>
-                                                <option value="2028" {{ '2028' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2028
-                                                </option>
-                                                <option value="2029" {{ '2029' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2029
-                                                </option>
-                                                <option value="2030" {{ '2030' == $prog->prog_ano ? 'selected' : '' }}>
-                                                    2030
-                                                </option>
+                                                <option value="" selected disabled>Seleccione...</option>
+                                                @php
+                                                    $currentYear = date('Y');
+                                                    $yearsToShow = 10;
+                                                @endphp
+                                                @for ($i = 0; $i < $yearsToShow; $i++)
+                                                    @php $year = $currentYear + $i; @endphp
+                                                    <option value="{{ $year }}"
+                                                        {{ $year == $prog->prog_ano ? 'selected' : '' }}>
+                                                        {{ $year }}
+                                                    </option>
+                                                @endfor
                                             </select>
+
                                             @error('ano')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -479,58 +462,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="form-group">
-                                <label>Mecanismo del programa</label>
-                                <div class="input-group">
-
-                                    <select class="form-control @error('mecanismo') is-invalid @enderror" id="mecanismo"
-                                        name="mecanismo">
-                                        <option value="" selected disable d>Seleccione...</option>
-                                        @forelse ($mecanismos as $mecani)
-                                            <option value="{{ $mecani->meca_codigo }}"
-                                                {{ $mecani->meca_codigo == $prog->meca_codigo ? 'selected' : '' }}>
-                                                {{ $mecani->meca_nombre }}</option>
-                                        @empty
-                                            <option value="-1">No existen registros</option>
-                                        @endforelse
-                                    </select>
-                                    @error('mecanismo')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            </div> --}}
-
-                            {{-- <div class="form-group">
-                            <label>Descripción</label>
-                            <div class="input-group">
-                                <textarea rows="6" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" autocomplete="off"
-                                    style="width:100%">{{ $prog->prog_descripcion }}</textarea>
-                                @error('descripcion')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div> --}}
-                            {{-- <div class="form-group">
-                            <label>Director/a</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-user-tie"></i>
-                                    </div>
-                                </div>
-                                <input type="text" class="form-control @error('director') is-invalid @enderror" id="director" name="director"
-                                    value="{{ $prog->prog_director }}" autocomplete="off">
-                                @error('director')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div> --}}
                             <div class="form-group" style="align-items: center;" id="actiAsociadasContainer">
                                 <label>Tipo de Actividades Asociadas</label>
                                 <div class="input-group">
@@ -539,23 +470,16 @@
                                         <option value="" disabled>Seleccione...</option>
                                         @foreach ($ACTIVIDADES as $acti)
                                             @php
-                                                $selected = false;
+                                                $selected = $PROGRA_ACTI->contains(function ($proacti) use ($acti, $prog) {
+                                                    return $proacti->tiac_codigo === $acti->tiac_codigo && $proacti->prog_codigo === $prog->prog_codigo;
+                                                });
                                             @endphp
-
-                                            @foreach ($PROGRA_ACTI as $proacti)
-                                                @if ($proacti->tiac_codigo === $acti->tiac_codigo && $proacti->prog_codigo === $prog->prog_codigo)
-                                                    @php
-                                                        $selected = true;
-                                                        break; // Salir del bucle interno si ya se encontró la actividad seleccionada
-                                                    @endphp
-                                                @endif
-                                            @endforeach
-
                                             <option value="{{ $acti->tiac_codigo }}" {{ $selected ? 'selected' : '' }}>
                                                 {{ $acti->tiac_nombre }}
                                             </option>
                                         @endforeach
                                     </select>
+
 
 
                                     @if ($errors->has('actividades'))
@@ -602,6 +526,65 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group" style="align-items: center;">
+                                <div class="form-group">
+                                    <label>Meta asignaturas</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" id="meta_asignaturas"
+                                            name="meta_asignaturas" value="{{ $prog->prog_meta_asignaturas }}"
+                                            autocomplete="off">
+                                    </div>
+                                    @error('meta_asignaturas')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta Nº carreras</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_n_carreras"
+                                                name="meta_n_carreras" value="{{ $prog->prog_meta_n_carreras }}"
+                                                autocomplete="off">
+                                        </div>
+                                        @error('meta_n_carreras')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta Nº asignaturas</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_n_asignaturas"
+                                                name="meta_n_asignaturas" value="{{ $prog->prog_meta_n_asignaturas }}"
+                                                autocomplete="off">
+                                        </div>
+                                        @error('meta_n_asignaturas')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
@@ -659,18 +642,17 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
-                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
     @endforeach
-
-
 
 
     <div class="modal fade" id="modalEliminaProgram" tabindex="-1" role="dialog" aria-labelledby="modalEliminar"

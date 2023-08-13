@@ -193,8 +193,8 @@
                                             style="color: red;">*</label><input type="checkbox" id="selectAllCarreras"
                                             style="margin-left: 60%"> <label for="selectAllCarreras">Todas</label>
 
-                                        <select class="form-control select2" multiple="" id="carreras" name="carreras[]"
-                                            style="width: 100%">
+                                        <select class="form-control select2" multiple="" id="carreras"
+                                            name="carreras[]" style="width: 100%">
                                             @if (isset($iniciativa) && $editar)
                                                 estoy aca
                                                 {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
@@ -490,7 +490,8 @@
             selectAllRegiones();
             selectAllComunas();
             selectAllEscuelas();
-            selectAllCarreras()
+            selectAllCarreras();
+            carrerasByEscuelas();
         });
 
         function selectAllRegiones() {
@@ -626,6 +627,29 @@
                     });
                 }
             })
+        }
+
+        function carrerasByEscuelas() {
+            const escuelasSelect = $("#escuelas");
+            const carrerasSelect = $("#carreras");
+            const carrerasOptions = {!! json_encode($carreras) !!};
+
+            escuelasSelect.on("change", function() {
+                const selectedEscuelas = escuelasSelect.val();
+
+                const filteredCarreras = carrerasOptions.filter(carrera => selectedEscuelas.includes(carrera
+                    .escu_codigo.toString()));
+
+                carrerasSelect.empty();
+                if (filteredCarreras.length > 0) {
+                    $.each(filteredCarreras, function(index, carrera) {
+                        carrerasSelect.append($("<option></option>").attr("value", carrera.care_codigo)
+                            .text(carrera.care_nombre));
+                    });
+                } else {
+                    carrerasSelect.append($("<option></option>").attr("value", "-1").text("No existen registros"));
+                }
+            });
         }
     </script>
 @endsection
