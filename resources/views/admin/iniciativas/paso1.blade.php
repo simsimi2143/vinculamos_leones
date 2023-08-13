@@ -24,8 +24,7 @@
                             <h4>Sección 1 - Antecedentes generales</h4>
                         </div>
                         <div class="card-body">
-                            {{-- {{  $iniciativa }} --}}
-                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                            @if (isset($iniciativa) && $editar)
                                 <form action="{{ route('admin.actualizar.paso1', $iniciativa->inic_codigo) }}"
                                     method="POST">
                                     @method('PUT')
@@ -39,7 +38,7 @@
                                     <div class="form-group">
                                         <label style="font-size: 110%">Nombre de iniciativa</label> <label for=""
                                             style="color: red;">*</label>
-                                        @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                        @if (isset($iniciativa) && $editar)
                                             <input type="text" class="form-control" id="nombre" name="nombre"
                                                 value="{{ old('nombre') ?? @$iniciativa->inic_nombre }}">
                                         @else
@@ -63,41 +62,17 @@
                                             style="color: red;">*</label>
                                         <select class="form-control" id="anho" name="anho">
                                             <option disabled selected>Seleccione...</option>
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
-                                                <option value="2018"
-                                                    {{ $iniciativa->inic_anho == '2018' ? 'selected' : '' }}>2018
+                                            @php
+                                                $selectedYear = isset($iniciativa) && $editar ? $iniciativa->inic_anho : old('anho');
+                                                $currentYear = date('Y');
+                                            @endphp
+                                            @for ($year = 2018; $year <= $currentYear; $year++)
+                                                <option value="{{ $year }}"
+                                                    {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}
                                                 </option>
-                                                <option value="2019"
-                                                    {{ $iniciativa->inic_anho == '2019' ? 'selected' : '' }}>2019
-                                                </option>
-                                                <option value="2020"
-                                                    {{ $iniciativa->inic_anho == '2020' ? 'selected' : '' }}>2020
-                                                </option>
-                                                <option value="2021"
-                                                    {{ $iniciativa->inic_anho == '2021' ? 'selected' : '' }}>2021
-                                                </option>
-                                                <option value="2022"
-                                                    {{ $iniciativa->inic_anho == '2022' ? 'selected' : '' }}>2022
-                                                </option>
-                                                <option value="2023"
-                                                    {{ $iniciativa->inic_anho == '2023' ? 'selected' : '' }}>
-                                                    2023</option>
-                                            @else
-                                                <option value="2018" {{ old('anho') == '2018' ? 'selected' : '' }}>2018
-                                                </option>
-                                                <option value="2019" {{ old('anho') == '2019' ? 'selected' : '' }}>2019
-                                                </option>
-                                                <option value="2020" {{ old('anho') == '2020' ? 'selected' : '' }}>2020
-                                                </option>
-                                                <option value="2021" {{ old('anho') == '2021' ? 'selected' : '' }}>2021
-                                                </option>
-                                                <option value="2022" {{ old('anho') == '2022' ? 'selected' : '' }}>2022
-                                                </option>
-                                                <option value="2023" {{ old('anho') == '2023' ? 'selected' : '' }}>
-                                                    2023</option>
-                                            @endif
-
+                                            @endfor
                                         </select>
+
                                         @if ($errors->has('anho'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
                                                 <div class="alert-body">
@@ -117,15 +92,16 @@
 
                                         <select class="form-control" id="inic_formato" name="inic_formato">
                                             <option disabled selected>Seleccione...</option>
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
                                                 <option value="Presencial"
-                                                    {{ $iniciativa->inic_formato == '1' ? 'selected' : '' }}>Presencial
+                                                    {{ $iniciativa->inic_formato == 'Presencial' ? 'selected' : '' }}>
+                                                    Presencial
                                                 </option>
                                                 <option value="Online"
-                                                    {{ $iniciativa->inic_formato == '2' ? 'selected' : '' }}>Online
+                                                    {{ $iniciativa->inic_formato == 'Online' ? 'selected' : '' }}>Online
                                                 </option>
                                                 <option value="Mixto"
-                                                    {{ $iniciativa->inic_formato == '3' ? 'selected' : '' }}>Mixto
+                                                    {{ $iniciativa->inic_formato == 'Mixto' ? 'selected' : '' }}>Mixto
                                                 </option>
                                             @else
                                                 <option value="Presencial" {{ old('formato') == '1' ? 'selected' : '' }}>
@@ -156,7 +132,7 @@
                                     <label style="font-size: 110%">Descripción</label> <label for=""
                                         style="color: red;">*</label>
                                     <div class="input-group">
-                                        @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                        @if (isset($iniciativa) && $editar)
                                             <textarea class="formbold-form-input" id="description" name="description" rows="5" style="width: 100%;">{{ old('description') ?? @$iniciativa->inic_descripcion }}</textarea>
                                         @else
                                             <textarea class="formbold-form-input" id="description" name="description" rows="5" style="width: 100%;">{{ old('description') }}</textarea>
@@ -180,9 +156,17 @@
                                             style="color: red;">*</label>
                                         <input type="checkbox" id="selectAllEscuelas" style="margin-left: 60%"> <label
                                             for="selectAllEscuelas">Todas</label>
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
-                                            <select class="form-control select2" name="escuelas[]" multiple=""
-                                                style="width: 100%" id="escuelas">
+                                        <select class="form-control select2" name="escuelas[]" multiple=""
+                                            style="width: 100%" id="escuelas">
+                                            @if (isset($iniciativa) && $editar)
+                                                @forelse ($escuelas as $escuela)
+                                                    <option value="{{ $escuela->escu_codigo }}"
+                                                        {{ in_array($escuela->escu_codigo, old('escuelas', [])) || in_array($escuela->escu_codigo, $escuSec) ? 'selected' : '' }}>
+                                                        {{ $escuela->escu_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            @else
                                                 @forelse ($escuelas as $escuela)
                                                     <option value="{{ $escuela->escu_codigo }}"
                                                         {{ collect(old('escuela'))->contains($escuela->escu_codigo) ? 'selected' : '' }}>
@@ -190,20 +174,8 @@
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
-                                            </select>
-                                        @else
-                                            <select class="form-control select2" name="escuelas[]" multiple=""
-                                                style="width: 100%" id="escuelas">
-                                                @forelse ($escuelas as $escuela)
-                                                    <option value="{{ $escuela->escu_codigo }}"
-                                                        {{ collect(old('escuela'))->contains($escuela->escu_codigo) ? 'selected' : '' }}>
-                                                        {{ $escuela->escu_nombre }}</option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
-                                            </select>
-                                        @endif
-
+                                            @endif
+                                        </select>
                                         @if ($errors->has('escuelas'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
                                                 <div class="alert-body">
@@ -220,18 +192,19 @@
                                         <label style="font-size: 110%">Carreras</label> <label for=""
                                             style="color: red;">*</label><input type="checkbox" id="selectAllCarreras"
                                             style="margin-left: 60%"> <label for="selectAllCarreras">Todas</label>
-                                        <select class="form-control select2" multiple id="carreras" name="carreras[]"
+
+                                        <select class="form-control select2" multiple="" id="carreras" name="carreras[]"
                                             style="width: 100%">
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
+                                                estoy aca
                                                 {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
                                                 @forelse ($carreras as $carrera)
-                                                    <option value="{{ $carrera->care_codigo }}""
-                                                        {{ collect(old('carreras'))->contains($carrera->care_codigo) ? 'selected' : '' }}>
+                                                    <option value="{{ $carrera->care_codigo }}"
+                                                        {{ in_array($carrera->care_codigo, old('carreras', [])) || in_array($carrera->care_codigo, $careSec) ? 'selected' : '' }}>
                                                         {{ $carrera->care_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
-                                                {{-- </select> --}}
                                             @else
                                                 {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
                                                 @forelse ($carreras as $carrera)
@@ -264,70 +237,39 @@
                             <div class="row">
                                 <div class="col-3 col-md-3 col-lg-3">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Mecanismo</label> <label for=""
+                                        <label style="font-size: 110%">Programas</label> <label for=""
                                             style="color: red;">*</label>
-                                        <select class="form-control select2" id="mecanismo" name="mecanismo"
+                                        <select class="form-control select2" id="programas" name="programas"
                                             style="width: 100%">
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativaData))
+                                                {{-- {{$prog_nombre}} --}}
                                                 <option value="" selected disabled>Seleccione...</option>
-                                                @forelse ($mecanismo as $meca)
-                                                    <option value="{{ $meca->meca_codigo }}"
-                                                        {{ old('mecasnismo') == $meca->meca_codigo ? 'selected' : '' }}>
-                                                        {{ $meca->meca_nombre }}</option>
+                                                @forelse ($programas as $programa)
+                                                    <option value="{{ $programa->prog_codigo }}"
+                                                        {{ $iniciativaData->prog_codigo == $programa->prog_codigo ? 'selected' : '' }}>
+                                                        {{ $programa->prog_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
                                             @else
                                                 <option value="" selected disabled>Seleccione...</option>
-                                                @forelse ($mecanismo as $meca)
-                                                    <option value="{{ $meca->meca_codigo }}"
-                                                        {{ old('mecasnismo') == $meca->meca_codigo ? 'selected' : '' }}>
-                                                        {{ $meca->meca_nombre }}</option>
+                                                @forelse ($programas as $programa)
+                                                    <option value="{{ $programa->prog_codigo }}"
+                                                        {{ old('programas') == $programa->prog_codigo ? 'selected' : '' }}>
+                                                        {{ $programa->prog_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
                                             @endif
                                         </select>
 
-                                        @if ($errors->has('mecanismo'))
+                                        @if ($errors->has('programas'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
                                                 <div class="alert-body">
-                                                    <strong>{{ $errors->first('mecanismo') }}</strong>
+                                                    <strong>{{ $errors->first('programas') }}</strong>
                                                 </div>
                                             </div>
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="col-3 col-md-3 col-lg-3">
-                                    <div class="form-group">
-                                        <label style="font-size: 110%">Tipo actividad</label> <label for=""
-                                            style="color: red;">*</label>
-                                        <select class="form-control select2" id="tactividad" name="tactividad"
-                                            style="width: 100%">
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
-                                                @forelse ($tipoActividad as $t)
-                                                    <option value="{{ $t->tiac_codigo }}"
-                                                        {{ collect(old('tipoActividad'))->contains($t->tiac_codigo) ? 'selected' : '' }}>
-                                                        {{ $t->tiac_nombre }}</option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
-                                                <option value="-1" disabled selected>Selecciona 1 Mecanismo</option>
-                                            @else
-                                                <option value="-1">No existen registros</option>
-                                            @endif
-                                        </select>
-
-                                        @if ($errors->has('tactividad'))
-                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                                <div class="alert-body">
-                                                    <button class="close"
-                                                        data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('tactividad') }}</strong>
-                                                </div>
-                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -338,7 +280,7 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="convenio" name="convenio"
                                             style="width: 100%">
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
                                                 <option value="" disabled selected>Seleccione...</option>
                                                 @foreach ($convenios as $convenio)
                                                     <option value="{{ $convenio->conv_codigo }}"
@@ -378,7 +320,7 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="territorio" name="territorio"
                                             style="width: 100%" onchange="seleccionarTerritorio()">
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
                                                 <option selected value="nacional"
                                                     {{ $iniciativa->inic_territorio == 'nacional' ? 'selected' : '' }}>
                                                     Nacional
@@ -419,7 +361,7 @@
                                         <select class="form-control select2" id="pais" name="pais"
                                             style="width: 100%">
                                             <option value="">Seleccione...</option>
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
                                                 @forelse ($paises as $pais)
                                                     <option value="{{ $pais->pais_codigo }}"
                                                         {{ $iniciativaPais[0]->pais_codigo == $pais->pais_codigo ? 'selected' : '' }}>
@@ -455,7 +397,7 @@
                                         <label style="font-size: 110%">Región</label>
                                         <select class="form-control select2" id="region" multiple=""
                                             name="region[]" style="width: 100%">
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
                                                 @forelse ($regiones as $region)
                                                     <option value="{{ $region->regi_codigo }}"
                                                         {{ in_array($region->regi_codigo, $iniciativaRegion) ? 'selected' : '' }}>
@@ -492,7 +434,7 @@
                                         <select class="form-control select2" id="comuna" name="comuna[]"
                                             multiple="" style="width: 100%">
                                             <option value="" disabled>Seleccione...</option>
-                                            @if (isset($iniciativa) && count($iniciativa) > 0 && isset($tokenUpdate))
+                                            @if (isset($iniciativa) && $editar)
                                                 @forelse ($comunas as $comuna)
                                                     <option value="{{ $comuna->comu_codigo }}"
                                                         {{ in_array($comuna->comu_codigo, $iniciativaComuna) ? 'selected' : '' }}>

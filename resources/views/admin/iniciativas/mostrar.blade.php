@@ -46,7 +46,7 @@
                                     <i class="fas fa-paperclip"></i>
                                 </a>
 
-                                <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo) }}" type="button"
+                                <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo, $tokenUpdate=$iniciativa[0]->inic_codigo) }}" type="button"
                                     data-toggle="tooltip" class="btn btn-warning" data-placemet="top"
                                     title="Editar iniciativa">
                                     <i class="fas fa-edit"></i>
@@ -86,37 +86,26 @@
 
                                             <tr>
                                                 <td>
-                                                    <strong>Pertinencia</strong>
+                                                    <strong>Descripción</strong>
                                                 </td>
                                                 <td>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
-                                                            <thead>
-                                                                <th>Local</th>
-                                                                <th>Diciplinar</th>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr style="background-color: inherit;">
-                                                                    <td>{{ $iniciativa[0]->inic_pertinencia_local }}
-                                                                    </td>
-
-                                                                    <td>{{ $iniciativa[0]->inic_pertinencia_territorial }}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                    {{ $iniciativa[0]->inic_descripcion }}
                                                 </td>
                                             </tr>
 
                                             <tr>
-                                                <td><strong>Mecanismo</strong></td>
-                                                <td>{{ $iniciativa[0]->meca_nombre }}</td>
+                                                <td><strong>Programas</strong></td>
+                                                <td>{{ $iniciativa[0]->prog_nombre }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Tipo de actividad</strong></td>
-                                                <td>{{ $iniciativa[0]->tiac_nombre }}</td>
+                                                <td>
+                                                    @foreach ($iniciativa as $key => $ini)
+                                                        {{ $key + 1 }}. {{ $ini->tiac_nombre }}<br>
+                                                    @endforeach
+                                                </td>
+
                                             </tr>
 
                                             <tr>

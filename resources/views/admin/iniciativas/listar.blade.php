@@ -43,7 +43,7 @@
                                         <tr>
 
                                             <th>Nombre</th>
-                                            <th>Mecanismo</th>
+                                            <th>Programas</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -54,7 +54,7 @@
                                         @foreach ($iniciativas as $iniciativa)
                                             <tr>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
-                                                <td>{{ $iniciativa->meca_nombre }}</td>
+                                                <td>{{ $iniciativa->prog_nombre }}</td>
                                                 <td>{{ $iniciativa->escuelas }}</td>
                                                 <td>{{ $iniciativa->carreras }}</td>
                                                 <td>
@@ -102,7 +102,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <a href="{{route('admin.iniciativas.detalles',$iniciativa->inic_codigo)}}" class="btn btn-icon btn-warning" data-toggle="tooltip"
+                                                    <a href="{{route('admin.iniciativas.detalles',$iniciativa->inic_codigo, $tokenUpdate=$iniciativa->inic_codigo)}}" class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
 
