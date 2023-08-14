@@ -61,6 +61,7 @@
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
+                                    {{-- {{}} --}}
                                     <tbody>
                                         <?php
                                         $contador = 0;
@@ -75,12 +76,14 @@
                                                 <td>{{ $meca->meca_nombre }}</td>
                                                 <td>{{ $meca->tmec_nombre }}</td>
                                                 <td>
-                                                    <a href="javascript:void(0)" class="btn btn-icon btn-warning"
-                                                    onclick="editarMeca({{ $meca->meca_codigo }})"
-                                                    data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger"
                                                         onclick="eliminarMeca({{ $meca->meca_codigo }})"
                                                         data-toggle="tooltip" data-placement="top" title="Eliminar mecanismo"><i class="fas fa-trash"></i></a>
+
+
+                                                    <a href="javascript:void(0)" class="btn btn-icon btn-warning"
+                                                    onclick="editarMeca({{ $meca->meca_codigo }})"
+                                                    data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
 
                                                 </td>
                                             </tr>
@@ -261,13 +264,13 @@
     </script>
 
 
-    {{-- <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('public/bundles/datatables/datatables.min.css') }}">
     <link rel="stylesheet"
-        href="{{ asset('/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
+        href="{{ asset('public/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="{{ asset('/bundles/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('/js/page/datatables.js') }}"></script> --}}
+    <script src="{{ asset('public/bundles/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('public/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('public/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('public/js/page/datatables.js') }}"></script> --}}
 @endsection
