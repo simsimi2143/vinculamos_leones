@@ -63,7 +63,7 @@ class IniciativasController extends Controller
     }
 
 
-    public function completarResultados($inic_codigo)
+    public function completarCobertura($inic_codigo)
     {
         $resuVerificar = ParticipantesInternos::where('inic_codigo', $inic_codigo)->count();
         if ($resuVerificar == 0)
@@ -88,14 +88,14 @@ class IniciativasController extends Controller
         ->where('participantes_internos.inic_codigo', $inic_codigo)
         ->get();
     
-        return view('admin.iniciativas.resultados', [
+        return view('admin.iniciativas.coberturas', [
             'iniciativa' => $inicObtener,
             'resultados' => $resuObtener
         ]);
     }
 
 
-    public function actualizarResultados(Request $request, $inic_codigo)
+    public function actualizarCobertura(Request $request, $inic_codigo)
     {
         $docentes_final = $request->input('docentes_final');
         $estudiantes_final = $request->input('estudiantes_final');
@@ -115,7 +115,7 @@ class IniciativasController extends Controller
             }
         }
 
-        return redirect()->route('admin.resultados.index', $inic_codigo)
+        return redirect()->route('admin.cobertura.index', $inic_codigo)
             ->with('success', 'Resultados actualizados correctamente.');
     }
 

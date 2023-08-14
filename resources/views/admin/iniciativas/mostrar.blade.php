@@ -17,7 +17,7 @@
 
                                         <a href="" class="dropdown-item has-icon"><i
                                                 class="fas fa-users"></i>Ingresar cobertura</a>
-                                        <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
+                                        <a href="{{route('admin.resultados.index', $iniciativa[0]->inic_codigo)}}" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
                                             resultados</a>
                                         <a href="" class="dropdown-item has-icon"><i
                                                 class="fas fa-file-signature"></i>Ingresar evaluación</a>

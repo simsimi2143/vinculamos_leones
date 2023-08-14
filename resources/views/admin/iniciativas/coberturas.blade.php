@@ -30,10 +30,9 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h4>{{ $iniciativa->inic_nombre }} - Resultados</h4>
+                            <h4>{{ $iniciativa->inic_nombre }} - Registro Participantes finales</h4>
                         </div>
                         <div class="card-body">
-                            <h6>Cuantificación de resultados</h6>
                             <form action="{{-- route('admin.resultados.update', $iniciativa->inic_codigo) --}}" method="POST">
                                 @csrf
                                 <div class="row mt-3">

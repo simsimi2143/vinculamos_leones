@@ -210,8 +210,8 @@ Route::middleware('verificar.admin')->group(function () {
     //todo: Update state iniciativa
     Route::post('/admin/iniciativas/update-state', [IniciativasController::class,'updateState'])->name('admin.iniciativas.updateState');
     //todo: Add result iniciativa
-    Route::get('/admin/iniciativa/{inic_codigo}/resultados', [IniciativasController::class, 'completarResultados'])->name('admin.resultados.index');
-    Route::post('admin/iniciativa/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('admin.resultados.update');
+    Route::get('/admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('admin.cobertura.index');
+    Route::post('admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'actualizarCobertura'])->name('admin.cobertura.update');
 
     //todo:evidencias de iniciativas
 
@@ -220,7 +220,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'actualizarEvidencia'])->name('admin.evidencia.actualizar');
     Route::post('admin/iniciativas/{inic_codigo}/descargar-evidencia',[IniciativasController::class,'descargarEvidencia'])->name('admin.evidencia.descargar');
     Route::delete('admin/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'eliminarEvidencia'])->name('admin.evidencia.eliminar');
-    Route::get('admin/inicicativas/{inic_codigo}/cobertura',[IniciativasController::class,'ingresarCobertura'])->name('admin.cobertura.listar');
+    // Route::get('admin/inicicativas/{inic_codigo}/cobertura',[IniciativasController::class,'ingresarCobertura'])->name('admin.cobertura.listar');
 
     //todo:fin evidencias de iniciativas
 

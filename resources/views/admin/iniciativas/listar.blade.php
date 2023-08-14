@@ -105,12 +105,12 @@
                                                         data-placement="top" title="Adjuntar evidencia"><i
                                                             class="fas fa-paperclip"></i></a>
                                                             
-                                                    <a href="{{ route('admin.cobertura.listar', $iniciativa->inic_codigo) }}"
+                                                    <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar cobertura"><i
                                                             class="fas fa-users"></i></a>
 
-                                                    <a href="{{ route('admin.resultados.index', $iniciativa->inic_codigo) }}" class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                    <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i
                                                             class="fas fa-flag"></i></a>
 
