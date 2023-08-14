@@ -15,9 +15,9 @@
                                         data-toggle="dropdown">Iniciativa</button>
                                     <div class="dropdown-menu dropright">
 
-                                        <a href="" class="dropdown-item has-icon"><i
+                                        <a href="{{route('admin.cobertura.index', $iniciativa[0]->inic_codigo)}}" class="dropdown-item has-icon"><i
                                                 class="fas fa-users"></i>Ingresar cobertura</a>
-                                        <a href="{{route('admin.cobertura.index', $iniciativa[0]->inic_codigo)}}" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
+                                        <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
                                             resultados</a>
                                         <a href="" class="dropdown-item has-icon"><i
                                                 class="fas fa-file-signature"></i>Ingresar evaluación</a>

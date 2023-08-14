@@ -726,9 +726,12 @@ class ParametrosController extends Controller
         // Actualizar los campos de la carrera con los valores del formulario
         $carrera->care_nombre = $request->input('care_nombre');
         $carrera->care_descripcion = $request->input('care_descripcion');
-        $carrera->care_director = $request->input('care_director');
-        $carrera->care_institucion = $request->input('care_institucion', 1);
         $carrera->escu_codigo = $request->input('escu_codigo');
+        $carrera->care_meta_estudiantes = $request->input('meta_estudiantes');
+        $carrera->care_meta_docentes = $request->input('meta_docentes');
+        $carrera->care_meta_soc_comunitarios = $request->input('meta_comunitarios');
+        $carrera->care_meta_benificiarios = $request->input('meta_benicifiarios');
+        $carrera->care_meta_Iniciativas = $request->input('meta_iniciativas');
 
         // Guardar los cambios en la carrera
         $carrera->save();
@@ -761,9 +764,14 @@ class ParametrosController extends Controller
         $carrera = new Carreras();
         $carrera->care_nombre = $request->input('care_nombre');
         $carrera->care_descripcion = $request->input('care_descripcion');
-        $carrera->care_director = $request->input('care_director');
-        /* $carrera->care_institucion = $request->input('care_institucion'); */
         $carrera->escu_codigo = $request->input('escu_codigo');
+        $carrera->care_meta_estudiantes = $request->input('meta_estudiantes');
+        $carrera->care_meta_docentes = $request->input('meta_docentes');
+        $carrera->care_meta_soc_comunitarios = $request->input('meta_comunitarios');
+        $carrera->care_meta_benificiarios = $request->input('meta_benicifiarios');
+        $carrera->care_meta_Iniciativas = $request->input('meta_iniciativas');
+        $carrera->care_creado = now();
+        // $carrera->care_director = $request->input('care_director');
 
         // Guardar la carrera en la base de datos
         $carrera->save();

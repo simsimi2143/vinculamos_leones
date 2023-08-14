@@ -8,25 +8,21 @@
                     <div class="row">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @if (
-                                $errors->has('care_nombre') ||
-                                $errors->has('care_director') ||
-                                $errors->has('escu_codigo')
-                                )
-                            <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                                <div class="alert-body">
-                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    @if ($errors->has('care_nombre'))
-                                        <strong>{{ $errors->first('care_nombre') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('care_director'))
-                                        <strong>{{ $errors->first('care_director') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('escu_codigo'))
-                                        <strong>{{ $errors->first('escu_codigo') }}</strong><br>
-                                    @endif
+                            @if ($errors->has('care_nombre') || $errors->has('care_director') || $errors->has('escu_codigo'))
+                                <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        @if ($errors->has('care_nombre'))
+                                            <strong>{{ $errors->first('care_nombre') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('care_director'))
+                                            <strong>{{ $errors->first('care_director') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('escu_codigo'))
+                                            <strong>{{ $errors->first('escu_codigo') }}</strong><br>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                             @if (Session::has('exitoCarrera'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
@@ -91,41 +87,41 @@
     </section>
 
     @foreach ($carreras as $care)
-    <div class="modal fade" id="modalEditarCarrera-{{ $care->care_codigo }}" tabindex="-1" role="dialog"
-        aria-labelledby="modalEditarCarrera" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarCarrera">Editar carrera</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.actualizar.carreras', $care->care_codigo) }}" method="POST">
-                        @method('PUT')
-                        @csrf
+        <div class="modal fade" id="modalEditarCarrera-{{ $care->care_codigo }}" tabindex="-1" role="dialog"
+            aria-labelledby="modalEditarCarrera" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarCarrera">Editar carrera</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('admin.actualizar.carreras', $care->care_codigo) }}" method="POST">
+                            @method('PUT')
+                            @csrf
 
-                        <div class="form-group">
-                            <label>Nombre de la carrera</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-pen-nib"></i>
+                            <div class="form-group">
+                                <label>Nombre de la carrera</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-pen-nib"></i>
+                                        </div>
                                     </div>
+                                    <input type="text" class="form-control" id="care_nombre" name="care_nombre"
+                                        value="{{ $care->care_nombre }}" autocomplete="off">
                                 </div>
-                                <input type="text" class="form-control" id="care_nombre" name="care_nombre"
-                                    value="{{ $care->care_nombre }}" autocomplete="off">
                             </div>
-                        </div>
-                        {{-- <div class="form-group">
+                            {{-- <div class="form-group">
                             <label>Descripción de la carrera</label>
                             <div class="input-group">
                                 <textarea rows="6" class="formbold-form-input" id="care_descripcion" name="care_descripcion" autocomplete="off"
                                     style="width:100%">{{ $care->care_descripcion }}</textarea>
                             </div>
                         </div> --}}
-                        <div class="form-group">
+                            {{-- <div class="form-group">
                             <label>Jefe/Jefa de la carrera</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -136,8 +132,8 @@
                                 <input type="text" class="form-control" id="care_director" name="care_director"
                                     value="{{ $care->care_director }}" autocomplete="off">
                             </div>
-                        </div>
-                        {{-- <div class="form-group">
+                        </div> --}}
+                            {{-- <div class="form-group">
                             <label>Institución</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -149,31 +145,126 @@
                                     value="{{ $care->care_institucion }}" autocomplete="off">
                             </div>
                         </div> --}}
-                        <div class="form-group">
-                            <label>Escuela</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-building"></i>
+                            <div class="form-group">
+                                <label>Escuela</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                    </div>
+                                    <select class="form-control" id="escu_codigo" name="escu_codigo">
+                                        @foreach ($escuelas as $escuela)
+                                            <option value="{{ $escuela->escu_codigo }}"
+                                                {{ $care->escu_codigo == $escuela->escu_codigo ? 'selected' : '' }}>
+                                                {{ $escuela->escu_nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta Estudiantes</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_estudiantes"
+                                                name="meta_estudiantes" value="{{ $care->care_meta_estudiantes }}"
+                                                autocomplete="off">
+                                        </div>
+                                        @error('meta_estudiantes')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
-                                <select class="form-control" id="escu_codigo" name="escu_codigo">
-                                    @foreach ($escuelas as $escuela)
-                                        <option value="{{ $escuela->escu_codigo }}" {{ $care->escu_codigo == $escuela->escu_codigo ? 'selected' : '' }}>
-                                            {{ $escuela->escu_nombre }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta Docentes</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_docentes"
+                                                name="meta_docentes" value="{{ $care->care_meta_docentes }}" autocomplete="off">
+                                        </div>
+                                        @error('meta_docentes')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
-                        </div>
-                    </form>
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta socios/as Comunitarios/as</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_comunitarios"
+                                                name="meta_comunitarios" value="{{ $care->care_meta_soc_comunitarios }}"
+                                                autocomplete="off">
+                                        </div>
+                                        @error('meta_comunitarios')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta Beneficiarios</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_benicifiarios"
+                                                name="meta_benicifiarios" value="{{ $care->care_meta_benificiarios }}" autocomplete="off">
+                                        </div>
+                                        @error('meta_benicifiarios')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Meta Iniciativas</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control" id="meta_iniciativas"
+                                                name="meta_iniciativas" value="{{ $care->care_meta_Iniciativas }}"
+                                                autocomplete="off">
+                                        </div>
+                                        @error('meta_iniciativas')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     @endforeach
 
 
@@ -198,8 +289,8 @@
                                         <i class="fas fa-pen-nib"></i>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="care_nombre" name="care_nombre" placeholder=""
-                                    autocomplete="off" value="{{ old('care_nombre') }}">
+                                <input type="text" class="form-control" id="care_nombre" name="care_nombre"
+                                    placeholder="" autocomplete="off" value="{{ old('care_nombre') }}">
                                 @if ($errors->has('care_nombre'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
@@ -211,6 +302,7 @@
                                 @endif
                             </div>
                         </div>
+
                         {{-- <div class="form-group">
                             <label>Descripción de la carrera</label>
                             <div class="input-group">
@@ -229,7 +321,7 @@
                                 @endif
                             </div>
                         </div> --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Jefe/Jefa de la carrera</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -249,7 +341,7 @@
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- <div class="form-group">
                             <label>Institución</label>
                             <div class="input-group">
@@ -286,13 +378,108 @@
                                 </select>
 
                                 @if ($errors->has('escu_codigo'))
-                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center" style="width:100%">
+                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                        style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                             <strong>{{ $errors->first('escu_codigo') }}</strong>
                                         </div>
                                     </div>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta Estudiantes</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_estudiantes"
+                                            name="meta_estudiantes" value="{{ old('meta_estudiantes') }}"
+                                            autocomplete="off">
+                                    </div>
+                                    @error('meta_estudiantes')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta Docentes</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_docentes"
+                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off">
+                                    </div>
+                                    @error('meta_docentes')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta socios/as Comunitarios/as</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_comunitarios"
+                                            name="meta_comunitarios" value="{{ old('meta_comunitarios') }}"
+                                            autocomplete="off">
+                                    </div>
+                                    @error('meta_comunitarios')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta Beneficiarios</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_benicifiarios"
+                                            name="meta_benicifiarios" value="{{ old('meta_benicifiarios') }}" autocomplete="off">
+                                    </div>
+                                    @error('meta_benicifiarios')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Meta Iniciativas</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="meta_iniciativas"
+                                            name="meta_iniciativas" value="{{ old('meta_iniciativas') }}"
+                                            autocomplete="off">
+                                    </div>
+                                    @error('meta_iniciativas')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
