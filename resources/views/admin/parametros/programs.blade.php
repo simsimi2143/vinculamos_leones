@@ -180,7 +180,7 @@
                                                 $currentYear = date('Y');
                                                 $yearsToShow = 10; // Puedes ajustar este valor según cuántos años quieres mostrar
                                             @endphp
-                                            @for ($i = 0; $i < $yearsToShow; $i++)
+                                            @for ($i = -1; $i < $yearsToShow; $i++)
                                                 @php $year = $currentYear + $i; @endphp
                                                 <option value="{{ $year }}">{{ $year }}</option>
                                             @endfor
@@ -444,7 +444,7 @@
                                                     $currentYear = date('Y');
                                                     $yearsToShow = 10;
                                                 @endphp
-                                                @for ($i = 0; $i < $yearsToShow; $i++)
+                                                @for ($i = -1; $i < $yearsToShow; $i++)
                                                     @php $year = $currentYear + $i; @endphp
                                                     <option value="{{ $year }}"
                                                         {{ $year == $prog->prog_ano ? 'selected' : '' }}>
