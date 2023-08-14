@@ -184,6 +184,18 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/editar-actividad/{nombreprefijo_codigo}', [BitacoraController::class, 'actualizarActividad'])->name('admin.actualizar.actividades');
     Route::post('admin/crear-actividad/', [BitacoraController::class, 'crearActividad'])->name('admin.crear.actividades');
 
+    // RecursosHumanos
+    Route::get('admin/listar-rrhh', [ParametrosController::class, 'listarRecursosHumanos'])->name('admin.listar.rrhh');
+    Route::delete('admin/eliminar-rrhh/', [ParametrosController::class, 'eliminarRecursosHumanos'])->name('admin.eliminar.rrhh');
+    Route::put('admin/editar-rrhh/{trrhh_codigo}', [ParametrosController::class, 'actualizarRecursosHumanos'])->name('admin.actualizar.rrhh');
+    Route::post('admin/crear-rrhh/', [ParametrosController::class, 'crearRecursosHumanos'])->name('admin.crear.rrhh');
+
+    // TipoInfraestructuras
+    Route::get('admin/listar-tipoinfra', [ParametrosController::class, 'listarTipoInfraestructuras'])->name('admin.listar.tipoinfra');
+    Route::delete('admin/eliminar-tipoinfra/', [ParametrosController::class, 'eliminarTipoInfraestructuras'])->name('admin.eliminar.tipoinfra');
+    Route::put('admin/editar-tipoinfra/{tinf_codigo}', [ParametrosController::class, 'actualizarTipoInfraestructuras'])->name('admin.actualizar.tipoinfra');
+    Route::post('admin/crear-tipoinfra/', [ParametrosController::class, 'crearTipoInfraestructuras'])->name('admin.crear.tipoinfra');
+
     // fin rutas para gestionar parametros
 
 
@@ -200,7 +212,7 @@ Route::middleware('verificar.admin')->group(function () {
 
     Route::get('admin/iniciativa/crear/editar/paso3', [IniciativasController::class, 'crearPaso3'])->name('admin.editar.paso3');
     Route::get('admin/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('admin.editar.paso3');
-    
+
     Route::post('admin/iniciativas/crear/socio',[IniciativasController::class,'guardarSocioComunitario'])->name('admin.iniciativas.crear.socio');
     Route::get('admin/crear/iniciativa/listar-internos',[IniciativasController::class,'listarInternos']);
     Route::get('admin/crear/iniciativa/listar-externos',[IniciativasController::class,'listarExternos']);
