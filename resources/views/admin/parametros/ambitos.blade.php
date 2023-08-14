@@ -33,10 +33,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de impactos</h4>
+                            <h4>Listado de Contribuciones</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearAmbito"><i class="fas fa-plus"></i> Nuevo impacto</button>
+                                    data-target="#modalCrearAmbito"><i class="fas fa-plus"></i> Nueva contribución</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -123,7 +123,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarAmbito">Editar impacto</h5>
+                        <h5 class="modal-title" id="modalEditarAmbito">Editar contribución</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -134,7 +134,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label>Nombre del impacto</label>
+                                <label>Nombre de la contribución</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -146,16 +146,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Tipo de impacto</label>
+                                <label>Tipo de contribución</label>
                                 <div class="input-group">
                                     <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
                                         name="descripcion">
                                         <option value="" selected disable d>Seleccione...</option>
-                                        <option value="Impacto Interno"
-                                            {{ 'Impacto Interno' == $ambi->amb_descripcion ? 'selected' : '' }}>Impacto
+                                        <option value="Contribución Interno"
+                                            {{ 'Contribución Interno' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
                                             Interno</option>
-                                        <option value="Impacto Externo"
-                                            {{ 'Impacto Externo' == $ambi->amb_descripcion ? 'selected' : '' }}>Impacto
+                                        <option value="Contribución Externo"
+                                            {{ 'Contribución Externo' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
                                             Externo</option>
                                     </select>
                                     @error('descripcion')
@@ -200,7 +200,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal">Nuevo impacto</h5>
+                    <h5 class="modal-title" id="formModal">Nueva contribución</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -209,7 +209,7 @@
                     <form action="{{ route('admin.crear.ambitos') }} " method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del impacto</label>
+                            <label>Nombre de la contribución</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -230,13 +230,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Tipo de impacto</label>
+                            <label>Tipo de contribución</label>
                             <div class="input-group">
                                 <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
                                     name="descripcion">
                                     <option value="" selected disable d>Seleccione...</option>
-                                    <option value="Impacto Interno">Impacto Interno</option>
-                                    <option value="Impacto Externo">Impacto Externo</option>
+                                    <option value="Contribución Interno">Contribución Interno</option>
+                                    <option value="Contribución Externo">Contribución Externo</option>
                                 </select>
                                 @error('descripcion')
                                     <div class="invalid-feedback">
@@ -302,14 +302,14 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEliminar">Eliminar impacto</h5>
+                        <h5 class="modal-title" id="modalEliminar">Eliminar Contribución</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El impacto dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">La Contribución dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
                             modos?</h6>
                         <input type="hidden" id="amb_codigo" name="amb_codigo" value="">
                     </div>
