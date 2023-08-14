@@ -241,7 +241,7 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="programas" name="programas"
                                             style="width: 100%">
-                                            @if (isset($iniciativaData))
+                                            @if (isset($iniciativaData) && $editar)
                                                 {{-- {{$prog_nombre}} --}}
                                                 <option value="" selected disabled>Seleccione...</option>
                                                 @forelse ($programas as $programa)
@@ -273,6 +273,45 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="col-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+
+                                        <label style="font-size: 110%">Tipo de Actividades</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="tactividad" name="tactividad"
+                                            style="width: 100%">
+                                            <option value="" selected disabled>Seleccione...</option>
+                                            @if (isset($iniciativaData) && $editar)
+                                                @forelse ($tipoActividad as $actividad)
+                                                    <option value="{{ $actividad->tiac_codigo }}"
+                                                        {{ $iniciativaData->tiac_codigo == $actividad->tiac_codigo ? 'selected' : '' }}>
+                                                        {{ $actividad->tiac_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            @else
+                                            
+                                                @forelse ($tipoActividad as $actividad)
+                                                    <option value="{{ $actividad->tiac_codigo }}"
+                                                        {{ old('tactividad') == $actividad->tiac_codigo ? 'selected' : '' }}>
+                                                        {{ $actividad->tiac_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            @endif
+                                        </select>
+
+                                        @if ($errors->has('programas'))
+                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                                <div class="alert-body">
+                                                    <strong>{{ $errors->first('programas') }}</strong>
+                                                </div>
+                                            </div>
+                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        @endif
+                                    </div>
+                                </div>
+
 
                                 <div class="col-3 col-md-3 col-lg-3">
                                     <div class="form-group">
@@ -318,8 +357,9 @@
                                     <div class="form-group">
                                         <label style="font-size: 110%">Territorio</label> <label for=""
                                             style="color: red;">*</label>
-                                        <select class="form-control select2" id="territorio" name="territorio"
+                                        <select class="form-control select2 territorio" id="territorio" name="territorio"
                                             style="width: 100%" onchange="seleccionarTerritorio()">
+
                                             @if (isset($iniciativa) && $editar)
                                                 <option selected value="nacional"
                                                     {{ $iniciativa->inic_territorio == 'nacional' ? 'selected' : '' }}>
@@ -358,7 +398,7 @@
                                     <div class="form-group">
                                         <label style="font-size: 110%">País</label> <label for=""
                                             style="color: red;">*</label>
-                                        <select class="form-control select2" id="pais" name="pais"
+                                        <select class="form-control select2 pais" id="pais" name="pais"
                                             style="width: 100%">
                                             <option value="">Seleccione...</option>
                                             @if (isset($iniciativa) && $editar)
@@ -492,6 +532,12 @@
             selectAllEscuelas();
             selectAllCarreras();
             carrerasByEscuelas();
+            // $('#programas').on('change', function() {
+            //     selectTiposActividades();
+            // });
+
+            // // Llamada inicial
+            // selectTiposActividades();
         });
 
         function selectAllRegiones() {
@@ -528,7 +574,7 @@
         }
 
         function actividadesByMecanismos() {
-            $('#mecanismo').on('change', function() {
+            $('#programas').on('change', function() {
                 console.log("first")
                 $.ajax({
                     url: window.location.origin + '/admin/iniciativas/obtener-actividades',
@@ -537,7 +583,7 @@
 
                     data: {
                         _token: '{{ csrf_token() }}',
-                        mecanismo: $('#mecanismo').val()
+                        programa: $('#programas').val()
                     },
                     success: function(data) {
                         $('#tactividad').empty();
@@ -651,5 +697,8 @@
                 }
             });
         }
+
+
+
     </script>
 @endsection

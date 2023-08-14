@@ -57,8 +57,8 @@
                             <h2 id="idIniciativa">{{ $iniciativa->inic_codigo }}</h2>
                             <h4>Iniciativa: {{ $iniciativa->inic_nombre }}</h4>
                             <div class="card-header-action">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio</button>
+                                {{-- <button type="button" class="btn btn-primary" data-toggle="modal" --}}
+                                    {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
                             </div>
                         </div>
 
@@ -98,7 +98,7 @@
 
                                 <div class="col-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Socio comunitario</label> <label for=""
+                                        <label style="font-size: 110%">Socio/a comunitario</label> <label for=""
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="socio" name="socio"
                                             style="width: 100%">
@@ -191,7 +191,7 @@
                                             style="width: 100%">
                                             <option value="" selected disabled>Seleccione...</option>
                                             @forelse ($escuelas as $escuela)
-                                                <option value="{{ $escuela->escu_codigo }}">
+                                                <option value="{{ $escuela->escu_codigo }}" >
                                                     {{ $escuela->escu_nombre }}
                                                 </option>
                                             @empty
@@ -207,9 +207,9 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="carreras" name="carreras"
                                             style="width: 100%">
-                                            <option value="" selected disabled>Seleccione...</option>
+                                            <option value=""  disabled selected>Seleccione...</option>
                                             @forelse ($carreras as $carrera)
-                                                <option value="{{ $carrera->care_codigo }}">
+                                                <option value="{{ $carrera->care_codigo }}" >
                                                     {{ $carrera->care_nombre }}
                                                 </option>
                                             @empty
@@ -218,26 +218,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-{{-- 
-                                  <div class="col-2 col-md-2 col-lg-2">
-                                    <div class="form-group">
-                                        <label>N° de participantes totales</label> <label for=""
-                                            style="color: red;">*</label>
-                                        <input type="number" class="form-control" id="ntotal" name="ntotal">
-
-                                        @if ($errors->has('ntotal'))
-                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                                <div class="alert-body">
-                                                    <button class="close"
-                                                        data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('ntotal') }}</strong>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>   --}}
-
                                 <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Estudiantes</label> <label for=""
@@ -308,81 +288,7 @@
                                 </div>
                             </div>
 
-                            {{-- <form action="{{ route('admin.paso2.verificar', $iniciativa->inic_codigo) }}" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-6 col-md-6 col-lg-6">
-                                        <div class="row">
-                                            <div class="col-2"></div>
-                                            <h4 class="font-weight-light">¿La iniciativa se desarrolla con <br>alguno de
-                                                los siguientes grupos?</h4>
-                                        </div>
-
-                                        <div class="row" style="margin-top: 5%">
-                                            <div class="col-2"></div>
-                                            <div class="form-grup">
-                                                {{$grupos}}
-                                                @foreach ($grupos as $grupo)
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name=grupos[] class="form-check-input"
-                                                            id="check{{ $grupo->grup_codigo }}"
-                                                            value="{{ $grupo->grup_codigo }}"
-                                                            @if (in_array($grupo->grup_codigo, $gruposSec)) checked @endif>
-                                                        <label for="check{{ $grupo->grup_codigo }}"
-                                                            class="form-check-label">
-                                                            <h6 class="font-weight-light">{{ $grupo->grup_nombre }}</h6>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-6 col-md-6 col-lg-6">
-                                        <div class="row">
-                                            <div class="col-2"></div>
-                                            <h4 class="font-weight-light"class="font-weight-light">¿La iniciativa aborda
-                                                alguna de <br>las siguientes temáticas?</h4>
-                                        </div>
-
-                                        <div class="row" style="margin-top: 5%">
-                                            <div class="col-2"></div>
-                                            <div class="form-grup">
-                                                @foreach ($tematicas as $tematica)
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name=tematicas[] class="form-check-input"
-                                                            id="check{{ $tematica->tema_codigo }}t"
-                                                            value="{{ $tematica->tema_codigo }}"
-                                                            @if (in_array($tematica->tema_codigo, $tematicasSec)) checked @endif>
-                                                        <label for="check{{ $tematica->tema_codigo }}t"
-                                                            class="form-check-label">
-                                                            <h6 class="font-weight-light">{{ $tematica->tema_nombre }}
-                                                            </h6>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-12 col-md-12 col-log-12">
-                                        <div class="text-right">
-                                            <strong>
-                                                <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
-                                                    type="button" class="btn mr-1 waves-effect"
-                                                    style="background-color:#042344; color:white"><i
-                                                        class="fas fa-chevron-left"></i>
-                                                    Paso anterior</a>
-                                            </strong>
-                                            <button type="submit" class="btn btn-primary mr-1 waves-effect"><i
-                                                    class="fas fa-save"></i> Guardar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form> --}}
+                            
                             <div class="row">
                                 <div class="col-12 col-md-12 col-log-12">
                                     <div class="text-right">
@@ -525,21 +431,21 @@
                                 @endif
                             </div>
 
-                            <label>Sedes Asociadas</label>
+                            <label>Escuelas Asociadas</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]"
+                                <select class="form-control select2" style="width: 100%" id="escuelasT" name="escuelasT[]"
                                     style="width: 100%" multiple>
                                     <option value="" disabled>Seleccione...</option>
-                                    @foreach ($sedesT as $sede)
-                                        <option value="{{ $sede->sede_codigo }}">{{ $sede->sede_nombre }}</option>
+                                    @foreach ($escuelasTotales as $escuela)
+                                        <option value="{{ $escuela->escu_codigo }}">{{ $escuela->escu_nombre }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('sedesT'))
+                                @if ($errors->has('escuelasT'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('sedesT') }}</strong>
+                                            <strong>{{ $errors->first('escuelasT') }}</strong>
                                         </div>
                                     </div>
                                 @endif
@@ -636,12 +542,7 @@
         }
 
         function modificar() {
-            console.log($("#idIniciativa").text())
-            console.log( $("#escuelas").val())
-            console.log($("#carreras").val())
-            console.log($("#ndocentes").val())
-            console.log($("#nestudiantes").val())
-       
+      
             $.ajax({
                 type: 'POST',
                 url: `${window.location.origin}/admin/actualizar/participantes-internos`,

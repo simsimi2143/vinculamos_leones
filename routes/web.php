@@ -207,6 +207,9 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/actualizar/participantes-internos',[IniciativasController::class,'actualizarInternos']);
     Route::post('admin/iniciativas/agregar/participantes-externos',[IniciativasController::class,'agregarExternos']);
 
+    //todo: Update state iniciativa
+    Route::post('/admin/iniciativas/update-state', [IniciativasController::class,'updateState'])->name('admin.iniciativas.updateState');
+
     //todo:evidencias de iniciativas
 
     Route::get('admin/iniciativas/{inic_codigo}/listar-evidencias',[IniciativasController::class,'listarEvidencia'])->name('admin.evidencias.listar');
@@ -214,6 +217,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'actualizarEvidencia'])->name('admin.evidencia.actualizar');
     Route::post('admin/iniciativas/{inic_codigo}/descargar-evidencia',[IniciativasController::class,'descargarEvidencia'])->name('admin.evidencia.descargar');
     Route::delete('admin/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'eliminarEvidencia'])->name('admin.evidencia.eliminar');
+    Route::get('admin/inicicativas/{inic_codigo}/cobertura',[IniciativasController::class,'ingresarCobertura'])->name('admin.cobertura.listar');
 
     //todo:fin evidencias de iniciativas
 

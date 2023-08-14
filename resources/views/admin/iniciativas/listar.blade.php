@@ -99,14 +99,16 @@
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
 
-                                                    {{-- <a href="" class="btn btn-icon btn-warning" data-toggle="tooltip"
-                                                        data-placement="top" title="Calcular INVI"><i
-                                                            class="fas fa-tachometer-alt"></i></a> --}}
 
                                                     <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Adjuntar evidencia"><i
                                                             class="fas fa-paperclip"></i></a>
+                                                            
+                                                    <a href="{{ route('admin.cobertura.listar', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                        data-placement="top" title="Ingresar cobertura"><i
+                                                            class="fas fa-users"></i></a>
 
                                                     <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i

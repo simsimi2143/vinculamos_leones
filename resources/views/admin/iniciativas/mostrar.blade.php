@@ -25,14 +25,63 @@
                                 </div>
 
                                 <div class="dropdown d-inline">
+
                                     <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton2"
                                         data-toggle="dropdown">Estados</button>
                                     <div class="dropdown-menu dropright">
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="3">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-check" style="margin-right: 8px;"></i> Aprobar iniciativa
+                                            </a>
+                                        </form>
 
-                                        <a href="" class="dropdown-item has-icon"><i class="fas fa-check"></i>Aprobar
-                                            iniciativa</a>
-                                        <a href="" class="dropdown-item has-icon"><i
-                                                class="fas fa-times"></i>Rechazar Iniciativa</a>
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="2">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-cog" style="margin-right: 8px;"></i> En ejecución
+                                            </a>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="4">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-info-circle" style="margin-right: 8px;"></i> Falta
+                                                información
+                                            </a>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="5">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-lock" style="margin-right: 8px;"></i> Cerrar iniciativa
+                                            </a>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="6">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-times" style="margin-right: 8px;"></i> Finalizar Iniciativa
+                                            </a>
+                                        </form>
+
+
+
                                     </div>
                                 </div>
 
@@ -46,7 +95,7 @@
                                     <i class="fas fa-paperclip"></i>
                                 </a>
 
-                                <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo, $tokenUpdate=$iniciativa[0]->inic_codigo) }}" type="button"
+                                <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo) }}" type="button"
                                     data-toggle="tooltip" class="btn btn-warning" data-placemet="top"
                                     title="Editar iniciativa">
                                     <i class="fas fa-edit"></i>
@@ -210,8 +259,8 @@
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-sm small">
                                                             <thead>
-                                                                <th>Sedes</th>
-                                                                <th>Esculas</th>
+                                                                <th>Escuelas</th>
+                                                                <th>Carreras</th>
                                                                 <th>Docentes</th>
                                                                 <th>Docentes final</th>
                                                                 <th>Estudiantes</th>
@@ -221,8 +270,8 @@
                                                             <tbody>
                                                                 @foreach ($internos as $interno)
                                                                     <tr>
-                                                                        <td>{{ $interno->sede_nombre }}</td>
                                                                         <td>{{ $interno->escu_nombre }}</td>
+                                                                        <td>{{ $interno->care_nombre }}</td>
                                                                         <td>
                                                                             @if ($interno->pain_docentes != null)
                                                                                 {{ $interno->pain_docentes }}

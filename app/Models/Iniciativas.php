@@ -10,7 +10,7 @@ class Iniciativas extends Model
     use HasFactory;
 
     protected $table = 'iniciativas';
-
+    protected $primaryKey = 'inic_codigo';
     public $timestamps = false;
 
     protected $fillable = [
