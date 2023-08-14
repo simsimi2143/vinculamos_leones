@@ -10,6 +10,7 @@ class ParticipantesInternos extends Model
     use HasFactory;
     protected $table = 'participantes_internos';
 
+    protected $primaryKey = 'pain_codigo';
     public $timestamps = false;
 
     protected $fillable = [

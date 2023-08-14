@@ -62,6 +62,64 @@ class IniciativasController extends Controller
         return view('admin.iniciativas.listar', ["iniciativas" => $iniciativa]);
     }
 
+
+    public function completarResultados($inic_codigo)
+    {
+        $resuVerificar = ParticipantesInternos::where('inic_codigo', $inic_codigo)->count();
+        if ($resuVerificar == 0)
+            return redirect()->back()->with('errorIniciativa', 'La iniciativa no posee resultados esperados.');
+
+        $inicObtener = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+        $resuObtener = DB::table('participantes_internos')
+        ->select(
+            'participantes_internos.pain_codigo', 
+            'escuelas.escu_nombre', 
+            'escuelas.escu_codigo', 
+            'carreras.care_nombre', 
+            'carreras.care_codigo', 
+            'participantes_internos.pain_docentes', 
+            'participantes_internos.pain_docentes_final', 
+            'participantes_internos.pain_estudiantes', 
+            'participantes_internos.pain_estudiantes_final', 
+            'participantes_internos.pain_total'
+        )
+        ->join('carreras', 'participantes_internos.care_codigo', '=', 'carreras.care_codigo')
+        ->join('escuelas', 'carreras.escu_codigo', '=', 'escuelas.escu_codigo')
+        ->where('participantes_internos.inic_codigo', $inic_codigo)
+        ->get();
+    
+        return view('admin.iniciativas.resultados', [
+            'iniciativa' => $inicObtener,
+            'resultados' => $resuObtener
+        ]);
+    }
+
+
+    public function actualizarResultados(Request $request, $inic_codigo)
+    {
+        $docentes_final = $request->input('docentes_final');
+        $estudiantes_final = $request->input('estudiantes_final');
+        // dd($docentes_final, $estudiantes_final);
+
+        foreach ($docentes_final as $pain_codigo => $docentes_final_value) {
+            // Obtener el resultado correspondiente según el $pain_codigo
+            $resultado = ParticipantesInternos::where('pain_codigo', $pain_codigo)
+                ->where('inic_codigo', $inic_codigo)
+                ->first();
+
+            if ($resultado) {
+                // Actualizar los valores en la base de datos
+                $resultado->pain_docentes_final = $docentes_final_value;
+                $resultado->pain_estudiantes_final = $estudiantes_final[$pain_codigo];
+                $resultado->save();
+            }
+        }
+
+        return redirect()->route('admin.resultados.index', $inic_codigo)
+            ->with('success', 'Resultados actualizados correctamente.');
+    }
+
+
     public function updateState(Request $request)
     {
         $iniciativaId = $request->inic_codigo;
@@ -71,7 +129,7 @@ class IniciativasController extends Controller
         $iniciativa->update([
             'inic_estado' => $state,
         ]);
-        
+
 
         // Respuesta de éxito
 

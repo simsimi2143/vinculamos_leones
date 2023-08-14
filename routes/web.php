@@ -209,6 +209,9 @@ Route::middleware('verificar.admin')->group(function () {
 
     //todo: Update state iniciativa
     Route::post('/admin/iniciativas/update-state', [IniciativasController::class,'updateState'])->name('admin.iniciativas.updateState');
+    //todo: Add result iniciativa
+    Route::get('/admin/iniciativa/{inic_codigo}/resultados', [IniciativasController::class, 'completarResultados'])->name('admin.resultados.index');
+    Route::post('admin/iniciativa/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('admin.resultados.update');
 
     //todo:evidencias de iniciativas
 

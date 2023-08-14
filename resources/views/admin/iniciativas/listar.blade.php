@@ -80,7 +80,7 @@
                                                     <div class="dropdown d-inline">
                                                         <button class="btn btn-primary dropdown-toggle"
                                                             id="dropdownMenuButton2"
-                                                            data-toggle="dropdown">Opciones</button>
+                                                            data-toggle="dropdown"title="Opciones"> <i class="fas fa-cog"></i> </button>
                                                         <div class="dropdown-menu dropright">
 
                                                             <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
@@ -94,7 +94,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo, $tokenUpdate = $iniciativa->inic_codigo) }}"
+                                                    <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
@@ -110,7 +110,7 @@
                                                         data-placement="top" title="Ingresar cobertura"><i
                                                             class="fas fa-users"></i></a>
 
-                                                    <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                    <a href="{{ route('admin.resultados.index', $iniciativa->inic_codigo) }}" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i
                                                             class="fas fa-flag"></i></a>
 
