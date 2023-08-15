@@ -25,6 +25,8 @@ use App\Models\Tematicas;
 use App\Models\TipoActividades;
 use App\Models\TipoIniciativas;
 use App\Models\TipoUnidades;
+use App\Models\TipoRRHH;
+use App\Models\TipoInfraestructura;
 use App\Models\MecanismosActividades;
 use App\Models\ProgramasActividades;
 use App\Models\Unidades;
@@ -298,17 +300,17 @@ class ParametrosController extends Controller
     public function eliminarProgramas(Request $request)
     {
         $programa = Programas::where('prog_codigo', $request->prog_codigo)->first();
-    
+
         if (!$programa) {
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.');
         }
-    
+
         // Eliminar actividades relacionadas
         ProgramasActividades::where('prog_codigo', $request->prog_codigo)->delete();
-    
+
         // Eliminar el programa
         $programa->delete();
-    
+
         return redirect()->route('admin.listar.programas')->with('exitoPrograma', 'El programa fue eliminado correctamente.');
     }
 
@@ -378,7 +380,7 @@ class ParametrosController extends Controller
         }
         $programa->actividades()->createMany($nuevasActividades);
         return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente');
-    
+
     }
 
     //TODO: Parametro Convenios
@@ -1801,6 +1803,160 @@ class ParametrosController extends Controller
 
         return redirect()->back()->with('exito', 'Sub-grupo de interés actualizado exitosamente')->withInput();
         ;
+    }
+
+    //TODO: Recurso Humano
+//--------------------------------------
+//CAMBIAR NOMBRE MODELO POR: TipoRRHH
+//--------------------------------------
+
+public function listarRecursosHumanos()
+{
+    return view('admin.parametros.tiporrhh', ['REGISTROS' => TipoRRHH::orderBy('trrhh_codigo', 'asc')->get()]);
+}
+
+public function crearRecursosHumanos(Request $request)
+{
+    $validacion = Validator::make($request->all(), [
+        'nombre' => 'required|max:100',
+        /* 'idcampo1' => 'required', */
+    ], [
+        'nombre.required' => 'El nombre es requerido.',
+        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+    ]);
+
+    if ($validacion->fails()) {
+        return redirect()->route('admin.listar.rrhh')->withErrors($validacion)->withInput();
+    }
+
+    $nuevo = new TipoRRHH();
+    $nuevo->trrhh_nombre = $request->input('nombre');
+    $nuevo->trrhh_creado = Carbon::now()->format('Y-m-d H:i:s');
+    $nuevo->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+    $nuevo->trrhh_visible = 1;
+    $nuevo->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
+    $nuevo->trrhh_rol_mod = Session::get('admin')->rous_codigo;
+
+    $nuevo->save();
+
+    return redirect()->back()->with('exito', 'Recurso Humano creado exitosamente');
+}
+
+public function eliminarRecursosHumanos(Request $request)
+{
+    $eliminado = TipoRRHH::where('trrhh_codigo', $request->trrhh_codigo)->first();
+    if (!$eliminado) {return redirect()->route('admin.listar.rrhh')->with('error', 'El Recurso Humano no se encuentra registrado en el sistema.');}
+
+    $eliminado = TipoRRHH::where('trrhh_codigo', $request->trrhh_codigo)->delete();
+    return redirect()->route('admin.listar.rrhh')->with('exito', 'El Recurso Humano fue eliminado correctamente.');
+}
+
+public function actualizarRecursosHumanos(Request $request, $trrhh_codigo)
+{
+    $validacion = Validator::make($request->all(), [
+        'nombre' => 'required|max:100',
+        /* 'idcampo1' => 'required', */
+    ], [
+        'nombre.required' => 'El nombre es requerido.',
+        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+    ]);
+
+    if ($validacion->fails()) {return redirect()->route('admin.listar.rrhh')->withErrors($validacion)->withInput();}
+
+    $editado = TipoRRHH::find($trrhh_codigo);
+    if (!$editado) {return redirect()->route('admin.listar.rrhh')->with('error', 'El Recurso Humano no se encuentra registrado en el sistema.')->withInput();}
+
+    $editado->trrhh_nombre = $request->input('nombre');
+    $editado->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+    $editado->trrhh_visible = 1;
+    $editado->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
+    $editado->trrhh_rol_mod = Session::get('admin')->rous_codigo;
+    $editado->save();
+
+    return redirect()->back()->with('exito', 'Recurso Humano actualizado exitosamente')->withInput();;
+}
+
+//TODO: tipo de infraestrutura
+//--------------------------------------
+//CAMBIAR NOMBRE MODELO POR: TipoInfraestructura
+//--------------------------------------
+
+public function listarTipoInfraestructuras()
+    {
+        return view('admin.parametros.tipoinfraestructura', ['REGISTROS' => TipoInfraestructura::orderBy('tinf_codigo', 'asc')->get()]);
+        /* // EN CASO DE NECESITAR OTROS DATOS AL ENRUTAR
+        $REGISTROS = TipoInfraestructura::orderBy('tinf_codigo', 'asc')->get();
+        $REGISTROS2 = MODELO2::orderBy('prefijojoin_codigo', 'asc')->get();
+
+        return view('admin.parametros.tipoinfra', [
+            'REGISTROS' => $REGISTROS,
+            'REGISTROS2' => $REGISTROS2
+        ]); */
+    }
+
+public function crearTipoInfraestructuras(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.tipoinfra')->withErrors($validacion)->withInput();
+        }
+
+        $nuevo = new TipoInfraestructura();
+        $nuevo->tinf_nombre = $request->input('nombre');
+        $nuevo->tinf_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->tinf_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->tinf_visible = 1;
+        $nuevo->tinf_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->tinf_rol_mod = Session::get('admin')->rous_codigo;
+
+        $nuevo->save();
+
+        return redirect()->back()->with('exito', 'tipo de infraestrutura creado exitosamente');
+    }
+
+public function eliminarTipoInfraestructuras(Request $request)
+    {
+        $eliminado = TipoInfraestructura::where('tinf_codigo', $request->tinf_codigo)->first();
+        if (!$eliminado) {return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.');}
+
+        $eliminado = TipoInfraestructura::where('tinf_codigo', $request->tinf_codigo)->delete();
+        return redirect()->route('admin.listar.tipoinfra')->with('exito', 'El tipo de infraestrutura fue eliminado correctamente.');
+    }
+
+public function actualizarTipoInfraestructuras(Request $request, $tinf_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
+
+        if ($validacion->fails()) {return redirect()->route('admin.listar.tipoinfra')->withErrors($validacion)->withInput();}
+
+        $editado = TipoInfraestructura::find($tinf_codigo);
+        if (!$editado) {return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.')->withInput();}
+
+        $editado->tinf_nombre = $request->input('nombre');
+        $editado->tinf_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $editado->tinf_visible = 1;
+        $editado->tinf_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->tinf_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->save();
+
+        return redirect()->back()->with('exito', 'tipo de infraestrutura actualizado exitosamente')->withInput();;
     }
 
 }
