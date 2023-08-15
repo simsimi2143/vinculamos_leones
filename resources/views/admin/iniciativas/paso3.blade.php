@@ -60,8 +60,8 @@
                                         <tr>
                                             <th></th>
                                             <th class="text-center">Dinero</th>
-                                            <th class="text-center">Infraestructura</th>
-                                            <th class="text-center">Recursos Humanos</th>
+                                            {{-- <th class="text-center">Infraestructura</th>
+                                            <th class="text-center">Recursos Humanos</th> --}}
                                             <th class="text-center">Total</th>
                                         </tr>
                                         <tr>
@@ -81,7 +81,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 <div class="row">
                                                     <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="empresa-infra-total">
 
@@ -124,7 +124,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <div class="row text-center">
                                                     <div class="col-12 col-md-12 col-lg-12" id="empresa-total">
@@ -150,7 +150,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 <div class="row">
                                                     <div class="col-9 col-md-9 col-lg-9 mt-2 text-center" id="externo-infra-total">
 
@@ -193,7 +193,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <div class="row text-center">
                                                     <div class="col-12 col-md-12 col-lg-12" id="externo-total">
