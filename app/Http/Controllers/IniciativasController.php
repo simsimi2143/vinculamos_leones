@@ -401,7 +401,7 @@ class IniciativasController extends Controller
             'escuelas' => 'required',
             'mecanismos' => 'required',
             'tactividad' => 'required',
-            'convenio' => 'required',
+            /* 'convenio' => 'required', */
             'territorio' => 'required',
             'pais' => 'required'
         ], [
@@ -414,7 +414,7 @@ class IniciativasController extends Controller
             'escuelas.required' => 'Es necesario que seleccione al menos una Escuela en donde se ejecutará la iniciativa.',
             'tactividad.required' => 'Es necesario que seleccione un tipo de actividad para la iniciativa.',
             'mecanismos.required' => 'Es necesario que seleccione un programa.',
-            'convenio.required' => 'Es necesario que escoja un convenio para asociar la iniciativa.',
+            /* 'convenio.required' => 'Es necesario que escoja un convenio para asociar la iniciativa.', */
             'territorio.required' => 'Especifique si la iniciativa es a nivel nacional o internacional.',
             'pais.required' => 'Seleccione el país en donde se ejecutará la iniciativa.'
         ]);
@@ -592,7 +592,7 @@ class IniciativasController extends Controller
             'escuelas' => 'required',
             'mecanismos' => 'required',
             // 'tactividad' => 'required',
-            'convenio' => 'required',
+            /* 'convenio' => 'required', */
             'territorio' => 'required',
             'pais' => 'required'
         ], [
@@ -605,7 +605,7 @@ class IniciativasController extends Controller
             'escuelas.required' => 'Es necesario que seleccione al menos una Escuela en donde se ejecutará la iniciativa.',
             'mecanismos.required' => 'Es necesario que seleccione un programa.',
             // 'tactividad.required' => 'Es necesario que seleccione el tipo de actividad a realizar.',
-            'convenio.required' => 'Es necesario que escoja un convenio para asociar la iniciativa.',
+            /* 'convenio.required' => 'Es necesario que escoja un convenio para asociar la iniciativa.', */
             'territorio.required' => 'Especifique si la iniciativa es a nivel nacional o internacional.',
             'pais.required' => 'Seleccione el país en donde se ejecutará la iniciativa.'
         ]);
@@ -820,7 +820,7 @@ class IniciativasController extends Controller
         $iniciativa = Iniciativas::where('inic_codigo', $request->inic_codigo)->first();
 
         if (!$iniciativa) {
-            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
         }
 
         IniciativasComunas::where('inic_codigo', $request->inic_codigo)->delete();
@@ -832,7 +832,7 @@ class IniciativasController extends Controller
         ParticipantesInternos::where('inic_codigo', $request->inic_codigo)->delete();
         Iniciativas::where('inic_codigo', $request->inic_codigo)->delete();
 
-        return redirect()->route('admin.iniciativa.listar')->with('exitoIniciativa', 'La iniciativa fue eliminado correctamente.');
+        return redirect()->route('admin.iniciativa.listar')->with('exitoIniciativa', 'La iniciativa fue eliminada correctamente.');
     }
 
 
