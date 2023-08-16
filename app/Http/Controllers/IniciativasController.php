@@ -1138,7 +1138,6 @@ class IniciativasController extends Controller
             return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el recurso, intente más tarde.']);
         return json_encode(['estado' => true, 'resultado' => 'El recurso fue guardado correctamente.']);
     }
-<<<<<<< HEAD
     public function consultarDinero(Request $request)
     {
         $validacion = Validator::make(
@@ -1271,6 +1270,3 @@ class IniciativasController extends Controller
     }
 
 }
-=======
-}
->>>>>>> 71481467632635ddfcbb774b953a4ef83bac3b4b
