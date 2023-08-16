@@ -10,6 +10,7 @@ use App\Models\Comuna;
 use App\Models\Convenios;
 use App\Models\Escuelas;
 use App\Models\GruposInteres;
+use App\Models\Iniciativas;
 use App\Models\Mecanismos;
 use App\Models\Pais;
 use App\Models\Regiones;
@@ -1120,6 +1121,9 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'El mecanismo no se encuentra registrado en el sistema.');
         }
 
+        $inicMecanismo = Iniciativas::where('meca_codigo',$request->meca_codigo)->get();
+        if(sizeof($inicMecanismo)>0) return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo','El mecanismo no se puede eliminar porque se encuentra asociado a una iniciativa.');
+
         $mecanismo->delete();
 
         return redirect()->route('admin.listar.mecanismos')->with('exitoMecanismo', 'El mecanismo fue eliminado correctamente.');
@@ -1900,10 +1904,12 @@ public function crearTipoInfraestructuras(Request $request)
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:100',
+            'valor' => 'required'
             /* 'idcampo1' => 'required', */
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            'valor.required' => 'Es necesario agregar la valorización del tipo de infraestructura'
             /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
         ]);
 
@@ -1913,6 +1919,7 @@ public function crearTipoInfraestructuras(Request $request)
 
         $nuevo = new TipoInfraestructura();
         $nuevo->tinf_nombre = $request->input('nombre');
+        $nuevo->tinf_valor = $request->input('valor');
         $nuevo->tinf_creado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->tinf_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->tinf_visible = 1;
@@ -1921,7 +1928,7 @@ public function crearTipoInfraestructuras(Request $request)
 
         $nuevo->save();
 
-        return redirect()->back()->with('exito', 'tipo de infraestrutura creado exitosamente');
+        return redirect()->back()->with('exitoTIfrastructura', 'Tipo de infraestrutura creado exitosamente');
     }
 
 public function eliminarTipoInfraestructuras(Request $request)
@@ -1937,10 +1944,12 @@ public function actualizarTipoInfraestructuras(Request $request, $tinf_codigo)
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:100',
+            'valor' => 'required'
             /* 'idcampo1' => 'required', */
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            'valor.required' => 'Es necesario que se ingrese un valor para la infraestructura.'
             /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
         ]);
 
@@ -1950,6 +1959,7 @@ public function actualizarTipoInfraestructuras(Request $request, $tinf_codigo)
         if (!$editado) {return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.')->withInput();}
 
         $editado->tinf_nombre = $request->input('nombre');
+        $editado->tinf_valor = $request->input('valor');
         $editado->tinf_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $editado->tinf_visible = 1;
         $editado->tinf_nickname_mod = Session::get('admin')->usua_nickname;
