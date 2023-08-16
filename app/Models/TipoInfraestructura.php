@@ -19,7 +19,9 @@ class TipoInfraestructura extends Model
     protected $fillable = [
         'tinf_codigo',
         'tinf_nombre',
+        'tinf_valor',
         'tinf_visible',
+        'tinf_vigente',
         'tinf_creado',
         'tinf_actualizado',
         'tinf_nickname_mod',

@@ -15,15 +15,16 @@ function cargarRecursos() {
     // petición que trae la suma total de todos los recursos organizados por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/recursos',
+        url: window.location.origin + '/admin/crear-iniciativa/recursos',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
@@ -36,30 +37,38 @@ function cargarRecursos() {
 
             if (dinero.length > 0) {
                 dinero.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_dinero);
-                    else totalExterno = totalExterno+parseInt(registro.suma_dinero);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_dinero);
+                    else totalExterno = totalExterno + parseInt(registro.suma_dinero);
                 });
             }
             if (especies.length > 0) {
                 especies.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_especies);
-                    else totalExterno = totalExterno+parseInt(registro.suma_especies);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_especies);
+                    else totalExterno = totalExterno + parseInt(registro.suma_especies);
                 });
             }
             if (infraestructura.length > 0) {
                 infraestructura.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_infraestructura);
-                    else totalExterno = totalExterno+parseInt(registro.suma_infraestructura);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_infraestructura);
+                    else totalExterno = totalExterno + parseInt(registro.suma_infraestructura);
                 });
             }
             if (rrhh.length > 0) {
                 rrhh.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_rrhh);
-                    else totalExterno = totalExterno+parseInt(registro.suma_rrhh);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_rrhh);
+                    else totalExterno = totalExterno + parseInt(registro.suma_rrhh);
                 });
             }
-            $('#empresa-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalEmpresa));
-            $('#externo-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalExterno));
+            $('#empresa-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalEmpresa));
+            $('#externo-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalExterno));
         },
         error: function(error) {
             console.log(error);
@@ -78,15 +87,16 @@ function cargarDinero() {
     // petición que trae la suma total del recurso dinero organizado por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/consultar-dinero',
+        url: '/admin/crear-iniciativa/consultar-dinero',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
@@ -94,12 +104,17 @@ function cargarDinero() {
             dinero = respuesta.resultado;
             if (dinero.length > 0) {
                 dinero.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_dinero);
-                    else totalExterno = totalExterno+parseInt(registro.suma_dinero);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_dinero);
+                    else totalExterno = totalExterno + parseInt(registro.suma_dinero);
                 });
             }
-            $('#empresadinero').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalEmpresa));
-            $('#externodinero').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalExterno));
+            $('#empresadinero').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalEmpresa));
+            $('#externodinero').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalExterno));
         },
         error: function(error) {
             console.log(error);
@@ -116,15 +131,16 @@ function cargarEspecies() {
     // petición que trae la suma total del recurso especies organizado por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/consultar-especies',
+        url: window.location.origin + '/admin/crear-iniciativa/consultar-especies',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
@@ -132,12 +148,17 @@ function cargarEspecies() {
             especies = respuesta.resultado;
             if (especies.length > 0) {
                 especies.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_especies);
-                    else totalExterno = totalExterno+parseInt(registro.suma_especies);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_especies);
+                    else totalExterno = totalExterno + parseInt(registro.suma_especies);
                 });
             }
-            $('#empresa-especies-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalEmpresa));
-            $('#externo-especies-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalExterno));
+            $('#empresa-especies-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalEmpresa));
+            $('#externo-especies-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalExterno));
         },
         error: function(error) {
             console.log(error);
@@ -155,15 +176,16 @@ function cargarInfraestructura() {
     // petición que trae la suma total del recurso infraestructura organizado por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/consultar-infraestructura',
+        url: window.location.origin + '/admin/crear-iniciativa/consultar-infraestructura',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
@@ -171,12 +193,17 @@ function cargarInfraestructura() {
             infraestructura = respuesta.resultado;
             if (infraestructura.length > 0) {
                 infraestructura.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_infraestructura);
-                    else totalExterno = totalExterno+parseInt(registro.suma_infraestructura);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_infraestructura);
+                    else totalExterno = totalExterno + parseInt(registro.suma_infraestructura);
                 });
             }
-            $('#empresa-infra-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalEmpresa));
-            $('#externo-infra-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalExterno));
+            $('#empresa-infra-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalEmpresa));
+            $('#externo-infra-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalExterno));
         },
         error: function(error) {
             console.log(error);
@@ -193,15 +220,16 @@ function cargarRrhh() {
     // petición que trae la suma total del recurso humano organizado por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/consultar-rrhh',
+        url: window.location.origin + '/admin/crear-iniciativa/consultar-rrhh',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
@@ -209,12 +237,17 @@ function cargarRrhh() {
             rrhh = respuesta.resultado;
             if (rrhh.length > 0) {
                 rrhh.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa+parseInt(registro.suma_rrhh);
-                    else totalExterno = totalExterno+parseInt(registro.suma_rrhh);
+                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
+                        registro.suma_rrhh);
+                    else totalExterno = totalExterno + parseInt(registro.suma_rrhh);
                 });
             }
-            $('#empresa-rrhh-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalEmpresa));
-            $('#externo-rrhh-total').text('$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(totalExterno));
+            $('#empresa-rrhh-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalEmpresa));
+            $('#externo-rrhh-total').text('$' + new Intl.NumberFormat('es-CL', {
+                maximumSignificantDigits: 3
+            }).format(totalExterno));
         },
         error: function(error) {
             console.log(error);
@@ -228,17 +261,19 @@ function guardarDinero(enti_codigo) {
     let aporteExterno = $('#aporteexterno').val();
     let dinero, alertError, alertExito
     $('#div-alert-recursos').html('');
-    
+
     if (enti_codigo == 1) {
         if (aporteEmpresa == '' || aporteEmpresa == null) {
-            alertError = `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>Debe ingresar el monto de dinero aportado por la empresa.</strong></div></div>`;
+            alertError =
+                `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>Debe ingresar el monto de dinero aportado por la empresa.</strong></div></div>`;
             $('#div-alert-recursos').html(alertError);
             return;
         }
         dinero = aporteEmpresa;
     } else {
         if (aporteExterno == '' || aporteExterno == null) {
-            alertError = `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>Debe ingresar el monto de dinero aportado por externos.</strong></div></div>`;
+            alertError =
+                `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>Debe ingresar el monto de dinero aportado por externos.</strong></div></div>`;
             $('#div-alert-recursos').html(alertError);
             return;
         }
@@ -248,7 +283,7 @@ function guardarDinero(enti_codigo) {
     // petición para guardar/actualizar el monto de dinero aportado por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/guardar-dinero',
+        url: '/admin/crear-iniciativa/guardar-dinero',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -260,11 +295,13 @@ function guardarDinero(enti_codigo) {
         success: function(resGuardar) {
             respuesta = JSON.parse(resGuardar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-recursos').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             $('#div-alert-recursos').html(alertExito);
             cargarDinero();
             cargarRecursos();
@@ -295,7 +332,7 @@ function guardarEspecie() {
     // petición para guardar una especie aportada por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/guardar-especie',
+        url: window.location.origin + '/admin/crear-iniciativa/guardar-especie',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -308,11 +345,13 @@ function guardarEspecie() {
         success: function(resGuardar) {
             respuesta = JSON.parse(resGuardar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-especie').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             $('#modalEspecies').modal('hide');
             $('#div-alert-recursos').html(alertExito);
             listarEspecies();
@@ -326,13 +365,13 @@ function guardarEspecie() {
 function listarEspecies() {
     let inic_codigo = $('#codigo').val();
     let datosEspecies, fila;
-    
+
     // petición para listar las especies aportadas por las entidades
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/listar-especies',
+        url: window.location.origin + '/admin/crear-iniciativa/listar-especies',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
@@ -340,24 +379,29 @@ function listarEspecies() {
             $('#tabla-externo-especies').empty();
             cargarEspecies();
             cargarRecursos();
-            
+
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
             }
-            
+
             datosEspecies = respuesta.resultado;
             datosEspecies.forEach(registro => {
-                fila =  '<tr>'+
-                            '<td>'+registro.coes_nombre+'</td>'+
-                            '<td>'+'$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(registro.coes_valorizacion)+'</td>'+
-                            '<td>'+
-                                '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarEspecie('+registro.coes_codigo+', '+registro.inic_codigo+', '+registro.enti_codigo+')"><i class="fas fa-trash"></i></button>'+
-                            '</td>'+
-                        '</tr>';
+                fila = '<tr>' +
+                    '<td>' + registro.coes_nombre + '</td>' +
+                    '<td>' + '$' + new Intl.NumberFormat('es-CL', {
+                        maximumSignificantDigits: 3
+                    }).format(registro.coes_valorizacion) + '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarEspecie(' +
+                    registro.coes_codigo + ', ' + registro.inic_codigo + ', ' + registro
+                    .enti_codigo + ')"><i class="fas fa-trash"></i></button>' +
+                    '</td>' +
+                    '</tr>';
                 if (registro.enti_codigo == 1) $('#tabla-empresa-especies').append(fila);
                 else $('#tabla-externo-especies').append(fila);
             });
@@ -375,7 +419,7 @@ function eliminarEspecie(coes_codigo, inic_codigo, enti_codigo) {
     // petición para eliminar una especie aportada por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/eliminar-especie',
+        url: window.location.origin + '/admin/crear-iniciativa/eliminar-especie',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -387,11 +431,13 @@ function eliminarEspecie(coes_codigo, inic_codigo, enti_codigo) {
         success: function(resEliminar) {
             respuesta = JSON.parse(resEliminar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-recursos').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             listarEspecies();
             $('#div-alert-recursos').html(alertExito);
         },
@@ -412,16 +458,19 @@ function crearInfra(enti_codigo) {
     // petición para consultar los tipos de infraestructura disponibles
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/listar-tipoinfra',
+        url: '/admin/crear-iniciativa/listar-tipoinfra',
         success: function(resListar) {
             $('#codigoinfra').find('option').not(':first').remove();
             $('#codigoinfra').prop('selectedIndex', 0);
             datosInfra = JSON.parse(resListar);
+            // console.log(datosInfra)
             if (datosInfra.length == 0) {
                 $('#codigoinfra').append(new Option('No existen registros', '-1'));
             } else {
                 datosInfra.forEach(registro => {
-                    $('#codigoinfra').append(new Option(registro.tiin_nombre, registro.tiin_codigo));
+                    console.log(registro)
+                    $('#codigoinfra').append(new Option(registro.tinf_nombre, registro
+                        .tinf_codigo));
                 });
             }
         },
@@ -434,21 +483,22 @@ function crearInfra(enti_codigo) {
 
 function buscarTipoInfra() {
     let coin_horas = $('#horasinfra').val();
-    let tiin_codigo = $('#codigoinfra').val();
+    let tinf_codigo = $('#codigoinfra').val();
     let respuesta;
-    
+
     // petición para consultar información del tipo infraestructura seleccionada
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/buscar-tipoinfra',
+        url: '/admin/crear-iniciativa/buscar-tipoinfra',
         data: {
-            tipoinfra: tiin_codigo
+            tipoinfra: tinf_codigo
         },
         success: function(resConsultar) {
             respuesta = JSON.parse(resConsultar);
-            if (respuesta.tiin_codigo == tiin_codigo) {
-                if (coin_horas != '') $('#valorinfra').val(coin_horas*respuesta.tiin_valor);
-                else $('#valorinfra').val(respuesta.tiin_valor);
+            console.log(respuesta)
+            if (respuesta.tinf_codigo == tinf_codigo) {
+                if (coin_horas != '') $('#valorinfra').val(coin_horas * respuesta.tinf_valor);
+                else $('#valorinfra').val(respuesta.tinf_valor);
             } else {
                 $('#valorinfra').val('-1');
             }
@@ -462,33 +512,35 @@ function buscarTipoInfra() {
 function guardarInfra() {
     let inic_codigo = $('#codigo').val();
     let enti_codigo = $('#entidadinfra').val();
-    let tiin_codigo = $('#codigoinfra').val();
+    let tinf_codigo = $('#codigoinfra').val();
     let coin_horas = $('#horasinfra').val();
     let respuesta, alertError, alertExito;
     $('#div-alert-infraestructura').html('');
     $('#div-alert-recursos').html('');
-    
+
     // petición para guardar infraestructura aportada por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/guardar-infraestructura',
+        url: '/admin/crear-iniciativa/guardar-infraestructura',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         data: {
             iniciativa: inic_codigo,
             entidad: enti_codigo,
-            tipoinfra: tiin_codigo,
+            tipoinfra: tinf_codigo,
             horas: coin_horas
         },
         success: function(resGuardar) {
             respuesta = JSON.parse(resGuardar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-infraestructura').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             $('#modalInfraestructura').modal('hide');
             $('#div-alert-recursos').html(alertExito);
             listarInfraestructura();
@@ -502,13 +554,13 @@ function guardarInfra() {
 function listarInfraestructura() {
     let inic_codigo = $('#codigo').val();
     let datosInfra, fila, alertError;
-    
+
     // petición para listar las infraestructuras aportadas por las entidades
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/listar-infraestructura',
+        url: '/admin/crear-iniciativa/listar-infraestructura',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
@@ -516,25 +568,31 @@ function listarInfraestructura() {
             $('#tabla-externo-infra').empty();
             cargarInfraestructura();
             cargarRecursos();
-            
+
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
             }
-            
+
             datosInfra = respuesta.resultado;
+            console.log(datosInfra)
             datosInfra.forEach(registro => {
-                fila =  '<tr>'+
-                            '<td>'+registro.tiin_nombre+'</td>'+
-                            '<td>'+registro.coin_horas+'</td>'+
-                            '<td>'+'$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(registro.coin_valorizacion)+'</td>'+
-                            '<td>'+
-                                '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarInfraestructura('+registro.inic_codigo+', '+registro.enti_codigo+', '+registro.tiin_codigo+')"><i class="fas fa-trash"></i></button>'+
-                            '</td>'+
-                        '</tr>';
+                fila = '<tr>' +
+                    '<td>' + registro.tinf_nombre + '</td>' +
+                    '<td>' + registro.coin_horas + '</td>' +
+                    '<td>' + '$' + new Intl.NumberFormat('es-CL', {
+                        maximumSignificantDigits: 3
+                    }).format(registro.coin_valorizacion) + '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarInfraestructura(' +
+                    registro.inic_codigo + ', ' + registro.enti_codigo + ', ' + registro
+                    .tinf_codigo + ')"><i class="fas fa-trash"></i></button>' +
+                    '</td>' +
+                    '</tr>';
                 if (registro.enti_codigo == 1) $('#tabla-empresa-infra').append(fila);
                 else $('#tabla-externo-infra').append(fila);
             });
@@ -552,7 +610,7 @@ function eliminarInfraestructura(inic_codigo, enti_codigo, tiin_codigo) {
     // petición para eliminar una infraestructura aportada por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/eliminar-infraestructura',
+        url: '/admin/crear-iniciativa/eliminar-infraestructura',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -564,11 +622,13 @@ function eliminarInfraestructura(inic_codigo, enti_codigo, tiin_codigo) {
         success: function(resEliminar) {
             respuesta = JSON.parse(resEliminar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-recursos').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             listarInfraestructura();
             $('#div-alert-recursos').html(alertExito);
         },
@@ -589,7 +649,7 @@ function crearRrhh(enti_codigo) {
     // petición para consultar los tipos de recursos humanos disponibles
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/listar-tiporrhh',
+        url: window.location.origin + '/admin/crear-iniciativa/listar-tiporrhh',
         success: function(resListar) {
             $('#codigorrhh').find('option').not(':first').remove();
             $('#codigorrhh').prop('selectedIndex', 0);
@@ -598,7 +658,8 @@ function crearRrhh(enti_codigo) {
                 $('#codigorrhh').append(new Option('No existen registros', '-1'));
             } else {
                 datosRrhh.forEach(registro => {
-                    $('#codigorrhh').append(new Option(registro.tirh_nombre, registro.tirh_codigo));
+                    $('#codigorrhh').append(new Option(registro.tirh_nombre, registro
+                        .tirh_codigo));
                 });
             }
         },
@@ -613,18 +674,18 @@ function buscarTipoRrhh() {
     let corh_horas = $('#horasrrhh').val();
     let tirh_codigo = $('#codigorrhh').val();
     let respuesta;
-    
+
     // petición para consultar información del tipo de RRHH seleccionado
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/buscar-tiporrhh',
+        url: window.location.origin + '/admin/crear-iniciativa/buscar-tiporrhh',
         data: {
             tiporrhh: tirh_codigo
         },
         success: function(resConsultar) {
             respuesta = JSON.parse(resConsultar);
             if (respuesta.tirh_codigo == tirh_codigo) {
-                if (corh_horas != '') $('#valorrrhh').val(corh_horas*respuesta.tirh_valor);
+                if (corh_horas != '') $('#valorrrhh').val(corh_horas * respuesta.tirh_valor);
                 else $('#valorrrhh').val(respuesta.tirh_valor);
             } else {
                 $('#valorrrhh').val('-1');
@@ -644,11 +705,11 @@ function guardarRrhh() {
     let respuesta, alertError, alertExito;
     $('#div-alert-rrhh').html('');
     $('#div-alert-recursos').html('');
-    
+
     // petición para guardar RRHH aportado por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/guardar-rrhh',
+        url: window.location.origin + '/admin/crear-iniciativa/guardar-rrhh',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -661,11 +722,13 @@ function guardarRrhh() {
         success: function(resGuardar) {
             respuesta = JSON.parse(resGuardar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-rrhh').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             $('#modalRrhh').modal('hide');
             $('#div-alert-recursos').html(alertExito);
             listarRrhh();
@@ -679,13 +742,13 @@ function guardarRrhh() {
 function listarRrhh() {
     let inic_codigo = $('#codigo').val();
     let datosRrhh, fila, alertError;
-    
+
     // petición para listar los RRHH aportados por las entidades
     $.ajax({
         type: 'GET',
-        url: window.location.origin+'/admin/crear-iniciativa/listar-rrhh',
+        url: window.location.origin + '/admin/crear-iniciativa/listar-rrhh',
         data: {
-            iniciativa: inic_codigo           
+            iniciativa: inic_codigo
         },
         success: function(resListar) {
             respuesta = JSON.parse(resListar);
@@ -693,25 +756,30 @@ function listarRrhh() {
             $('#tabla-externo-rrhh').empty();
             cargarRrhh();
             cargarRecursos();
-            
+
             if (!respuesta.estado) {
                 if (respuesta.resultado != '') {
-                    alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    alertError =
+                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                     $('#div-alert-recursos').html(alertError);
                 }
                 return;
             }
-            
+
             datosRrhh = respuesta.resultado;
             datosRrhh.forEach(registro => {
-                fila =  '<tr>'+
-                            '<td>'+registro.tirh_nombre+'</td>'+
-                            '<td>'+registro.corh_horas+'</td>'+
-                            '<td>'+'$'+new Intl.NumberFormat('es-CL', { maximumSignificantDigits: 3 }).format(registro.corh_valorizacion)+'</td>'+
-                            '<td>'+
-                                '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarRrhh('+registro.inic_codigo+', '+registro.enti_codigo+', '+registro.tirh_codigo+')"><i class="fas fa-trash"></i></button>'+
-                            '</td>'+
-                        '</tr>';
+                fila = '<tr>' +
+                    '<td>' + registro.tirh_nombre + '</td>' +
+                    '<td>' + registro.corh_horas + '</td>' +
+                    '<td>' + '$' + new Intl.NumberFormat('es-CL', {
+                        maximumSignificantDigits: 3
+                    }).format(registro.corh_valorizacion) + '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarRrhh(' +
+                    registro.inic_codigo + ', ' + registro.enti_codigo + ', ' + registro
+                    .tirh_codigo + ')"><i class="fas fa-trash"></i></button>' +
+                    '</td>' +
+                    '</tr>';
                 if (registro.enti_codigo == 1) $('#tabla-empresa-rrhh').append(fila);
                 else $('#tabla-externo-rrhh').append(fila);
             });
@@ -729,7 +797,7 @@ function eliminarRrhh(inic_codigo, enti_codigo, tirh_codigo) {
     // petición para eliminar un RRHH aportado por la entidad
     $.ajax({
         type: 'POST',
-        url: window.location.origin+'/admin/crear-iniciativa/eliminar-rrhh',
+        url: window.location.origin + '/admin/crear-iniciativa/eliminar-rrhh',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -741,11 +809,13 @@ function eliminarRrhh(inic_codigo, enti_codigo, tirh_codigo) {
         success: function(resEliminar) {
             respuesta = JSON.parse(resEliminar);
             if (!respuesta.estado) {
-                alertError = `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                alertError =
+                    `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
                 $('#div-alert-recursos').html(alertError);
                 return;
             }
-            alertExito = `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+            alertExito =
+                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
             listarRrhh();
             $('#div-alert-recursos').html(alertExito);
         },

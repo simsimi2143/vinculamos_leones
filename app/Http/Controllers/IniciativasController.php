@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CostosInfraestructura;
 use App\Models\Grupos;
 use App\Models\IniciativasComunas;
 use App\Models\IniciativasEvidencias;
@@ -25,6 +26,8 @@ use App\Models\MecanismosActividades;
 use App\Models\Mecanismos;
 use App\Models\Programas;
 use App\Models\ProgramasActividades;
+use App\Models\TipoInfraestructura;
+use App\Models\CostosDinero;
 use App\Models\Pais;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -1072,7 +1075,7 @@ class IniciativasController extends Controller
     {
         $iniciativa = Iniciativas::where('inic_codigo', $inic_codigo)->first();
         // $inicEditar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
-        // // $listarRegiones = Regiones::select('regi_codigo', 'regi_nombre')->orderBy('regi_codigo')->get();
+        // $listarRegiones = Regiones::select('regi_codigo', 'regi_nombre')->orderBy('regi_codigo')->get();
         // $listarParticipantes = DB::table('participantes')
         //     ->select('inic_codigo', 'participantes.sube_codigo', 'sube_nombre')
         //     ->join('subentornos', 'subentornos.sube_codigo', '=', 'participantes.sube_codigo')
@@ -1082,12 +1085,188 @@ class IniciativasController extends Controller
         return view('admin.iniciativas.paso3', [
             'iniciativa' => $iniciativa
         ]);
-
     }
 
-    public function crearPaso3()
+    public function guardarDinero(Request $request)
     {
-        return view('admin.iniciativas.paso3');
+        $validacion = Validator::make(
+            $request->all(),
+            [
+                'iniciativa' => 'exists:iniciativas,inic_codigo',
+                'entidad' => 'exists:entidades,enti_codigo'
+            ],
+            [
+                'iniciativa.exists' => 'La iniciativa no se encuentra registrada.',
+                'entidad.exists' => 'La entidad no se encuentra registrada.'
+            ]
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
 
+        $codiVerificar = CostosDinero::where(
+            [
+                'inic_codigo' => $request->iniciativa,
+                'enti_codigo' => $request->entidad
+            ]
+        )->first();
+        if (!$codiVerificar) {
+            $codiGuardar = CostosDinero::create([
+                'inic_codigo' => $request->iniciativa,
+                'enti_codigo' => $request->entidad,
+                'codi_valorizacion' => $request->valorizacion,
+                'codi_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'codi_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'codi_vigente' => 'S',
+                'codi_nickname_mod' => Session::get('admin')->usua_nickname,
+                'codi_rol_mod' => Session::get('admin')->rous_codigo
+            ]);
+        } else {
+            $codiGuardar = CostosDinero::where(
+                [
+                    'inic_codigo' => $request->iniciativa,
+                    'enti_codigo' => $request->entidad
+                ]
+            )->update([
+                        'codi_valorizacion' => $request->valorizacion,
+                        'codi_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                        'codi_nickname_mod' => Session::get('admin')->usua_nickname,
+                        'codi_rol_mod' => Session::get('admin')->rous_codigo
+                    ]);
+        }
+
+        if (!$codiGuardar)
+            return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el recurso, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'El recurso fue guardado correctamente.']);
     }
+    public function consultarDinero(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $codiListar = CostosDinero::select(
+            'enti_codigo',
+            DB::raw('COALESCE(SUM(codi_valorizacion), 0) AS suma_dinero')
+        )->where('inic_codigo', $request->iniciativa)
+            ->groupBy('enti_codigo')
+            ->get();
+        return json_encode(['estado' => true, 'resultado' => $codiListar]);
+    }
+
+    public function buscarTipoInfra(Request $request)
+    {
+        $tiinConsultar = TipoInfraestructura::select(
+            'tinf_codigo',
+            'tinf_valor'
+        )
+            ->where('tinf_codigo', $request->tipoinfra)
+            ->first();
+        return json_encode($tiinConsultar);
+    }
+
+    public function listarTipoInfra()
+    {
+        $tiinListar = TipoInfraestructura::select(
+            'tinf_codigo',
+            'tinf_nombre',
+            'tinf_valor'
+        )
+            ->where('tinf_vigente', 'S')->get();
+        return json_encode($tiinListar);
+    }
+
+    public function guardarInfraestructura(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            [
+                'iniciativa' => 'exists:iniciativas,inic_codigo',
+                'entidad' => 'exists:entidades,enti_codigo',
+                'tipoinfra' => 'exists:tipo_infraestructura,tinf_codigo',
+                'horas' => 'required|integer|min:0'
+            ],
+            [
+                'iniciativa.exists' => 'La iniciativa no se encuentra registrada.',
+                'entidad.exists' => 'La entidad no se encuentra registrada.',
+                'tipoinfra.exists' => 'El tipo de infraestructura no se encuentra registrado.',
+                'horas.required' => 'La cantidad de horas es requerida.',
+                'horas.integer' => 'La cantidad de horas debe ser un número entero.',
+                'horas.min' => 'La cantidad de horas debe ser un número mayor o igual que cero.'
+            ]
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $coinVerificar = CostosInfraestructura::where(
+            [
+                'inic_codigo' => $request->iniciativa,
+                'enti_codigo' => $request->entidad,
+                'tinf_codigo' => $request->tipoinfra
+            ]
+        )->first();
+
+        if ($coinVerificar)
+            return json_encode(['estado' => false, 'resultado' => 'La infraestructura ya se encuentra asociada a la entidad.']);
+
+        $tiinConsultar = TipoInfraestructura::select('tinf_valor')->where('tinf_codigo', $request->tipoinfra)->first();
+        $coinGuardar = CostosInfraestructura::create([
+            'inic_codigo' => $request->iniciativa,
+            'enti_codigo' => $request->entidad,
+            'tinf_codigo' => $request->tipoinfra,
+            'coin_horas' => $request->horas,
+            'coin_valorizacion' => $request->horas * $tiinConsultar->tiin_valor,
+            'coin_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'coin_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'coin_vigente' => 'S',
+            'coin_nickname_mod' => Session::get('admin')->usua_nickname,
+            'coin_rol_mod' => Session::get('admin')->rous_codigo
+        ]);
+        if (!$coinGuardar)
+            return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar la infraestructura, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'La infraestructura fue guardada correctamente.']);
+    }
+
+    public function listarInfraestructura(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $coinListar = DB::table('costos_infraestructura')
+            ->select('inic_codigo', 'enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', 'coin_horas', 'coin_valorizacion')
+            ->join('tipo_infraestructura', 'tipo_infraestructura.tinf_codigo', '=', 'costos_infraestructura.tinf_codigo')
+            ->where('inic_codigo', $request->iniciativa)
+            ->orderBy('coin_creado', 'asc')
+            ->get();
+        if (sizeof($coinListar) == 0)
+            return json_encode(['estado' => false, 'resultado' => '']);
+        return json_encode(['estado' => true, 'resultado' => $coinListar]);
+    }
+
+    public function eliminarInfraestructura(Request $request)
+    {
+        $coinVerificar = CostosInfraestructura::where(
+            [
+                'inic_codigo' => $request->iniciativa,
+                'enti_codigo' => $request->entidad,
+                'tinf_codigo' => $request->tipoinfra
+            ]
+        )->first();
+        if (!$coinVerificar)
+            return json_encode(['estado' => false, 'resultado' => 'La infraestructura no se encuentra asociada a la iniciativa y entidad.']);
+
+        $coinEliminar = CostosInfraestructura::where(['inic_codigo' => $request->iniciativa, 'enti_codigo' => $request->entidad, 'tinf_codigo' => $request->tipoinfra])->delete();
+        if (!$coinEliminar)
+            return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al eliminar la infraestructura, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'La infraestructura fue eliminada correctamente.']);
+    }
+
 }
