@@ -216,7 +216,7 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Socios</label>
+                                    <label>Meta de Socios</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -233,7 +233,7 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Iniciativas</label>
+                                    <label>Meta de Iniciativas</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -250,7 +250,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="align-items: center;">
+                        {{-- <div class="form-group" style="align-items: center;">
                             <div class="form-group">
                                 <label>Meta asignaturas</label>
                                 <div class="input-group">
@@ -268,11 +268,11 @@
                                 @enderror
                             </div>
 
-                        </div>
+                        </div> --}}
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Nº carreras</label>
+                                    <label>Meta de Carreras</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -290,7 +290,7 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Nº asignaturas</label>
+                                    <label>Meta de Asignaturas</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -310,7 +310,7 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Estudiantes</label>
+                                    <label>Meta de Estudiantes</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -328,7 +328,7 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Docentes</label>
+                                    <label>Meta de Docentes</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -347,7 +347,7 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta Beneficiarios</label>
+                                    <label>Meta de Beneficiarios/as</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -497,7 +497,7 @@
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Socios</label>
+                                        <label>Meta N° Socios</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -512,7 +512,7 @@
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Iniciativas</label>
+                                        <label>Meta N° Iniciativas</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -526,7 +526,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" style="align-items: center;">
+                            {{-- <div class="form-group" style="align-items: center;">
                                 <div class="form-group">
                                     <label>Meta asignaturas</label>
                                     <div class="input-group">
@@ -544,12 +544,12 @@
                                     @enderror
                                 </div>
 
-                            </div>
+                            </div> --}}
 
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Nº carreras</label>
+                                        <label>Meta de Carreras</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -567,7 +567,7 @@
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Nº asignaturas</label>
+                                        <label>Meta de Asignaturas</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -588,7 +588,7 @@
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Estudiantes</label>
+                                        <label>Meta de Estudiantes</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -606,7 +606,7 @@
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Docentes</label>
+                                        <label>Meta de Docentes</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -626,7 +626,7 @@
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Meta Beneficiarios</label>
+                                        <label>Meta de Beneficiarios/as</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
