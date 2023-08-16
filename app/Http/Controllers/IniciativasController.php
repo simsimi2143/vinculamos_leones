@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CostosInfraestructura;
+use App\Models\CostosRrhh;
 use App\Models\Grupos;
 use App\Models\IniciativasComunas;
 use App\Models\IniciativasEvidencias;
@@ -17,6 +18,7 @@ use App\Models\SociosComunitarios;
 use App\Models\SubGruposInteres;
 use App\Models\Tematicas;
 use App\Models\TipoActividades;
+use App\Models\TipoRRHH;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Escuelas;
@@ -1218,7 +1220,7 @@ class IniciativasController extends Controller
             'enti_codigo' => $request->entidad,
             'tinf_codigo' => $request->tipoinfra,
             'coin_horas' => $request->horas,
-            'coin_valorizacion' => $request->horas * $tiinConsultar->tiin_valor,
+            'coin_valorizacion' => $request->horas * $tiinConsultar->tinf_valor,
             'coin_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'coin_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'coin_vigente' => 'S',
@@ -1269,4 +1271,134 @@ class IniciativasController extends Controller
         return json_encode(['estado' => true, 'resultado' => 'La infraestructura fue eliminada correctamente.']);
     }
 
+
+    public function consultarInfraestructura(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $coinListar = CostosInfraestructura::select('enti_codigo', DB::raw('COALESCE(SUM(coin_valorizacion), 0) AS suma_infraestructura'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
+        return json_encode(['estado' => true, 'resultado' => $coinListar]);
+    }
+
+
+    public function listarRecursos(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $codiListar = CostosDinero::select('enti_codigo', DB::raw('COALESCE(SUM(codi_valorizacion), 0) AS suma_dinero'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
+        //$coesListar = CostosEspecies::select('enti_codigo', DB::raw('COALESCE(SUM(coes_valorizacion), 0) AS suma_especies'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
+        $coinListar = CostosInfraestructura::select('enti_codigo', DB::raw('COALESCE(SUM(coin_valorizacion), 0) AS suma_infraestructura'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
+        $corhListar = CostosRrhh::select('enti_codigo', DB::raw('COALESCE(SUM(corh_valorizacion), 0) AS suma_rrhh'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
+        $resultado = ['dinero' => $codiListar, 'infraestructura' => $coinListar, 'rrhh' => $corhListar];
+        return json_encode(['estado' => true, 'resultado' => $resultado]);
+    }
+
+    public function listarTipoRrhh()
+    {
+        $tirhListar = TipoRrhh::select('trrhh_codigo', 'trrhh_nombre')->where('trrhh_visible', 1)->get();
+        return json_encode($tirhListar);
+    }
+    public function buscarTipoRrhh(Request $request)
+    {
+        $tirhConsultar = TipoRRHH::select('trrhh_codigo', 'trrhh_valor')->where('trrhh_codigo', $request->tiporrhh)->first();
+        return json_encode($tirhConsultar);
+    }
+    public function listarRrhh(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $corhListar = DB::table('costos_rrhh')
+            ->select('inic_codigo', 'enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', 'corh_horas', 'corh_valorizacion')
+            ->join('tipo_rrhh', 'tipo_rrhh.trrhh_codigo', '=', 'costos_rrhh.trrhh_codigo')
+            ->where('inic_codigo', $request->iniciativa)
+            ->orderBy('corh_creado', 'asc')
+            ->get();
+        if (sizeof($corhListar) == 0)
+            return json_encode(['estado' => false, 'resultado' => '']);
+        return json_encode(['estado' => true, 'resultado' => $corhListar]);
+    }
+
+    public function guardarRrhh(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            [
+                'iniciativa' => 'exists:iniciativas,inic_codigo',
+                'entidad' => 'exists:entidades,enti_codigo',
+                'tiporrhh' => 'exists:tipo_rrhh,trrhh_codigo',
+                'horas' => 'required|integer|min:0'
+            ],
+            [
+                'iniciativa.exists' => 'La iniciativa no se encuentra registrada.',
+                'entidad.exists' => 'La entidad no se encuentra registrada.',
+                'tiporrhh.exists' => 'El tipo de recurso humano no se encuentra registrado.',
+                'horas.required' => 'La cantidad de horas es requerida.',
+                'horas.integer' => 'La cantidad de horas debe ser un número entero.',
+                'horas.min' => 'La cantidad de horas debe ser un número mayor o igual que cero.'
+            ]
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $corhVerificar = CostosRrhh::where(
+            [
+                'inic_codigo' => $request->iniciativa,
+                'enti_codigo' => $request->entidad,
+                'trrhh_codigo' => $request->tiporrhh
+            ]
+        )->first();
+
+        if ($corhVerificar)
+        return json_encode(['estado' => false, 'resultado' => 'El recurso humano ya se encuentra asociado a la entidad.']);
+    
+    $tirhConsultar = TipoRrhh::select('trrhh_valor')->where('trrhh_codigo', $request->tiporrhh)->first();
+
+        $corhGuardar = CostosRrhh::create([
+            'inic_codigo' => $request->iniciativa,
+            'trrhh_codigo' => $request->tiporrhh,
+            'enti_codigo' => $request->entidad,
+            'corh_horas' => $request->horas,
+            'corh_valorizacion' => $request->horas * $tirhConsultar->tirh_valor,
+            'corh_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'corh_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'corh_vigente' => 1,
+            'corh_nickname_mod' => Session::get('admin')->usua_nickname,
+            'corh_rol_mod' => Session::get('admin')->rous_codigo
+        ]);
+        if (!$corhGuardar)
+            return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el recurso humano, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'El recurso humano fue guardado correctamente.']);
+    }
+    
+    public function consultarRrhh(Request $request)
+    {
+        $validacion = Validator::make(
+            $request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails())
+            return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $corhListar = CostosRrhh::select('enti_codigo', DB::raw('COALESCE(SUM(corh_valorizacion), 0) AS suma_rrhh'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
+        return json_encode(['estado' => true, 'resultado' => $corhListar]);
+    }
 }
