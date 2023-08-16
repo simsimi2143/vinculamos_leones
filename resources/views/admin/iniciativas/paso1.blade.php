@@ -314,7 +314,7 @@
                                         <select class="form-control select2" id="convenio" name="convenio"
                                             style="width: 100%">
                                             @if (isset($iniciativa) && $editar)
-                                                <option value="" disabled selected>Seleccione...</option>
+                                                <option value="" selected>No Aplica</option>
                                                 @foreach ($convenios as $convenio)
                                                     <option value="{{ $convenio->conv_codigo }}"
                                                         {{ $iniciativa->conv_codigo == $convenio->conv_codigo ? 'selected' : '' }}>
