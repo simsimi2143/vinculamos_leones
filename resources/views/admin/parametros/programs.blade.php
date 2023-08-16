@@ -216,15 +216,19 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label>Meta de Socios</label>
-                                    <div class="input-group">
+                                    <a class="btn btn-primary btn-socios" data-toggle="collapse" href="#div_socios" role="button"
+                                        aria-expanded="false" aria-controls="div_socios" onclick="limpiarInputSocio()">
+                                        Aplicar
+                                    </a>
+                                    <label>Meta de Socios/as</label>
+                                    <div class="input-group collapse" id="div_socios" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" id="meta_socios" name="meta_socios"
-                                            value="{{ old('meta_socios') }}" autocomplete="off">
+                                            value="{{ old('meta_socios') }}" autocomplete="off" placeholder="N° de socios/as">
                                     </div>
                                     @error('meta_socios')
                                         <div class="text-danger">{{ $message }}</div>
@@ -233,8 +237,12 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_iniciativas" role="button"
+                                        aria-expanded="false" aria-controls="div_iniciativas" onclick="limpiarInputIni()">
+                                        Aplicar
+                                    </a>
                                     <label>Meta de Iniciativas</label>
-                                    <div class="input-group">
+                                    <div class="input-group collapse" id="div_iniciativas" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
@@ -242,7 +250,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_iniciativas"
                                             name="meta_iniciativas" value="{{ old('meta_iniciativas') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="N° de iniciativas">
                                     </div>
                                     @error('meta_iniciativas')
                                         <div class="text-danger">{{ $message }}</div>
@@ -250,30 +258,15 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="form-group" style="align-items: center;">
-                            <div class="form-group">
-                                <label>Meta asignaturas</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i class="fas fa-calendar-check"></i>
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control" id="meta_asignaturas"
-                                        name="meta_asignaturas" value="{{ old('meta_asignaturas') }}"
-                                        autocomplete="off">
-                                </div>
-                                @error('meta_asignaturas')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                        </div> --}}
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_carreras" role="button"
+                                        aria-expanded="false" aria-controls="div_carreras" onclick="limpiarInputCarre()">
+                                        Aplicar
+                                    </a>
                                     <label>Meta de Carreras</label>
-                                    <div class="input-group">
+                                    <div class="input-group collapse" id="div_carreras" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
@@ -281,7 +274,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_n_carreras"
                                             name="meta_n_carreras" value="{{ old('meta_n_carreras') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="N° de carreras">
                                     </div>
                                     @error('meta_n_carreras')
                                         <div class="text-danger">{{ $message }}</div>
@@ -290,8 +283,12 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_asignaturas" role="button"
+                                        aria-expanded="false" aria-controls="div_asignaturas" onclick="limpiarInputAsig()">
+                                        Aplicar
+                                    </a>
                                     <label>Meta de Asignaturas</label>
-                                    <div class="input-group">
+                                    <div class="input-group collapse" id="div_asignaturas" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
@@ -299,7 +296,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_n_asignaturas"
                                             name="meta_n_asignaturas" value="{{ old('meta_n_asignaturas') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="N° de asignaturas">
                                     </div>
                                     @error('meta_n_asignaturas')
                                         <div class="text-danger">{{ $message }}</div>
@@ -310,8 +307,12 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_estudiantes" role="button"
+                                        aria-expanded="false" aria-controls="div_estudiantes" onclick="limpiarInputEstu()">
+                                        Aplicar
+                                    </a>
                                     <label>Meta de Estudiantes</label>
-                                    <div class="input-group">
+                                    <div class="input-group collapse" id="div_estudiantes" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
@@ -319,24 +320,29 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_estudiantes"
                                             name="meta_estudiantes" value="{{ old('meta_estudiantes') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="N° de estudiantes">
                                     </div>
                                     @error('meta_estudiantes')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
+
                                 </div>
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_docentes" role="button"
+                                        aria-expanded="false" aria-controls="div_docentes" onclick="limpiarInputDoce()">
+                                        Aplicar
+                                    </a>
                                     <label>Meta de Docentes</label>
-                                    <div class="input-group">
+                                    <div class="input-group collapse" id="div_docentes" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" id="meta_docentes"
-                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off">
+                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off" placeholder="N° de docentes">
                                     </div>
                                     @error('meta_docentes')
                                         <div class="text-danger">{{ $message }}</div>
@@ -345,10 +351,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6 col-md-6 col-lg-6">
+                            <div class="col-8 col-md-8 col-lg-8">
                                 <div class="form-group">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_beneficiarios" role="button"
+                                        aria-expanded="false" aria-controls="div_beneficiarios" onclick="limpiarInputBene()">
+                                        Aplicar
+                                    </a>
                                     <label>Meta de Beneficiarios/as</label>
-                                    <div class="input-group">
+                                    <div class="input-group collapse" id="div_beneficiarios" style="margin-top: 10px">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fas fa-calendar-check"></i>
@@ -356,7 +366,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_beneficiarios"
                                             name="meta_beneficiarios" value="{{ old('meta_beneficiarios') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="N° de beneficiarios/as">
                                     </div>
                                     @error('meta_beneficiarios')
                                         <div class="text-danger">{{ $message }}</div>
@@ -692,6 +702,38 @@
         function editarProg(prog_codigo) {
             $('#modalEditarprogramas-' + prog_codigo).modal('show');
         }
+
+        function limpiarInputSocio() {
+            const inputMetaSocios = document.querySelector('#div_socios input');
+            inputMetaSocios.value = '';
+        }
+        function limpiarInputIni() {
+            const inputMetaIniciativas = document.querySelector('#div_iniciativas input');
+            inputMetaIniciativas.value = '';
+        }
+        function limpiarInputCarre() {
+            const inputMetaCarreras = document.querySelector('#div_carreras input');
+            inputMetaCarreras.value = '';
+        }
+        function limpiarInputAsig() {
+            const inputMetaAsignatura = document.querySelector('#div_asignaturas input');
+            inputMetaAsignatura.value = '';
+        }
+        function limpiarInputEstu() {
+            const inputMetaEstudiantes = document.querySelector('#div_estudiantes input');
+            inputMetaEstudiantes.value = '';
+        }
+        function limpiarInputDoce() {
+            const inputMetaDocentes = document.querySelector('#div_docentes input');
+            inputMetaDocentes.value = '';
+        }
+        function limpiarInputBene() {
+            const inputMetaBeneficiarios = document.querySelector('#div_beneficiarios input');
+            inputMetaBeneficiarios.value = '';
+        }
+
+
+
     </script>
     {{--
     <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
