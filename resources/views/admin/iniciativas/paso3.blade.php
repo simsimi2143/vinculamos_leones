@@ -100,7 +100,7 @@
                                                         <table class="table table-bordered table-hover small table-sm">
                                                             <tr>
                                                                 <th>Recurso</th>
-                                                                <th>Horas</th>
+                                                                <th>C/Infraestructura</th>
                                                                 <th>Valorización</th>
                                                                 <th></th>
                                                             </tr>
@@ -181,7 +181,7 @@
                                                         <table class="table table-bordered table-hover small table-sm">
                                                             <tr>
                                                                 <th>Recurso</th>
-                                                                <th>Horas</th>
+                                                                <th>C/Infraestructura</th>
                                                                 <th>Valorización</th>
                                                                 <th></th>
                                                             </tr>
@@ -278,7 +278,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Cantidad de horas</label>
+                            <label>Cantidad de Infraestructuras</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">

@@ -198,6 +198,8 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/editar-tipoinfra/{tinf_codigo}', [ParametrosController::class, 'actualizarTipoInfraestructuras'])->name('admin.actualizar.tipoinfra');
     Route::post('admin/crear-tipoinfra/', [ParametrosController::class, 'crearTipoInfraestructuras'])->name('admin.crear.tipoinfra');
 
+
+
     // fin rutas para gestionar parametros
 
 
@@ -220,6 +222,13 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/crear-iniciativa/guardar-infraestructura', [IniciativasController::class, 'guardarInfraestructura'])->name('admin.infra.guardar');
     Route::get('admin/crear-iniciativa/listar-infraestructura', [IniciativasController::class, 'listarInfraestructura'])->name('admin.infra.listar');
     Route::post('admin/crear-iniciativa/eliminar-infraestructura', [IniciativasController::class, 'eliminarInfraestructura'])->name('admin.infra.eliminar');
+    Route::get('admin/crear-iniciativa/consultar-infraestructura', [IniciativasController::class, 'consultarInfraestructura'])->name('admin.infra.consultar');
+    Route::get('admin/crear-iniciativa/listar-tiporrhh', [IniciativasController::class, 'listarTipoRrhh'])->name('admin.tiporrhh.listar');
+    Route::get('admin/crear-iniciativa/recursos', [IniciativasController::class, 'listarRecursos'])->name('admin.recursos.listar');
+    Route::get('admin/crear-iniciativa/listar-rrhh', [IniciativasController::class, 'listarRrhh'])->name('admin.rrhh.listar');
+    Route::get('admin/crear-iniciativa/buscar-tiporrhh', [IniciativasController::class, 'buscarTipoRrhh'])->name('admin.tiporrhh.buscar');
+    Route::post('admin/crear-iniciativa/guardar-rrhh', [IniciativasController::class, 'guardarRrhh'])->name('admin.rrhh.guardar');
+    Route::get('admin/crear-iniciativa/consultar-rrhh', [IniciativasController::class, 'consultarRrhh'])->name('admin.rrhh.consultar');
 
 
 
