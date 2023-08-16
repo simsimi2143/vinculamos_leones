@@ -1,21 +1,21 @@
 $(document).ready(function() {
     cargarRecursos();
     cargarDinero();
-    listarEspecies();
+    // listarEspecies();
     listarInfraestructura();
     listarRrhh();
 })
 
 function cargarRecursos() {
     let inic_codigo = $('#codigo').val();
-    let dinero, especies, infraestructura, rrhh
+    let dinero, infraestructura, rrhh
     let totalEmpresa = 0;
     let totalExterno = 0;
 
     // petición que trae la suma total de todos los recursos organizados por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin + '/admin/crear-iniciativa/recursos',
+        url: '/admin/crear-iniciativa/recursos',
         data: {
             iniciativa: inic_codigo
         },
@@ -31,7 +31,6 @@ function cargarRecursos() {
             }
 
             dinero = respuesta.resultado.dinero;
-            especies = respuesta.resultado.especies;
             infraestructura = respuesta.resultado.infraestructura;
             rrhh = respuesta.resultado.rrhh;
 
@@ -40,13 +39,6 @@ function cargarRecursos() {
                     if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
                         registro.suma_dinero);
                     else totalExterno = totalExterno + parseInt(registro.suma_dinero);
-                });
-            }
-            if (especies.length > 0) {
-                especies.forEach(registro => {
-                    if (registro.enti_codigo == 1) totalEmpresa = totalEmpresa + parseInt(
-                        registro.suma_especies);
-                    else totalExterno = totalExterno + parseInt(registro.suma_especies);
                 });
             }
             if (infraestructura.length > 0) {
@@ -71,7 +63,7 @@ function cargarRecursos() {
             }).format(totalExterno));
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -117,7 +109,7 @@ function cargarDinero() {
             }).format(totalExterno));
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -161,7 +153,7 @@ function cargarEspecies() {
             }).format(totalExterno));
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -176,7 +168,7 @@ function cargarInfraestructura() {
     // petición que trae la suma total del recurso infraestructura organizado por entidad
     $.ajax({
         type: 'GET',
-        url: window.location.origin + '/admin/crear-iniciativa/consultar-infraestructura',
+        url: '/admin/crear-iniciativa/consultar-infraestructura',
         data: {
             iniciativa: inic_codigo
         },
@@ -206,7 +198,7 @@ function cargarInfraestructura() {
             }).format(totalExterno));
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -250,7 +242,7 @@ function cargarRrhh() {
             }).format(totalExterno));
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -307,7 +299,7 @@ function guardarDinero(enti_codigo) {
             cargarRecursos();
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -357,7 +349,7 @@ function guardarEspecie() {
             listarEspecies();
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -407,7 +399,7 @@ function listarEspecies() {
             });
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -442,7 +434,7 @@ function eliminarEspecie(coes_codigo, inic_codigo, enti_codigo) {
             $('#div-alert-recursos').html(alertExito);
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -463,19 +455,17 @@ function crearInfra(enti_codigo) {
             $('#codigoinfra').find('option').not(':first').remove();
             $('#codigoinfra').prop('selectedIndex', 0);
             datosInfra = JSON.parse(resListar);
-            // console.log(datosInfra)
             if (datosInfra.length == 0) {
                 $('#codigoinfra').append(new Option('No existen registros', '-1'));
             } else {
                 datosInfra.forEach(registro => {
-                    console.log(registro)
                     $('#codigoinfra').append(new Option(registro.tinf_nombre, registro
                         .tinf_codigo));
                 });
             }
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
     $('#modalInfraestructura').modal('show');
@@ -495,7 +485,7 @@ function buscarTipoInfra() {
         },
         success: function(resConsultar) {
             respuesta = JSON.parse(resConsultar);
-            console.log(respuesta)
+            console.log(respuesta);
             if (respuesta.tinf_codigo == tinf_codigo) {
                 if (coin_horas != '') $('#valorinfra').val(coin_horas * respuesta.tinf_valor);
                 else $('#valorinfra').val(respuesta.tinf_valor);
@@ -504,7 +494,7 @@ function buscarTipoInfra() {
             }
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -517,6 +507,7 @@ function guardarInfra() {
     let respuesta, alertError, alertExito;
     $('#div-alert-infraestructura').html('');
     $('#div-alert-recursos').html('');
+    console.log(inic_codigo, enti_codigo, tinf_codigo, coin_horas);
 
     // petición para guardar infraestructura aportada por la entidad
     $.ajax({
@@ -546,7 +537,7 @@ function guardarInfra() {
             listarInfraestructura();
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -579,7 +570,6 @@ function listarInfraestructura() {
             }
 
             datosInfra = respuesta.resultado;
-            console.log(datosInfra)
             datosInfra.forEach(registro => {
                 fila = '<tr>' +
                     '<td>' + registro.tinf_nombre + '</td>' +
@@ -598,7 +588,7 @@ function listarInfraestructura() {
             });
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -633,7 +623,7 @@ function eliminarInfraestructura(inic_codigo, enti_codigo, tiin_codigo) {
             $('#div-alert-recursos').html(alertExito);
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -649,8 +639,9 @@ function crearRrhh(enti_codigo) {
     // petición para consultar los tipos de recursos humanos disponibles
     $.ajax({
         type: 'GET',
-        url: window.location.origin + '/admin/crear-iniciativa/listar-tiporrhh',
+        url: '/admin/crear-iniciativa/listar-tiporrhh',
         success: function(resListar) {
+            console.log(resListar);
             $('#codigorrhh').find('option').not(':first').remove();
             $('#codigorrhh').prop('selectedIndex', 0);
             datosRrhh = JSON.parse(resListar);
@@ -658,13 +649,13 @@ function crearRrhh(enti_codigo) {
                 $('#codigorrhh').append(new Option('No existen registros', '-1'));
             } else {
                 datosRrhh.forEach(registro => {
-                    $('#codigorrhh').append(new Option(registro.tirh_nombre, registro
-                        .tirh_codigo));
+                    $('#codigorrhh').append(new Option(registro.trrhh_nombre, registro
+                        .trrhh_codigo));
                 });
             }
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
     $('#modalRrhh').modal('show');
@@ -672,27 +663,27 @@ function crearRrhh(enti_codigo) {
 
 function buscarTipoRrhh() {
     let corh_horas = $('#horasrrhh').val();
-    let tirh_codigo = $('#codigorrhh').val();
+    let trrhh_codigo = $('#codigorrhh').val();
     let respuesta;
 
     // petición para consultar información del tipo de RRHH seleccionado
     $.ajax({
         type: 'GET',
-        url: window.location.origin + '/admin/crear-iniciativa/buscar-tiporrhh',
+        url:  '/admin/crear-iniciativa/buscar-tiporrhh',
         data: {
-            tiporrhh: tirh_codigo
+            tiporrhh: trrhh_codigo
         },
         success: function(resConsultar) {
             respuesta = JSON.parse(resConsultar);
-            if (respuesta.tirh_codigo == tirh_codigo) {
-                if (corh_horas != '') $('#valorrrhh').val(corh_horas * respuesta.tirh_valor);
-                else $('#valorrrhh').val(respuesta.tirh_valor);
+            if (respuesta.trrhh_codigo == trrhh_codigo) {
+                if (corh_horas != '') $('#valorrrhh').val(corh_horas * respuesta.trrhh_valor);
+                else $('#valorrrhh').val(respuesta.trrhh_valor);
             } else {
                 $('#valorrrhh').val('-1');
             }
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -700,7 +691,7 @@ function buscarTipoRrhh() {
 function guardarRrhh() {
     let inic_codigo = $('#codigo').val();
     let enti_codigo = $('#entidadrrhh').val();
-    let tirh_codigo = $('#codigorrhh').val();
+    let trrhh_codigo = $('#codigorrhh').val();
     let corh_horas = $('#horasrrhh').val();
     let respuesta, alertError, alertExito;
     $('#div-alert-rrhh').html('');
@@ -716,7 +707,7 @@ function guardarRrhh() {
         data: {
             iniciativa: inic_codigo,
             entidad: enti_codigo,
-            tiporrhh: tirh_codigo,
+            tiporrhh: trrhh_codigo,
             horas: corh_horas
         },
         success: function(resGuardar) {
@@ -734,7 +725,7 @@ function guardarRrhh() {
             listarRrhh();
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
@@ -746,7 +737,7 @@ function listarRrhh() {
     // petición para listar los RRHH aportados por las entidades
     $.ajax({
         type: 'GET',
-        url: window.location.origin + '/admin/crear-iniciativa/listar-rrhh',
+        url:  '/admin/crear-iniciativa/listar-rrhh',
         data: {
             iniciativa: inic_codigo
         },
@@ -767,9 +758,10 @@ function listarRrhh() {
             }
 
             datosRrhh = respuesta.resultado;
+            console.log(datosRrhh);
             datosRrhh.forEach(registro => {
                 fila = '<tr>' +
-                    '<td>' + registro.tirh_nombre + '</td>' +
+                    '<td>' + registro.trrhh_nombre + '</td>' +
                     '<td>' + registro.corh_horas + '</td>' +
                     '<td>' + '$' + new Intl.NumberFormat('es-CL', {
                         maximumSignificantDigits: 3
@@ -777,7 +769,7 @@ function listarRrhh() {
                     '<td>' +
                     '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarRrhh(' +
                     registro.inic_codigo + ', ' + registro.enti_codigo + ', ' + registro
-                    .tirh_codigo + ')"><i class="fas fa-trash"></i></button>' +
+                    .trrhh_codigo + ')"><i class="fas fa-trash"></i></button>' +
                     '</td>' +
                     '</tr>';
                 if (registro.enti_codigo == 1) $('#tabla-empresa-rrhh').append(fila);
@@ -785,12 +777,12 @@ function listarRrhh() {
             });
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
 
-function eliminarRrhh(inic_codigo, enti_codigo, tirh_codigo) {
+function eliminarRrhh(inic_codigo, enti_codigo, trrhh_codigo) {
     let alertError, alertExito;
     $('#div-alert-recursos').html('');
 
@@ -804,7 +796,7 @@ function eliminarRrhh(inic_codigo, enti_codigo, tirh_codigo) {
         data: {
             iniciativa: inic_codigo,
             entidad: enti_codigo,
-            tiporrhh: tirh_codigo
+            tiporrhh: trrhh_codigo
         },
         success: function(resEliminar) {
             respuesta = JSON.parse(resEliminar);
@@ -820,7 +812,7 @@ function eliminarRrhh(inic_codigo, enti_codigo, tirh_codigo) {
             $('#div-alert-recursos').html(alertExito);
         },
         error: function(error) {
-            console.log(error);
+            //console.error(error);
         }
     });
 }
