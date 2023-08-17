@@ -296,6 +296,10 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.');
         }
 
+        $verificar = Iniciativas::select('inic_codigo')->where('prog_codigo', $request->prog_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.programas')->with('errorPrograma', 'No es posible eliminar, el programa está siendo utilizado en una iniciativa');
+        }
         // Eliminar actividades relacionadas
         ProgramasActividades::where('prog_codigo', $request->prog_codigo)->delete();
         ProgramasContribuciones::where('prog_codigo', $request->prog_codigo)->delete();
@@ -399,6 +403,11 @@ class ParametrosController extends Controller
             $verificarDropFile = unlink('public/' . $verificarDrop->conv_ruta_archivo);
         } catch (\Exception $e) {
             echo "Archivo no encontrado: " . $e->getMessage();
+        }
+
+        $verificar = Iniciativas::select('inic_codigo')->where('conv_codigo', $request->conv_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'No es posible eliminar, el documento de colaboración está siendo utilizado en una iniciativa');
         }
 
         $Drop = Convenios::where('conv_codigo', $request->conv_codigo)->delete();
@@ -793,6 +802,12 @@ class ParametrosController extends Controller
         if (!$verificarDrop) {
             return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'La escuela no se encuentra registrada en el sistema.');
         }
+
+        $verificar = Carreras::select('escu_codigo')->where('escu_codigo', $request->escu_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'No es posible eliminar, la escuela está siendo utilizada en una carrera');
+        }
+
         $Drop = Escuelas::where('escu_codigo', $request->escu_codigo)->delete();
         if (!$Drop) {
             return redirect()->back()->with('errorEscuela', 'La escuela no se pudo eliminar, intente más tarde.');
@@ -1138,6 +1153,11 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'El mecanismo no se encuentra registrado en el sistema.');
         }
 
+        $verificar = Iniciativas::select('inic_codigo')->where('meca_codigo', $request->meca_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'No es posible eliminar, el mecanismo está siendo utilizado en una iniciativa');
+        }
+
         $inicMecanismo = Iniciativas::where('meca_codigo',$request->meca_codigo)->get();
         if(sizeof($inicMecanismo)>0) return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo','El mecanismo no se puede eliminar porque se encuentra asociado a una iniciativa.');
 
@@ -1312,6 +1332,11 @@ class ParametrosController extends Controller
         $tipoact = TipoActividades::find($request->input('tiac_codigo'));
         if (!$tipoact) {
             return redirect()->route('admin.listar.tipoact')->with('errorTipoact', 'Tipo de actividad no encontrado.');
+        }
+
+        $verificar = Iniciativas::select('inic_codigo')->where('tiac_codigo', $request->tiac_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.tipoact')->with('errorTipoact', 'No es posible eliminar, el tipo de actividad está siendo utilizado en una iniciativa');
         }
 
         $tipoact->delete();
