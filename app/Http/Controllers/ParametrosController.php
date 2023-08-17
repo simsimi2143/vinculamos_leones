@@ -224,12 +224,12 @@ class ParametrosController extends Controller
         $request->validate([
             'nombre' => 'required|max:255',
             'ambito' => 'required',
-            'tipo' => 'required',
+            /* 'tipo' => 'required', */
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             'ambito.required' => 'Seleccione un ámbito de acción.',
-            'tipo.required' => 'Seleccione un tipo de iniciativa.',
+            /* 'tipo.required' => 'Seleccione un tipo de iniciativa.', */
         ]);
 
 
@@ -285,12 +285,12 @@ class ParametrosController extends Controller
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             'ambito' => 'required',
-            'tipo' => 'required',
+            /* 'tipo' => 'required', */
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             'ambito.required' => 'Seleccione un ámbito de acción.',
-            'tipo.required' => 'Seleccione un tipo de iniciativa.',
+            /* 'tipo.required' => 'Seleccione un tipo de iniciativa.', */
 
         ]);
         if ($validacion->fails()) {

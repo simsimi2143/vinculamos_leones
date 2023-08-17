@@ -152,11 +152,11 @@
                                         name="descripcion">
                                         <option value="" selected disable d>Seleccione...</option>
                                         <option value="Contribución Interno"
-                                            {{ 'Contribución Interno' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
-                                            Interno</option>
+                                            {{ 'Contribución Interna' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
+                                            Interna</option>
                                         <option value="Contribución Externo"
-                                            {{ 'Contribución Externo' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
-                                            Externo</option>
+                                            {{ 'Contribución Externa' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
+                                            Externa</option>
                                     </select>
                                     @error('descripcion')
                                         <div class="invalid-feedback">
@@ -235,8 +235,8 @@
                                 <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
                                     name="descripcion">
                                     <option value="" selected disable d>Seleccione...</option>
-                                    <option value="Contribución Interno">Contribución Interno</option>
-                                    <option value="Contribución Externo">Contribución Externo</option>
+                                    <option value="Contribución Interna">Contribución Interna</option>
+                                    <option value="Contribución Externa">Contribución Externa</option>
                                 </select>
                                 @error('descripcion')
                                     <div class="invalid-feedback">

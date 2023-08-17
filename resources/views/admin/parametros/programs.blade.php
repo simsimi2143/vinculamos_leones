@@ -195,25 +195,56 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Frecuencia</label>
-                            <div class="input-group">
-                                <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
-                                    name="tipo">
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    @forelse ($tiposIniciativas as $tip)
-                                        <option value="{{ $tip->tmec_codigo }}"
-                                            {{ old('tipo') == $tip->tmec_codigo ? 'selected' : '' }}>
-                                            {{ $tip->tmec_nombre }}</option>
-                                    @empty
-                                        <option value="-1">No existen registros</option>
-                                    @endforelse
-                                </select>
-                                @error('tipo')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                        <div class="row">
+                            <div class="col-5 col-md-5 col-lg-5">
+                                <div class="form-group">
+                                    <label>Frecuencia</label>
+                                    <div class="input-group">
+                                        <select class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion">
+                                            <option value="Temporal">Temporal</option>
+                                            <option value="Permanente">Permanente</option>
+                                        </select>
+                                        {{-- <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
+                                            name="tipo">
+                                            <option value="" selected disabled>Seleccione...</option>
+                                            @forelse ($tiposIniciativas as $tip)
+                                                <option value="{{ $tip->tmec_codigo }}"
+                                                    {{ old('tipo') == $tip->tmec_codigo ? 'selected' : '' }}>
+                                                    {{ $tip->tmec_nombre }}</option>
+                                            @empty
+                                                <option value="-1">No existen registros</option>
+                                            @endforelse
+                                        </select>
+                                        @error('tipo')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror --}}
                                     </div>
-                                @enderror
+                                </div>
+                            </div>
+                            <div class="col-7 col-md-7 col-lg-7">
+                                {{-- <div class="form-group">
+                                    <label>Contribución</label>
+                                    <div class="input-group">
+                                        <select class="form-control @error('contribucion') is-invalid @enderror" id="contribucion"
+                                            name="contribucion">
+                                            <option value="" selected disabled>Seleccione...</option>
+                                            @forelse ($CONTRIS as $cont)
+                                                <option value="{{ $cont->amb_codigo }}"
+                                                    {{ old('contribucion') == $cont->amb_codigo ? 'selected' : '' }}>
+                                                    {{ $cont->amb_nombre }}({{ $cont->amb_descripcion}})</option>
+                                            @empty
+                                                <option value="-1">No existen registros</option>
+                                            @endforelse
+                                        </select>
+                                        @error('contribucion')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="row">
@@ -475,22 +506,58 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Frecuencia</label>
-                                <div class="input-group">
-                                    <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
-                                        @foreach ($tiposIniciativas as $ti)
-                                            <option value="{{ $ti->tmec_codigo }}" {{ $ti->tmec_codigo == $prog->tmec_codigo ? 'selected' : '' }}>
-                                                {{ $ti->tmec_nombre }}
-                                            </option>
-                                        @endforeach
-                                    </select>
 
-                                    @error('tipo')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
+                            <div class="row">
+                                <div class="col-5 col-md-5 col-lg-5">
+                                    <div class="form-group">
+                                        <label>Frecuencia</label>
+                                        <select class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion">
+                                            <option value="Temporal" {{ "Temporal" == $prog->prog_descripcion ? 'selected' : '' }}>Temporal</option>
+                                            <option value="Permanente" {{ "Permanente" == $prog->prog_descripcion ? 'selected' : '' }}>Permanente</option>
+                                        </select>
+                                        {{-- <div class="input-group">
+                                            <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
+                                                @foreach ($tiposIniciativas as $ti)
+                                                    <option value="{{ $ti->tmec_codigo }}" {{ $ti->tmec_codigo == $prog->tmec_codigo ? 'selected' : '' }}>
+                                                        {{ $ti->tmec_nombre }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            @error('tipo')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div> --}}
+                                    </div>
+                                </div>
+                                <div class="col-7 col-md-7 col-lg-7">
+                                    {{-- <div class="form-group">
+                                        <label>Contribución</label>
+                                        <div class="input-group">
+                                            <select class="form-control @error('contribucion') is-invalid @enderror" id="contribucion"
+                                                name="contribucion">
+                                                <option value="" selected disabled>Seleccione...</option>
+                                                @forelse ($CONTRIS as $cont)
+                                                    <option value="{{ $cont->amb_codigo }}"
+                                                        {{ old('contribucion') == $cont->amb_codigo ? 'selected' : '' }}>
+                                                        {{ $cont->amb_nombre }}({{ $cont->amb_descripcion}})</option>
+                                                    <option value="{{ $cont->amb_codigo }}"
+                                                        {{ $tipo->amb_codigo == $prog->amb_codigo ? 'selected' : '' }}>
+                                                        {{ $tipo->amac_nombre }}
+                                                    </option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            </select>
+                                            @error('contribucion')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-                                    @enderror
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="row">
