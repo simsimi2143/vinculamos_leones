@@ -119,6 +119,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::delete('admin/eliminar-socios/', [ParametrosController::class, 'eliminarSocios'])->name('admin.eliminar.socios');
     Route::put('socios/{escu_codigo}/actualizar', [ParametrosController::class, 'actualizarSocios'])->name('admin.actualizar.socios');
     Route::post('admin/crear-socios/', [ParametrosController::class, 'crearSocios'])->name('admin.crear.socios');
+    Route::post('admin/socios/listar-subgrupos', [ParametrosController::class, 'subgruposBygrupos']);
 
     //Mecanismos
     Route::get('admin/mecanismos/listar', [ParametrosController::class, 'listarMecanismos'])->name('admin.listar.mecanismos');

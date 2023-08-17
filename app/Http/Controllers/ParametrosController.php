@@ -829,9 +829,15 @@ class ParametrosController extends Controller
         $sedesT = Sedes::orderBy('sede_codigo', 'asc')->get();
         $SedeSocios = SedesSocios::all();
         $grupos = GruposInteres::orderBy('grin_codigo', 'asc')->get();
+        $subgrupos = SubGruposInteres::all();
+        return view('admin.parametros.socios', compact('sedesT', 'socios', 'SedeSocios', 'grupos','subgrupos'));
 
-        return view('admin.parametros.socios', compact('sedesT', 'socios', 'SedeSocios', 'grupos'));
+    }
+    public function subgruposBygrupos(Request $request)
+    {
+        $subgrupo = SubGruposInteres::where('grin_codigo',$request->grin_codigo)->get();
 
+        return response()->json($subgrupo);
     }
 
     public function eliminarSocios(Request $request)
@@ -863,6 +869,7 @@ class ParametrosController extends Controller
             [
                 'nombre' => 'required|max:255',
                 'nombre_contraparte' => 'required|max:255',
+                'subgrupo' => 'required'
                 /* 'domicilio' => 'required|max:255', */
                 /* 'telefono' => 'required|max:255', */
                 /* 'email' => 'required|max:255', */
@@ -875,6 +882,7 @@ class ParametrosController extends Controller
                 'nombre.max' => 'El nombre del socio comunitario excede el máximo de caracteres permitidos (255).',
                 'nombre_contraparte.required' => 'El nombre de la contraparte es requerido.',
                 'nombre_contraparte.max' => 'El nombre de la contraparte excede el máximo de caracteres permitidos (255).',
+                'subgrupo.required' => 'Es necesario que seleccione un subgrupo de interés.'
                 /* 'domicilio.required' => 'El domicilio de la contraparte es requerido.',
                 'domicilio.max' => 'El domicilio de la contraparte excede el máximo de caracteres permitidos (255).',
                 'telefono.required' => 'El teléfono de la contraparte del director es requerido.',
@@ -893,6 +901,7 @@ class ParametrosController extends Controller
         } */
         $socio = SociosComunitarios::where(['soco_codigo' => $soco_codigo])->update([
             'grin_codigo' => $request->input('grupo'),
+            'sugr_codigo' => $request->input('subgrupo'),
             'soco_nombre_socio' => $request->input('nombre'),
             'soco_nombre_contraparte' => $request->input('nombre_contraparte'),
             'soco_domicilio_socio' => $request->input('domicilio'),
@@ -900,39 +909,6 @@ class ParametrosController extends Controller
             'soco_email_contraparte' => $request->input('email'),
         ]);
 
-        /* $seso = [];
-
-        if ($request->has('nacional')) {
-            $sedes = Sedes::select('sede_codigo')->orderBy('sede_codigo', 'asc')->get();
-            foreach ($sedes as $sede) {
-                array_push($seso, [
-                    'sede_codigo' => $sede->sede_codigo,
-                    'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
-                ]);
-            }
-        } else {
-            $sedes = $request->input('sedesT', []);
-            foreach ($sedes as $sede) {
-                array_push($seso, [
-                    'sede_codigo' => $sede,
-                    'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
-                ]);
-            }
-        } */
-
-
-
-        /* $sesoCrear = SedesSocios::insert($seso);
-        if (!$sesoCrear) {
-            SedesSocios::where('soco_codigo', $soco_codigo)->delete();
-            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
-        } */
 
         return redirect()->back()->with('exitoSocio', 'El socio comunitario ha sido actualizado correctamente.')->withInput();
     }
@@ -977,45 +953,10 @@ class ParametrosController extends Controller
             'soco_telefono_contraparte' => $request->telefono,
             'soco_email_contraparte' => $request->email,
             'grin_codigo' => $request->grupo,
+            'sugr_codigo' => $request->subgrupo,
         ]);
 
-        /* if (!$MacaActi) {
-            return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
-        }
 
-
-        $soco_codigo = $MacaActi;
-        $seso = [];
-
-        if ($request->has('nacional')) {
-            $sedes = Sedes::select('sede_codigo')->orderBy('sede_codigo', 'asc')->get();
-            foreach ($sedes as $sede) {
-                array_push($seso, [
-                    'sede_codigo' => $sede->sede_codigo,
-                    'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
-                ]);
-            }
-        } else {
-            $sedes = $request->input('sedesT', []);
-            foreach ($sedes as $sede) {
-                array_push($seso, [
-                    'sede_codigo' => $sede,
-                    'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
-                ]);
-            }
-        }
-
-        $sesoCrear = SedesSocios::insert($seso);
-        if (!$sesoCrear) {
-            SedesSocios::where('inic_codigo', $soco_codigo)->delete();
-            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
-        } */
 
         return redirect()->back()->with('socoExito', 'Se agregó el socio comunitario correctamente.')->withInput();
     }
