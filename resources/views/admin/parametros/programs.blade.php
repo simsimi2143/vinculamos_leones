@@ -155,7 +155,7 @@
                                             name="ambito">
                                             <option value="" selected disable d>Seleccione...</option>
                                             @forelse ($tipos as $tip)
-                                                <option value="{{ $tip->amac_codigo }}">
+                                                <option style="font-size: 120%;" value="{{ $tip->amac_codigo }}">
                                                     {{ $tip->amac_nombre }}</option>
                                             @empty
                                                 <option value="-1">No existen registros</option>
@@ -182,7 +182,7 @@
                                             @endphp
                                             @for ($i = -1; $i < $yearsToShow; $i++)
                                                 @php $year = $currentYear + $i; @endphp
-                                                <option value="{{ $year }}">{{ $year }}</option>
+                                                <option style="font-size: 120%;" value="{{ $year }}">{{ $year }}</option>
                                             @endfor
                                         </select>
 
@@ -195,16 +195,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-5 col-md-5 col-lg-5">
-                                <div class="form-group">
-                                    <label>Frecuencia</label>
-                                    <div class="input-group">
-                                        <select class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion">
-                                            <option value="Temporal">Temporal</option>
-                                            <option value="Permanente">Permanente</option>
-                                        </select>
-                                        {{-- <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
+                        <div class="form-group">
+                            <label>Frecuencia</label>
+                            <div class="input-group">
+                                <select class="form-control @error('descripcion') is-invalid @enderror" name="descripcion"
+                                    id="descripcion">
+                                    <option value="Temporal" style="font-size: 120%;">Temporal</option>
+                                    <option value="Permanente" style="font-size: 120%;">Permanente</option>
+                                </select>
+                                {{-- <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
                                             name="tipo">
                                             <option value="" selected disabled>Seleccione...</option>
                                             @forelse ($tiposIniciativas as $tip)
@@ -220,38 +219,36 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror --}}
-                                    </div>
-                                </div>
                             </div>
-                            <div class="col-7 col-md-7 col-lg-7">
-                                {{-- <div class="form-group">
-                                    <label>Contribución</label>
-                                    <div class="input-group">
-                                        <select class="form-control @error('contribucion') is-invalid @enderror" id="contribucion"
-                                            name="contribucion">
-                                            <option value="" selected disabled>Seleccione...</option>
-                                            @forelse ($CONTRIS as $cont)
-                                                <option value="{{ $cont->amb_codigo }}"
-                                                    {{ old('contribucion') == $cont->amb_codigo ? 'selected' : '' }}>
-                                                    {{ $cont->amb_nombre }}({{ $cont->amb_descripcion}})</option>
-                                            @empty
-                                                <option value="-1">No existen registros</option>
-                                            @endforelse
-                                        </select>
-                                        @error('contribucion')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Contribución</label>
+                            <div class="input-group">
+                                <select class="form-control select2 @error('contribucion') is-invalid @enderror"
+                                    id="contribucion" name="contribucion[]" multiple="" style="width: 100%">
+                                    @forelse ($CONTRIS as $cont)
+                                        <option value="{{ $cont->amb_codigo }}"
+                                            {{ old('contribucion') == $cont->amb_codigo ? 'selected' : '' }}>
+                                            {{ $cont->amb_nombre }} <label
+                                                for="">({{ $cont->amb_descripcion }})</label>
+                                        </option>
+                                    @empty
+                                        <option value="-1">No existen registros</option>
+                                    @endforelse
+                                </select>
+                                @error('contribucion')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
                                     </div>
-                                </div> --}}
+                                @enderror
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <a class="btn btn-primary btn-socios" data-toggle="collapse" href="#div_socios" role="button"
-                                        aria-expanded="false" aria-controls="div_socios" onclick="limpiarInputSocio()">
+                                    <a class="btn btn-primary btn-socios" data-toggle="collapse" href="#div_socios"
+                                        role="button" aria-expanded="false" aria-controls="div_socios"
+                                        onclick="limpiarInputSocio()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Socios/as</label>
@@ -262,7 +259,8 @@
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" id="meta_socios" name="meta_socios"
-                                            value="{{ old('meta_socios') }}" autocomplete="off" placeholder="N° de socios/as">
+                                            value="{{ old('meta_socios') }}" autocomplete="off"
+                                            placeholder="N° de socios/as">
                                     </div>
                                     @error('meta_socios')
                                         <div class="text-danger">{{ $message }}</div>
@@ -271,8 +269,9 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_iniciativas" role="button"
-                                        aria-expanded="false" aria-controls="div_iniciativas" onclick="limpiarInputIni()">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_iniciativas"
+                                        role="button" aria-expanded="false" aria-controls="div_iniciativas"
+                                        onclick="limpiarInputIni()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Iniciativas</label>
@@ -295,8 +294,9 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_carreras" role="button"
-                                        aria-expanded="false" aria-controls="div_carreras" onclick="limpiarInputCarre()">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_carreras"
+                                        role="button" aria-expanded="false" aria-controls="div_carreras"
+                                        onclick="limpiarInputCarre()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Carreras</label>
@@ -317,8 +317,9 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_asignaturas" role="button"
-                                        aria-expanded="false" aria-controls="div_asignaturas" onclick="limpiarInputAsig()">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_asignaturas"
+                                        role="button" aria-expanded="false" aria-controls="div_asignaturas"
+                                        onclick="limpiarInputAsig()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Asignaturas</label>
@@ -341,8 +342,9 @@
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_estudiantes" role="button"
-                                        aria-expanded="false" aria-controls="div_estudiantes" onclick="limpiarInputEstu()">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_estudiantes"
+                                        role="button" aria-expanded="false" aria-controls="div_estudiantes"
+                                        onclick="limpiarInputEstu()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Estudiantes</label>
@@ -364,8 +366,9 @@
                             </div>
                             <div class="col-6 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_docentes" role="button"
-                                        aria-expanded="false" aria-controls="div_docentes" onclick="limpiarInputDoce()">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_docentes"
+                                        role="button" aria-expanded="false" aria-controls="div_docentes"
+                                        onclick="limpiarInputDoce()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Docentes</label>
@@ -376,7 +379,8 @@
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" id="meta_docentes"
-                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off" placeholder="N° de docentes">
+                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off"
+                                            placeholder="N° de docentes">
                                     </div>
                                     @error('meta_docentes')
                                         <div class="text-danger">{{ $message }}</div>
@@ -387,8 +391,9 @@
                         <div class="row">
                             <div class="col-8 col-md-8 col-lg-8">
                                 <div class="form-group">
-                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_beneficiarios" role="button"
-                                        aria-expanded="false" aria-controls="div_beneficiarios" onclick="limpiarInputBene()">
+                                    <a class="btn btn-primary" data-toggle="collapse" href="#div_beneficiarios"
+                                        role="button" aria-expanded="false" aria-controls="div_beneficiarios"
+                                        onclick="limpiarInputBene()">
                                         Aplicar
                                     </a>
                                     <label>Meta de Beneficiarios/as</label>
@@ -462,7 +467,7 @@
                                             <select class="form-control @error('ambito') is-invalid @enderror"
                                                 id="ambito" name="ambito">
                                                 @foreach ($tipos as $tipo)
-                                                    <option value="{{ $tipo->amac_codigo }}"
+                                                    <option style="font-size: 120%;" value="{{ $tipo->amac_codigo }}"
                                                         {{ $tipo->amac_codigo == $prog->amac_codigo ? 'selected' : '' }}>
                                                         {{ $tipo->amac_nombre }}
                                                     </option>
@@ -490,7 +495,7 @@
                                                 @endphp
                                                 @for ($i = -1; $i < $yearsToShow; $i++)
                                                     @php $year = $currentYear + $i; @endphp
-                                                    <option value="{{ $year }}"
+                                                    <option style="font-size: 120%;" value="{{ $year }}"
                                                         {{ $year == $prog->prog_ano ? 'selected' : '' }}>
                                                         {{ $year }}
                                                     </option>
@@ -507,15 +512,18 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-5 col-md-5 col-lg-5">
-                                    <div class="form-group">
-                                        <label>Frecuencia</label>
-                                        <select class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion">
-                                            <option value="Temporal" {{ "Temporal" == $prog->prog_descripcion ? 'selected' : '' }}>Temporal</option>
-                                            <option value="Permanente" {{ "Permanente" == $prog->prog_descripcion ? 'selected' : '' }}>Permanente</option>
-                                        </select>
-                                        {{-- <div class="input-group">
+                            <div class="form-group">
+                                <label>Frecuencia</label>
+                                <select class="form-control @error('descripcion') is-invalid @enderror" name="descripcion"
+                                    id="descripcion">
+                                    <option style="font-size: 120%;" value="Temporal"
+                                        {{ 'Temporal' == $prog->prog_descripcion ? 'selected' : '' }}>Temporal
+                                    </option>
+                                    <option style="font-size: 120%;" value="Permanente"
+                                        {{ 'Permanente' == $prog->prog_descripcion ? 'selected' : '' }}>Permanente
+                                    </option>
+                                </select>
+                                {{-- <div class="input-group">
                                             <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
                                                 @foreach ($tiposIniciativas as $ti)
                                                     <option value="{{ $ti->tmec_codigo }}" {{ $ti->tmec_codigo == $prog->tmec_codigo ? 'selected' : '' }}>
@@ -530,34 +538,26 @@
                                                 </div>
                                             @enderror
                                         </div> --}}
-                                    </div>
-                                </div>
-                                <div class="col-7 col-md-7 col-lg-7">
-                                    {{-- <div class="form-group">
-                                        <label>Contribución</label>
-                                        <div class="input-group">
-                                            <select class="form-control @error('contribucion') is-invalid @enderror" id="contribucion"
-                                                name="contribucion">
-                                                <option value="" selected disabled>Seleccione...</option>
-                                                @forelse ($CONTRIS as $cont)
-                                                    <option value="{{ $cont->amb_codigo }}"
-                                                        {{ old('contribucion') == $cont->amb_codigo ? 'selected' : '' }}>
-                                                        {{ $cont->amb_nombre }}({{ $cont->amb_descripcion}})</option>
-                                                    <option value="{{ $cont->amb_codigo }}"
-                                                        {{ $tipo->amb_codigo == $prog->amb_codigo ? 'selected' : '' }}>
-                                                        {{ $tipo->amac_nombre }}
-                                                    </option>
-                                                @empty
-                                                    <option value="-1">No existen registros</option>
-                                                @endforelse
-                                            </select>
-                                            @error('contribucion')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Contribución</label>
+                                <div class="input-group">
+                                    <select class="form-control select2 @error('contribuciont') is-invalid @enderror"
+                                        id="contribuciont" name="contribuciont[]" multiple="" style="width: 100%">
+                                        @forelse ($CONTRIS as $cont){{-- PROCONS --}}
+                                            <option value="{{ $cont->amb_codigo }}"
+                                            {{ $PROCONS->where('prog_codigo', $prog->prog_codigo)->where('amb_codigo', $cont->amb_codigo)->count() > 0 ? 'selected' : '' }}>
+                                                {{ $cont->amb_nombre }}
+                                            </option>
+                                        @empty
+                                            <option value="-1">No existen registros</option>
+                                        @endforelse
+                                    </select>
+                                    @error('contribuciont')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
                                         </div>
-                                    </div> --}}
+                                    @enderror
                                 </div>
                             </div>
                             <div class="row">
@@ -571,7 +571,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_socios"
-                                                name="meta_socios" value="{{ $prog->prog_meta_socios }}"
+                                                name="meta_socios" value="{{ $prog->prog_meta_socios }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                     </div>
@@ -586,7 +586,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_iniciativas"
-                                                name="meta_iniciativas" value="{{ $prog->prog_meta_iniciativas }}"
+                                                name="meta_iniciativas" value="{{ $prog->prog_meta_iniciativas }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                     </div>
@@ -623,7 +623,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_n_carreras"
-                                                name="meta_n_carreras" value="{{ $prog->prog_meta_n_carreras }}"
+                                                name="meta_n_carreras" value="{{ $prog->prog_meta_n_carreras }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_n_carreras')
@@ -641,7 +641,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_n_asignaturas"
-                                                name="meta_n_asignaturas" value="{{ $prog->prog_meta_n_asignaturas }}"
+                                                name="meta_n_asignaturas" value="{{ $prog->prog_meta_n_asignaturas }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_n_asignaturas')
@@ -662,7 +662,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_estudiantes"
-                                                name="meta_estudiantes" value="{{ $prog->prog_meta_estudiantes }}"
+                                                name="meta_estudiantes" value="{{ $prog->prog_meta_estudiantes }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_estudiantes')
@@ -680,7 +680,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_docentes"
-                                                name="meta_docentes" value="{{ $prog->prog_meta_docentes }}"
+                                                name="meta_docentes" value="{{ $prog->prog_meta_docentes }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_docentes')
@@ -700,7 +700,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_beneficiarios"
-                                                name="meta_beneficiarios" value="{{ $prog->prog_meta_beneficiarios }}"
+                                                name="meta_beneficiarios" value="{{ $prog->prog_meta_beneficiarios }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_beneficiarios')
@@ -763,33 +763,36 @@
             const inputMetaSocios = document.querySelector('#div_socios input');
             inputMetaSocios.value = '';
         }
+
         function limpiarInputIni() {
             const inputMetaIniciativas = document.querySelector('#div_iniciativas input');
             inputMetaIniciativas.value = '';
         }
+
         function limpiarInputCarre() {
             const inputMetaCarreras = document.querySelector('#div_carreras input');
             inputMetaCarreras.value = '';
         }
+
         function limpiarInputAsig() {
             const inputMetaAsignatura = document.querySelector('#div_asignaturas input');
             inputMetaAsignatura.value = '';
         }
+
         function limpiarInputEstu() {
             const inputMetaEstudiantes = document.querySelector('#div_estudiantes input');
             inputMetaEstudiantes.value = '';
         }
+
         function limpiarInputDoce() {
             const inputMetaDocentes = document.querySelector('#div_docentes input');
             inputMetaDocentes.value = '';
         }
+
         function limpiarInputBene() {
             const inputMetaBeneficiarios = document.querySelector('#div_beneficiarios input');
             inputMetaBeneficiarios.value = '';
         }
-
-
-
     </script>
     {{--
     <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">

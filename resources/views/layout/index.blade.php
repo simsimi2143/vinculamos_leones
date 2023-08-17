@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="{{ asset('/bundles/jquery-selectric/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/izitoast/css/iziToast.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/pretty-checkbox/pretty-checkbox.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('/bundles/select2/dist/css/select2.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">

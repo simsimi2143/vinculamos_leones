@@ -15,6 +15,7 @@ use App\Models\Mecanismos;
 use App\Models\Pais;
 use App\Models\Regiones;
 use App\Models\Programas;
+use App\Models\ProgramasContribuciones;
 use App\Models\Sedes;
 use App\Models\SedesSocios;
 use App\Models\SedesEscuelas;
@@ -215,8 +216,10 @@ class ParametrosController extends Controller
         $ACTIVIDADES = TipoActividades::all();
         $PROGRA_ACTI = ProgramasActividades::all();
         $tiposIniciativas = TipoIniciativas::orderBy('tmec_codigo', 'asc')->get();
+        $CONTRIS = Ambitos::all();
+        $PROCONS = ProgramasContribuciones::all();
 
-        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI', 'tiposIniciativas'));
+        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI', 'tiposIniciativas','CONTRIS','PROCONS'));
     }
 
     public function crearProgramas(Request $request)
@@ -256,7 +259,29 @@ class ParametrosController extends Controller
         ]);
 
         if (!$programas) {
-            return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
+            return redirect()->back()->with('errorPrograma', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
+        }
+
+        $prog_codigo = $programas;
+        $proco = [];
+
+        $contris = $request->input('contribucion', []);
+        foreach ($contris as $activ) {
+            array_push($proco, [
+                'prog_codigo' => $prog_codigo,
+                'amb_codigo' => $activ,
+                'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                'proco_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+
+        $procoCrear = ProgramasContribuciones::insert($proco);
+        if (!$procoCrear) {
+            ProgramasContribuciones::where('prog_codigo', $prog_codigo)->delete();
+            return redirect()->back()->with('errorPrograma', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
         }
 
         return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();
@@ -271,8 +296,13 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.');
         }
 
+        $verificar = Iniciativas::select('inic_codigo')->where('prog_codigo', $request->prog_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.programas')->with('errorPrograma', 'No es posible eliminar, el programa está siendo utilizado en una iniciativa');
+        }
         // Eliminar actividades relacionadas
         ProgramasActividades::where('prog_codigo', $request->prog_codigo)->delete();
+        ProgramasContribuciones::where('prog_codigo', $request->prog_codigo)->delete();
 
         // Eliminar el programa
         $programa->delete();
@@ -305,6 +335,8 @@ class ParametrosController extends Controller
 
         }
 
+        ProgramasContribuciones::where('prog_codigo', $prog_codigo)->delete();
+
         $programa->prog_nombre = $request->nombre;
         $programa->prog_ano = $request->ano;
         $programa->tmec_codigo = $request->tipo;
@@ -326,6 +358,27 @@ class ParametrosController extends Controller
 
         // Guardar la actualización del programa en la base de datos
         $programa->save();
+
+        $proco = [];
+
+        $contris = $request->input('contribuciont', []);
+        foreach ($contris as $activ) {
+            array_push($proco, [
+                'prog_codigo' => $prog_codigo,
+                'amb_codigo' => $activ,
+                'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                'proco_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+
+        $procoCrear = ProgramasContribuciones::insert($proco);
+        if (!$procoCrear) {
+            ProgramasContribuciones::where('prog_codigo', $prog_codigo)->delete();
+            return redirect()->back()->with('errorPrograma', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
+        }
 
         return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente');
 
@@ -350,6 +403,11 @@ class ParametrosController extends Controller
             $verificarDropFile = unlink('public/' . $verificarDrop->conv_ruta_archivo);
         } catch (\Exception $e) {
             echo "Archivo no encontrado: " . $e->getMessage();
+        }
+
+        $verificar = Iniciativas::select('inic_codigo')->where('conv_codigo', $request->conv_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'No es posible eliminar, el documento de colaboración está siendo utilizado en una iniciativa');
         }
 
         $Drop = Convenios::where('conv_codigo', $request->conv_codigo)->delete();
@@ -744,6 +802,12 @@ class ParametrosController extends Controller
         if (!$verificarDrop) {
             return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'La escuela no se encuentra registrada en el sistema.');
         }
+
+        $verificar = Carreras::select('escu_codigo')->where('escu_codigo', $request->escu_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'No es posible eliminar, la escuela está siendo utilizada en una carrera');
+        }
+
         $Drop = Escuelas::where('escu_codigo', $request->escu_codigo)->delete();
         if (!$Drop) {
             return redirect()->back()->with('errorEscuela', 'La escuela no se pudo eliminar, intente más tarde.');
@@ -1000,10 +1064,10 @@ class ParametrosController extends Controller
             return redirect()->back()->with('Mecanismo', 'Ocurrió un error al Crear el mecanismo.')->withInput();
         }
         $meca_codigo = $mecanismo;
-        $seso = [];
-        $activis = $request->input('actividades', []);
-        foreach ($activis as $activ) {
-            array_push($seso, [
+        $proco = [];
+        $contris = $request->input('actividades', []);
+        foreach ($contris as $activ) {
+            array_push($proco, [
                 'meca_codigo' => $meca_codigo,
                 'tiac_codigo' => $activ,
                 'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -1012,8 +1076,8 @@ class ParametrosController extends Controller
                 'meac_rol_mod' => Session::get('admin')->rous_codigo,
             ]);
         }
-        $sesoCrear = MecanismosActividades::insert($seso);
-        if (!$sesoCrear) {
+        $procoCrear = MecanismosActividades::insert($proco);
+        if (!$procoCrear) {
             ProgramasActividades::where('id_meca', $meca_codigo)->delete();
             return redirect()->back()->with('errorMecanismo', 'Ocurrió un error durante el registro de mecanismos, intente más tarde.')->withInput();
         }
@@ -1028,6 +1092,11 @@ class ParametrosController extends Controller
 
         if (!$mecanismo) {
             return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'El mecanismo no se encuentra registrado en el sistema.');
+        }
+
+        $verificar = Iniciativas::select('inic_codigo')->where('meca_codigo', $request->meca_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'No es posible eliminar, el mecanismo está siendo utilizado en una iniciativa');
         }
 
         $inicMecanismo = Iniciativas::where('meca_codigo',$request->meca_codigo)->get();
@@ -1204,6 +1273,11 @@ class ParametrosController extends Controller
         $tipoact = TipoActividades::find($request->input('tiac_codigo'));
         if (!$tipoact) {
             return redirect()->route('admin.listar.tipoact')->with('errorTipoact', 'Tipo de actividad no encontrado.');
+        }
+
+        $verificar = Iniciativas::select('inic_codigo')->where('tiac_codigo', $request->tiac_codigo);
+        if ($verificar) {
+            return redirect()->route('admin.listar.tipoact')->with('errorTipoact', 'No es posible eliminar, el tipo de actividad está siendo utilizado en una iniciativa');
         }
 
         $tipoact->delete();
