@@ -596,7 +596,7 @@ class IniciativasController extends Controller
             'carreras' => 'required',
             'escuelas' => 'required',
             'mecanismos' => 'required',
-            // 'tactividad' => 'required',
+            'tactividad' => 'required',
             /* 'convenio' => 'required', */
             'territorio' => 'required',
             'pais' => 'required'
@@ -609,7 +609,7 @@ class IniciativasController extends Controller
             'carreras.required' => 'Es necesario que seleccione al menos una Carrera en donde se ejecutará la iniciativa.',
             'escuelas.required' => 'Es necesario que seleccione al menos una Escuela en donde se ejecutará la iniciativa.',
             'mecanismos.required' => 'Es necesario que seleccione un programa.',
-            // 'tactividad.required' => 'Es necesario que seleccione el tipo de actividad a realizar.',
+            'tactividad.required' => 'Es necesario que seleccione el tipo de actividad a realizar.',
             /* 'convenio.required' => 'Es necesario que escoja un convenio para asociar la iniciativa.', */
             'territorio.required' => 'Especifique si la iniciativa es a nivel nacional o internacional.',
             'pais.required' => 'Seleccione el país en donde se ejecutará la iniciativa.'
@@ -622,6 +622,7 @@ class IniciativasController extends Controller
             'inic_descripcion' => $request->description,
             'conv_codigo' => $request->convenio,
             'meca_codigo' => $request->mecanismos,
+            'tiac_codigo' => $request->tactividad,
             'inic_territorio' => $request->territorio,
             'inic_visible' => 1,
             'inic_creado' => Carbon::now()->format('Y-m-d H:i:s'),

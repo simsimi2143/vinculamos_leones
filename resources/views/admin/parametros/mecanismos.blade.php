@@ -57,7 +57,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
-                                            <th>Tipo</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -74,16 +73,16 @@
                                             <tr>
                                                 <td>{{ $contador }}</td>
                                                 <td>{{ $meca->meca_nombre }}</td>
-                                                <td>{{ $meca->tmec_nombre }}</td>
                                                 <td>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger"
                                                         onclick="eliminarMeca({{ $meca->meca_codigo }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Eliminar mecanismo"><i class="fas fa-trash"></i></a>
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Eliminar mecanismo"><i class="fas fa-trash"></i></a>
 
 
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
-                                                    onclick="editarMeca({{ $meca->meca_codigo }})"
-                                                    data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
+                                                        onclick="editarMeca({{ $meca->meca_codigo }})" data-toggle="tooltip"
+                                                        data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
 
                                                 </td>
                                             </tr>
@@ -119,8 +118,9 @@
                                         <i class="fas fa-pen-nib"></i>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control @error('meca_nombre') is-invalid @enderror" id="meca_nombre" name="meca_nombre" placeholder=""
-                                    autocomplete="off" value="{{ old('meca_nombre') }}">
+                                <input type="text" class="form-control @error('meca_nombre') is-invalid @enderror"
+                                    id="meca_nombre" name="meca_nombre" placeholder="" autocomplete="off"
+                                    value="{{ old('meca_nombre') }}">
                                 @error('meca_nombre')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -128,20 +128,18 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Tipo de iniciativa del Mecanismo</label>
+                        <div class="form-group" style="align-items: center;" id="actiAsociadasContainer">
+                            <label>Tipo de Actividades Asociadas</label>
                             <div class="input-group">
-                                <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    @forelse ($tipos as $tip)
-                                        <option value="{{ $tip->tmec_codigo }}"
-                                            {{ old('tipo') == $tip->tmec_codigo ? 'selected' : '' }}>
-                                            {{ $tip->tmec_nombre }}</option>
-                                    @empty
-                                        <option value="-1">No existen registros</option>
-                                    @endforelse
+                                <select class="form-control select2" style="width: 100%" id="actividades"
+                                    name="actividades[]" multiple @error('actividades') is-invalid @enderror>
+                                    <option value="" disabled>Seleccione...</option>
+                                    @foreach ($ACTIVIDADES as $acti)
+                                        <option value="{{ $acti->tiac_codigo }}">
+                                            {{ $acti->tiac_nombre }}</option>
+                                    @endforeach
                                 </select>
-                                @error('tipo')
+                                @error('actividades')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -160,66 +158,102 @@
 
 
     @foreach ($mecanismos as $meca)
-    <div class="modal fade" id="modalEditarmecanismos-{{ $meca->meca_codigo }}" tabindex="-1" role="dialog"
-        aria-labelledby="modalEditarmecanismos" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarmecanismos">Editar mecanismo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.actualizar.mecanismos', $meca->meca_codigo) }}" method="POST">
-                        @method('PUT')
-                        @csrf
+        <div class="modal fade" id="modalEditarmecanismos-{{ $meca->meca_codigo }}" tabindex="-1" role="dialog"
+            aria-labelledby="modalEditarmecanismos" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarmecanismos">Editar mecanismo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('admin.actualizar.mecanismos', $meca->meca_codigo) }}" method="POST">
+                            @method('PUT')
+                            @csrf
 
-                        <div class="form-group">
-                            <label>Nombre del Mecanismo</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-pen-nib"></i>
+                            <div class="form-group">
+                                <label>Nombre del Mecanismo</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-pen-nib"></i>
+                                        </div>
                                     </div>
+                                    <input type="text" class="form-control @error('meca_nombre') is-invalid @enderror"
+                                        id="meca_nombre" name="meca_nombre" value="{{ $meca->meca_nombre }}"
+                                        autocomplete="off">
+                                    @error('mecanombre')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
-                                <input type="text" class="form-control @error('meca_nombre') is-invalid @enderror" id="meca_nombre" name="meca_nombre"
-                                    value="{{ $meca->meca_nombre }}" autocomplete="off">
-                                @error('mecanombre')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo de iniciativa del mecanismo</label>
-                            <div class="input-group">
-                                <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
-                                    @foreach ($tipos as $tipo)
-                                        <option value="{{ $tipo->tmec_codigo }}"
-                                            {{ $tipo->tmec_codigo == $meca->tmec_codigo ? 'selected' : '' }}>
-                                            {{ $tipo->tmec_nombre }}
+                            <div class="form-group" style="align-items: center;" id="actiAsociadasContainer">
+                                <label>Tipo de Actividades Asociadas</label>
+                                <div class="input-group">
+                                    
+                                    <select class="form-control select2" style="width: 100%" id="actividades"
+                                        name="actividades[]" multiple>
+                                        <option value="" disabled>Seleccione...</option>
+                                        @foreach ($ACTIVIDADES as $acti)
+                                        @php
+                                            $selected = $Mecanismos_Actividades->contains(function ($meca_acti) use ($acti, $meca) {
+                                                return $meca_acti->tiac_codigo === $acti->tiac_codigo && $meca_acti->meca_codigo === $meca->meca_codigo;
+                                            });
+                                        @endphp
+                                        <option value="{{ $acti->tiac_codigo }}" {{ $selected ? 'selected' : '' }}>
+                                            {{ $acti->tiac_nombre }}
                                         </option>
                                     @endforeach
-                                </select>
-                                @error('tipo')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
+                                    
+                                    </select>
 
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
-                        </div>
-                    </form>
+
+
+                                    @if ($errors->has('actividades'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('actividades') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
+
+
+                                </div>
+                            </div>
+                            {{-- <div class="form-group">
+                                <label>Tipo de iniciativa del mecanismo</label>
+                                <div class="input-group">
+                                    <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
+                                        name="tipo">
+                                        @foreach ($tipos as $tipo)
+                                            <option value="{{ $tipo->tmec_codigo }}"
+                                                {{ $tipo->tmec_codigo == $meca->tmec_codigo ? 'selected' : '' }}>
+                                                {{ $tipo->actividades }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('tipo')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div> --}}
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-@endforeach
+    @endforeach
 
 
 
@@ -239,7 +273,8 @@
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El Mecanismo dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">El Mecanismo dejará de existir dentro del sistema. <br> ¿Desea continuar de
+                            todos
                             modos?</h6>
                         <input type="hidden" id="meca_codigo" name="meca_codigo" value="">
                     </div>

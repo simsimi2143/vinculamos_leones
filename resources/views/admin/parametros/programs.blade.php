@@ -195,18 +195,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="align-items: center;" id="actiAsociadasContainer">
-                            <label>Tipo de Actividades Asociadas</label>
+                        <div class="form-group">
+                            <label>Tipo de iniciativa del Programa</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="actividades"
-                                    name="actividades[]" multiple @error('actividades') is-invalid @enderror>
-                                    <option value="" disabled>Seleccione...</option>
-                                    @foreach ($ACTIVIDADES as $acti)
-                                        <option value="{{ $acti->tiac_codigo }}">
-                                            {{ $acti->tiac_nombre }}</option>
-                                    @endforeach
+                                <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
+                                    name="tipo">
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    @forelse ($tiposIniciativas as $tip)
+                                        <option value="{{ $tip->tmec_codigo }}"
+                                            {{ old('tipo') == $tip->tmec_codigo ? 'selected' : '' }}>
+                                            {{ $tip->tmec_nombre }}</option>
+                                    @empty
+                                        <option value="-1">No existen registros</option>
+                                    @endforelse
                                 </select>
-                                @error('actividades')
+                                @error('tipo')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -462,36 +465,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" style="align-items: center;" id="actiAsociadasContainer">
-                                <label>Tipo de Actividades Asociadas</label>
+                            <div class="form-group">
+                                <label>Tipo de iniciativa del Programa</label>
                                 <div class="input-group">
-                                    <select class="form-control select2" style="width: 100%" id="actividades"
-                                        name="actividades[]" multiple>
-                                        <option value="" disabled>Seleccione...</option>
-                                        @foreach ($ACTIVIDADES as $acti)
-                                            @php
-                                                $selected = $PROGRA_ACTI->contains(function ($proacti) use ($acti, $prog) {
-                                                    return $proacti->tiac_codigo === $acti->tiac_codigo && $proacti->prog_codigo === $prog->prog_codigo;
-                                                });
-                                            @endphp
-                                            <option value="{{ $acti->tiac_codigo }}" {{ $selected ? 'selected' : '' }}>
-                                                {{ $acti->tiac_nombre }}
+                                    <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
+                                        @foreach ($tiposIniciativas as $ti)
+                                            <option value="{{ $ti->tmec_codigo }}" {{ $ti->tmec_codigo == $prog->tmec_codigo ? 'selected' : '' }}>
+                                                {{ $ti->tmec_nombre }}
                                             </option>
                                         @endforeach
                                     </select>
-
-
-
-                                    @if ($errors->has('actividades'))
-                                        <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                            <div class="alert-body">
-                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                                <strong>{{ $errors->first('actividades') }}</strong>
-                                            </div>
+                                    
+                                    @error('tipo')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
                                         </div>
-                                    @endif
-
-
+                                    @enderror
                                 </div>
                             </div>
                             <div class="row">
