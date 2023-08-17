@@ -10,6 +10,7 @@ use App\Models\Comuna;
 use App\Models\Convenios;
 use App\Models\Escuelas;
 use App\Models\GruposInteres;
+use App\Models\Iniciativas;
 use App\Models\Mecanismos;
 use App\Models\Pais;
 use App\Models\Regiones;
@@ -33,6 +34,7 @@ use App\Models\Unidades;
 use App\Models\SubUnidades;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -212,26 +214,30 @@ class ParametrosController extends Controller
         $tipos = AmbitosAccion::orderBy('amac_codigo', 'asc')->get();
         $ACTIVIDADES = TipoActividades::all();
         $PROGRA_ACTI = ProgramasActividades::all();
+        $tiposIniciativas = TipoIniciativas::orderBy('tmec_codigo', 'asc')->get();
 
-        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI'));
+        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI', 'tiposIniciativas'));
     }
 
     public function crearProgramas(Request $request)
     {
-        $request -> validate([
+        $request->validate([
             'nombre' => 'required|max:255',
             'ambito' => 'required',
-            'actividades' => 'required',
+            'tipo' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             'ambito.required' => 'Seleccione un ámbito de acción.',
-            'actividades[].required' => 'Un tipo de actividad es necesaria.',
+            'tipo.required' => 'Seleccione un tipo de iniciativa.',
         ]);
+
+
 
         $programas = Programas::insertGetId([
             'prog_nombre' => $request->nombre,
             'prog_ano' => $request->ano,
+            'tmec_codigo' => $request->tipo,
             'prog_descripcion' => $request->descripcion,
             'prog_director' => $request->director,
             'prog_meta_socios' => $request->meta_socios,
@@ -239,7 +245,7 @@ class ParametrosController extends Controller
             'prog_meta_estudiantes' => $request->meta_estudiantes,
             'prog_meta_docentes' => $request->meta_docentes,
             'prog_meta_beneficiarios' => $request->meta_beneficiarios,
-            'prog_meta_asignaturas'=> $request->meta_asignaturas,
+            'prog_meta_asignaturas' => $request->meta_asignaturas,
             'prog_meta_n_carreras' => $request->meta_n_carreras,
             'prog_meta_n_asignaturas' => $request->meta_n_asignaturas,
             'amac_codigo' => $request->ambito,
@@ -253,46 +259,6 @@ class ParametrosController extends Controller
             return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
         }
 
-        $prog_codigo = $programas;
-        $seso = [];
-
-        $activis = $request->input('actividades', []);
-        foreach ($activis as $activ) {
-            array_push($seso, [
-                'prog_codigo' => $prog_codigo,
-                'tiac_codigo' => $activ,
-                'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'prog_nickname_mod' => Session::get('admin')->usua_nickname,
-                'prog_rol_mod' => Session::get('admin')->rous_codigo,
-            ]);
-        }
-
-
-        $sesoCrear = ProgramasActividades::insert($seso);
-        if (!$sesoCrear) {
-            ProgramasActividades::where('inic_codigo', $prog_codigo)->delete();
-            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
-        }
-        /*
-                $programa = new Programas();
-                $programa->prog_nombre = $request->input('nombre');
-                $programa->prog_ano = $request->input('ano');
-                $programa->prog_descripcion = $request->input('descripcion');
-                $programa->prog_director = $request->input('director');
-                $programa->prog_meta_socios = $request->input('meta_socios');
-                $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');
-                $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
-                $programa->prog_meta_docentes = $request->input('meta_docentes');
-                $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
-                $programa->amac_codigo = $request->input('ambito');
-                $programa->meca_codigo = $request->input('mecanismo');
-                $programa->prog_creado = now();
-                $programa->prog_actualizado = now();
-
-                // Guardar el programa en la base de datos
-                $programa->save();
-         */
         return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();
         ;
     }
@@ -319,66 +285,48 @@ class ParametrosController extends Controller
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             'ambito' => 'required',
-            'actividades' => 'required',
+            'tipo' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             'ambito.required' => 'Seleccione un ámbito de acción.',
-            'meta_socios.required' => 'Una meta de socios es necesaria.',
-            'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
-            'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
-            'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
-            'meta_beneficiarios.required' => 'Una meta de beneficiarios es necesaria.',
-            'actividades.required' => 'Un tipo de actividad es necesaria.',
-        ]);
+            'tipo.required' => 'Seleccione un tipo de iniciativa.',
 
+        ]);
         if ($validacion->fails()) {
-            return redirect()->route('admin.listar.programas')->withErrors($validacion)->withInput();
+            return redirect()->route('admin.listar.mecanismos')->withErrors($validacion)->withInput();
         }
 
-        $programa = Programas::with('actividades')->find($prog_codigo);
+        $programa = Programas::find($prog_codigo);
 
         if (!$programa) {
             return redirect()->route('admin.listar.programas')->with('errorPrograma', 'El programa no se encuentra registrado en el sistema.')->withInput();
             ;
+
         }
 
+        $programa->prog_nombre = $request->nombre;
+        $programa->prog_ano = $request->ano;
+        $programa->tmec_codigo = $request->tipo;
+        $programa->prog_descripcion = $request->descripcion;
+        $programa->prog_director = $request->director;
+        $programa->prog_meta_socios = $request->meta_socios;
+        $programa->prog_meta_iniciativas = $request->meta_iniciativas;
+        $programa->prog_meta_estudiantes = $request->meta_estudiantes;
+        $programa->prog_meta_docentes = $request->meta_docentes;
+        $programa->prog_meta_beneficiarios = $request->meta_beneficiarios;
+        $programa->prog_meta_asignaturas = $request->meta_asignaturas;
+        $programa->prog_meta_n_carreras = $request->meta_n_carreras;
+        $programa->prog_meta_n_asignaturas = $request->meta_n_asignaturas;
+        $programa->amac_codigo = $request->ambito;
+        $programa->prog_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $programa->prog_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $programa->prog_nickname_mod = Session::get('admin')->usua_nickname;
+        $programa->prog_rol_mod = Session::get('admin')->rous_codigo;
 
-        $programa->update([
-            'prog_nombre' => $request->nombre,
-            'prog_ano' => $request->ano,
-            'prog_descripcion' => $request->descripcion,
-            'prog_director' => $request->director,
-            'prog_meta_socios' => $request->meta_socios,
-            'prog_meta_iniciativas' => $request->meta_iniciativas,
-            'prog_meta_estudiantes' => $request->meta_estudiantes,
-            'prog_meta_docentes' => $request->meta_docentes,
-            'prog_meta_beneficiarios' => $request->meta_beneficiarios,
-            'prog_meta_asignaturas'=> $request->meta_asignaturas,
-            'prog_meta_n_carreras' => $request->meta_n_carreras,
-            'prog_meta_n_asignaturas' => $request->meta_n_asignaturas,
-            'amac_codigo' => $request->ambito,
-            'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'prog_nickname_mod' => Session::get('admin')->usua_nickname,
-            'prog_rol_mod' => Session::get('admin')->rous_codigo,
-        ]);
+        // Guardar la actualización del programa en la base de datos
+        $programa->save();
 
-        // Eliminar actividades existentes
-        $programa->actividades()->delete();
-
-        $actividades = $request->input('actividades', []);
-        $nuevasActividades = [];
-        foreach ($actividades as $actividad) {
-            $nuevasActividades[] = [
-                'tiac_codigo' => $actividad,
-                'prog_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'prog_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'prog_nickname_mod' => Session::get('admin')->usua_nickname,
-                'prog_rol_mod' => Session::get('admin')->rous_codigo,
-            ];
-        }
-        $programa->actividades()->createMany($nuevasActividades);
         return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente');
 
     }
@@ -1076,37 +1024,58 @@ class ParametrosController extends Controller
     //TODO: funciones de mecanismos para parametrizar
     public function listarMecanismos()
     {
-        $mecanismos = Mecanismos::join('tipo_iniciativa', 'mecanismos.tmec_codigo', '=', 'tipo_iniciativa.tmec_codigo')
-            ->select('mecanismos.*', 'tipo_iniciativa.tmec_nombre')
-            ->orderBy('mecanismos.meca_codigo', 'asc')
-            ->get();
+        $mecanismos = Mecanismos::orderBy('meca_codigo', 'asc')->get();
+        $Mecanismos_Actividades = MecanismosActividades::all();
+        $ACTIVIDADES = TipoActividades::all();
 
         $tipos = TipoIniciativas::orderBy('tmec_codigo', 'asc')->get();
 
-        return view('admin.parametros.mecanismos', compact('mecanismos', 'tipos'));
+        return view('admin.parametros.mecanismos', compact('mecanismos', 'tipos', 'ACTIVIDADES', 'Mecanismos_Actividades'));
     }
 
     public function crearMecanismos(Request $request)
     {
-        $validacion = Validator::make($request->all(), [
+
+        $request->validate([
             'meca_nombre' => 'required|max:255',
-            'tipo' => 'required',
+            'actividades' => 'required',
         ], [
             'meca_nombre.required' => 'El nombre del mecanismo es requerido.',
             'meca_nombre.max' => 'El nombre del mecanismo excede el máximo de caracteres permitidos (255).',
-            'tipo.required' => 'Seleccione un tipo de iniciativa.',
+            'actividades[].required' => 'Un tipo de actividad es necesaria.',
         ]);
 
-        if ($validacion->fails()) {
-            return redirect()->route('admin.mecanismos.listar')->withErrors($validacion)->withInput();
-        }
 
-        $mecanismo = Mecanismos::create([
-            'meca_nombre' => $request->input('meca_nombre'),
-            'tmec_codigo' => $request->input('tipo'),
+        $mecanismo = Mecanismos::insertGetId([
+            'meca_nombre' => $request->meca_nombre,
+            'tmec_codigo' => $request->tipo,
+            'meca_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'meca_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'meca_nickname_mod' => Session::get('admin')->usua_nickname,
+            'meca_rol_mod' => Session::get('admin')->rous_codigo,
             // Añade el resto de los campos del modelo si son necesarios.
         ]);
-
+        if (!$mecanismo) {
+            return redirect()->back()->with('Mecanismo', 'Ocurrió un error al Crear el mecanismo.')->withInput();
+        }
+        $meca_codigo = $mecanismo;
+        $seso = [];
+        $activis = $request->input('actividades', []);
+        foreach ($activis as $activ) {
+            array_push($seso, [
+                'meca_codigo' => $meca_codigo,
+                'tiac_codigo' => $activ,
+                'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_nickname_mod' => Session::get('admin')->usua_nickname,
+                'meac_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+        $sesoCrear = MecanismosActividades::insert($seso);
+        if (!$sesoCrear) {
+            ProgramasActividades::where('id_meca', $meca_codigo)->delete();
+            return redirect()->back()->with('errorMecanismo', 'Ocurrió un error durante el registro de mecanismos, intente más tarde.')->withInput();
+        }
         return redirect()->route('admin.listar.mecanismos')
             ->with('exitoMecanismo', 'Mecanismo creado exitosamente.');
     }
@@ -1120,6 +1089,9 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'El mecanismo no se encuentra registrado en el sistema.');
         }
 
+        $inicMecanismo = Iniciativas::where('meca_codigo',$request->meca_codigo)->get();
+        if(sizeof($inicMecanismo)>0) return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo','El mecanismo no se puede eliminar porque se encuentra asociado a una iniciativa.');
+
         $mecanismo->delete();
 
         return redirect()->route('admin.listar.mecanismos')->with('exitoMecanismo', 'El mecanismo fue eliminado correctamente.');
@@ -1127,29 +1099,48 @@ class ParametrosController extends Controller
 
     public function actualizarMecanismos(Request $request, $meca_codigo)
     {
-        $validacion = Validator::make($request->all(), [
+        $request->validate([
             'meca_nombre' => 'required|max:255',
-            'tipo' => 'required',
+            'actividades' => 'required',
         ], [
             'meca_nombre.required' => 'El nombre del mecanismo es requerido.',
             'meca_nombre.max' => 'El nombre del mecanismo excede el máximo de caracteres permitidos (255).',
-            'tipo.required' => 'Seleccione un tipo de iniciativa.',
+            'actividades[].required' => 'Un tipo de actividad es necesaria.',
         ]);
 
-        if ($validacion->fails()) {
-            return redirect()->route('admin.listar.mecanismos')->withErrors($validacion)->withInput();
-        }
 
         $mecanismo = Mecanismos::find($meca_codigo);
 
         if (!$mecanismo) {
             return redirect()->route('admin.listar.mecanismos')->with('errorMecanismo', 'El mecanismo no se encuentra registrado en el sistema.');
         }
+        $mecanismo->update([
+            'meca_nombre' => $request->meca_nombre,
+            'tmec_codigo' => $request->tipo,
+            'meca_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'meca_nickname_mod' => Session::get('admin')->usua_nickname,
+            'meca_rol_mod' => Session::get('admin')->rous_codigo,
+        ]);
 
-        $mecanismo->meca_nombre = $request->input('meca_nombre');
-        $mecanismo->tmec_codigo = $request->input('tipo');
-        // Añade el resto de los campos del modelo si son necesarios.
-        $mecanismo->save();
+        $macanimos_actividades = MecanismosActividades::where('meca_codigo', $meca_codigo)->delete();
+        if (!$macanimos_actividades) {
+            return redirect()->back()->with('errorMecanismo', 'Ocurrió un error al cambiar las actividades del mecanismo.')->withInput();
+        }
+        $actividades = $request->input('actividades', []);
+        $nuevasActividades = [];
+
+        foreach ($actividades as $actividad) {
+            array_push($nuevasActividades, [
+                'meca_codigo' => $meca_codigo,
+                'tiac_codigo' => $actividad,
+                'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'meac_nickname_mod' => Session::get('admin')->usua_nickname,
+                'meac_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+        $nuevasActividades = MecanismosActividades::insert($nuevasActividades);
 
         return redirect()->route('admin.listar.mecanismos')->with('exitoMecanismo', 'Mecanismo actualizado exitosamente.');
     }
@@ -1810,80 +1801,87 @@ class ParametrosController extends Controller
 //CAMBIAR NOMBRE MODELO POR: TipoRRHH
 //--------------------------------------
 
-public function listarRecursosHumanos()
-{
-    return view('admin.parametros.tiporrhh', ['REGISTROS' => TipoRRHH::orderBy('trrhh_codigo', 'asc')->get()]);
-}
-
-public function crearRecursosHumanos(Request $request)
-{
-    $validacion = Validator::make($request->all(), [
-        'nombre' => 'required|max:100',
-        /* 'idcampo1' => 'required', */
-    ], [
-        'nombre.required' => 'El nombre es requerido.',
-        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
-    ]);
-
-    if ($validacion->fails()) {
-        return redirect()->route('admin.listar.rrhh')->withErrors($validacion)->withInput();
+    public function listarRecursosHumanos()
+    {
+        return view('admin.parametros.tiporrhh', ['REGISTROS' => TipoRRHH::orderBy('trrhh_codigo', 'asc')->get()]);
     }
 
-    $nuevo = new TipoRRHH();
-    $nuevo->trrhh_nombre = $request->input('nombre');
-    $nuevo->trrhh_creado = Carbon::now()->format('Y-m-d H:i:s');
-    $nuevo->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-    $nuevo->trrhh_visible = 1;
-    $nuevo->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
-    $nuevo->trrhh_rol_mod = Session::get('admin')->rous_codigo;
+    public function crearRecursosHumanos(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
 
-    $nuevo->save();
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.rrhh')->withErrors($validacion)->withInput();
+        }
 
-    return redirect()->back()->with('exito', 'Recurso Humano creado exitosamente');
-}
+        $nuevo = new TipoRRHH();
+        $nuevo->trrhh_nombre = $request->input('nombre');
+        $nuevo->trrhh_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->trrhh_visible = 1;
+        $nuevo->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->trrhh_rol_mod = Session::get('admin')->rous_codigo;
 
-public function eliminarRecursosHumanos(Request $request)
-{
-    $eliminado = TipoRRHH::where('trrhh_codigo', $request->trrhh_codigo)->first();
-    if (!$eliminado) {return redirect()->route('admin.listar.rrhh')->with('error', 'El Recurso Humano no se encuentra registrado en el sistema.');}
+        $nuevo->save();
 
-    $eliminado = TipoRRHH::where('trrhh_codigo', $request->trrhh_codigo)->delete();
-    return redirect()->route('admin.listar.rrhh')->with('exito', 'El Recurso Humano fue eliminado correctamente.');
-}
+        return redirect()->back()->with('exito', 'Recurso Humano creado exitosamente');
+    }
 
-public function actualizarRecursosHumanos(Request $request, $trrhh_codigo)
-{
-    $validacion = Validator::make($request->all(), [
-        'nombre' => 'required|max:100',
-        /* 'idcampo1' => 'required', */
-    ], [
-        'nombre.required' => 'El nombre es requerido.',
-        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
-    ]);
+    public function eliminarRecursosHumanos(Request $request)
+    {
+        $eliminado = TipoRRHH::where('trrhh_codigo', $request->trrhh_codigo)->first();
+        if (!$eliminado) {
+            return redirect()->route('admin.listar.rrhh')->with('error', 'El Recurso Humano no se encuentra registrado en el sistema.');
+        }
 
-    if ($validacion->fails()) {return redirect()->route('admin.listar.rrhh')->withErrors($validacion)->withInput();}
+        $eliminado = TipoRRHH::where('trrhh_codigo', $request->trrhh_codigo)->delete();
+        return redirect()->route('admin.listar.rrhh')->with('exito', 'El Recurso Humano fue eliminado correctamente.');
+    }
 
-    $editado = TipoRRHH::find($trrhh_codigo);
-    if (!$editado) {return redirect()->route('admin.listar.rrhh')->with('error', 'El Recurso Humano no se encuentra registrado en el sistema.')->withInput();}
+    public function actualizarRecursosHumanos(Request $request, $trrhh_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+            /* 'idcampo1' => 'required', */
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+        ]);
 
-    $editado->trrhh_nombre = $request->input('nombre');
-    $editado->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
-    $editado->trrhh_visible = 1;
-    $editado->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
-    $editado->trrhh_rol_mod = Session::get('admin')->rous_codigo;
-    $editado->save();
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.rrhh')->withErrors($validacion)->withInput();
+        }
 
-    return redirect()->back()->with('exito', 'Recurso Humano actualizado exitosamente')->withInput();;
-}
+        $editado = TipoRRHH::find($trrhh_codigo);
+        if (!$editado) {
+            return redirect()->route('admin.listar.rrhh')->with('error', 'El Recurso Humano no se encuentra registrado en el sistema.')->withInput();
+        }
 
-//TODO: tipo de infraestrutura
+        $editado->trrhh_nombre = $request->input('nombre');
+        $editado->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $editado->trrhh_visible = 1;
+        $editado->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->trrhh_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->save();
+
+        return redirect()->back()->with('exito', 'Recurso Humano actualizado exitosamente')->withInput();
+        ;
+    }
+
+    //TODO: tipo de infraestrutura
 //--------------------------------------
 //CAMBIAR NOMBRE MODELO POR: TipoInfraestructura
 //--------------------------------------
 
-public function listarTipoInfraestructuras()
+    public function listarTipoInfraestructuras()
     {
         return view('admin.parametros.tipoinfraestructura', ['REGISTROS' => TipoInfraestructura::orderBy('tinf_codigo', 'asc')->get()]);
         /* // EN CASO DE NECESITAR OTROS DATOS AL ENRUTAR
@@ -1896,14 +1894,16 @@ public function listarTipoInfraestructuras()
         ]); */
     }
 
-public function crearTipoInfraestructuras(Request $request)
+    public function crearTipoInfraestructuras(Request $request)
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:100',
+            'valor' => 'required'
             /* 'idcampo1' => 'required', */
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            'valor.required' => 'Es necesario agregar la valorización del tipo de infraestructura'
             /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
         ]);
 
@@ -1913,6 +1913,7 @@ public function crearTipoInfraestructuras(Request $request)
 
         $nuevo = new TipoInfraestructura();
         $nuevo->tinf_nombre = $request->input('nombre');
+        $nuevo->tinf_valor = $request->input('valor');
         $nuevo->tinf_creado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->tinf_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->tinf_visible = 1;
@@ -1921,42 +1922,52 @@ public function crearTipoInfraestructuras(Request $request)
 
         $nuevo->save();
 
-        return redirect()->back()->with('exito', 'tipo de infraestrutura creado exitosamente');
+        return redirect()->back()->with('exitoTIfrastructura', 'Tipo de infraestrutura creado exitosamente');
     }
 
-public function eliminarTipoInfraestructuras(Request $request)
+    public function eliminarTipoInfraestructuras(Request $request)
     {
         $eliminado = TipoInfraestructura::where('tinf_codigo', $request->tinf_codigo)->first();
-        if (!$eliminado) {return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.');}
+        if (!$eliminado) {
+            return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.');
+        }
 
         $eliminado = TipoInfraestructura::where('tinf_codigo', $request->tinf_codigo)->delete();
         return redirect()->route('admin.listar.tipoinfra')->with('exito', 'El tipo de infraestrutura fue eliminado correctamente.');
     }
 
-public function actualizarTipoInfraestructuras(Request $request, $tinf_codigo)
+    public function actualizarTipoInfraestructuras(Request $request, $tinf_codigo)
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:100',
+            'valor' => 'required'
             /* 'idcampo1' => 'required', */
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+            'valor.required' => 'Es necesario que se ingrese un valor para la infraestructura.'
             /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
         ]);
 
-        if ($validacion->fails()) {return redirect()->route('admin.listar.tipoinfra')->withErrors($validacion)->withInput();}
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.tipoinfra')->withErrors($validacion)->withInput();
+        }
 
         $editado = TipoInfraestructura::find($tinf_codigo);
-        if (!$editado) {return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.')->withInput();}
+        if (!$editado) {
+            return redirect()->route('admin.listar.tipoinfra')->with('error', 'El tipo de infraestrutura no se encuentra registrado en el sistema.')->withInput();
+        }
 
         $editado->tinf_nombre = $request->input('nombre');
+        $editado->tinf_valor = $request->input('valor');
         $editado->tinf_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $editado->tinf_visible = 1;
         $editado->tinf_nickname_mod = Session::get('admin')->usua_nickname;
         $editado->tinf_rol_mod = Session::get('admin')->rous_codigo;
         $editado->save();
 
-        return redirect()->back()->with('exito', 'tipo de infraestrutura actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exito', 'tipo de infraestrutura actualizado exitosamente')->withInput();
+        ;
     }
 
 }

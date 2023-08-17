@@ -38,19 +38,28 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                     <div class="row">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @if (
-                                $errors->has('nombre')
-                                )
-                            <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                                <div class="alert-body">
-                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    @if ($errors->has('nombre'))
-                                        <strong>{{ $errors->first('nombre') }}</strong><br>
-                                    @endif
+                            @if ($errors->has('nombre'))
+                                <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        @if ($errors->has('nombre'))
+                                            <strong>{{ $errors->first('nombre') }}</strong><br>
+                                        @endif
 
+                                    </div>
                                 </div>
-                            </div>
                             @endif
+
+                            @if ($errors->has('valor'))
+                                <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                    style="width:100%">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        <strong>{{ $errors->first('valor') }}</strong>
+                                    </div>
+                                </div>
+                            @endif
+
                             @if (Session::has('errortipo de infraestrutura'))
                                 <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
@@ -59,10 +68,10 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('exitotipo de infraestrutura'))
+                            @if (Session::has('exitoTIfrastructura'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('exitotipo de infraestrutura') }}</strong>
+                                        <strong>{{ Session::get('exitoTIfrastructura') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>
@@ -76,7 +85,8 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                             <h4>Listado de tipos de infraestructuras</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearregistro"><i class="fas fa-plus"></i> Nuevo tipo de infraestrutura</button>
+                                    data-target="#modalCrearregistro"><i class="fas fa-plus"></i> Nuevo tipo de
+                                    infraestrutura</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -84,8 +94,9 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                 <table class="table table-striped" id="table-1" style="font-size: 110%;">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            {{-- <th>#</th> --}}
                                             <th>Nombre</th>
+                                            <th>Valor</th>
                                             {{-- <th> idcampo1  </th> --}}
                                             <th>Acciones</th>
                                         </tr>
@@ -95,17 +106,19 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                         @foreach ($REGISTROS as $registro)
                                             <?php $contador = $contador + 1; ?>
                                             <tr>
-                                                <td>{{ $contador }}</td>
+                                                {{-- <td>{{ $contador }}</td> --}}
                                                 <td>{{ $registro->tinf_nombre }}</td>
+                                                <td>{{ $registro->tinf_valor }}</td>
                                                 {{-- <td> {{ $registro->tinf_idcampo1 }} </td> --}}
                                                 <td>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
-                                                        onclick="editarRegistro({{ $registro->tinf_codigo }})" data-toggle="tooltip"
-                                                        data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
+                                                        onclick="editarRegistro({{ $registro->tinf_codigo }})"
+                                                        data-toggle="tooltip" data-placement="top" title="Editar"><i
+                                                            class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger"
                                                         onclick="eliminarRegistro({{ $registro->tinf_codigo }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Eliminar registro"><i
-                                                            class="fas fa-trash"></i></a>
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Eliminar registro"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -151,6 +164,28 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                             <div class="alert-body">
                                                 <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                                 <strong>{{ $errors->first('nombre') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Valor</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-dollar-sign"></i> {{-- ICONO --}}
+                                        </div>
+                                    </div>
+                                    <input type="numer" class="form-control" id="valor" name="valor"
+                                        value="{{ $registro->tinf_valor }}" autocomplete="off">
+                                    @if ($errors->has('valor'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('valor') }}</strong>
                                             </div>
                                         </div>
                                     @endif
@@ -223,17 +258,41 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
-                                        <i class="fas fa-pen-nib"></i>  {{-- ICONO --}}
+                                        <i class="fas fa-pen-nib"></i> {{-- ICONO --}}
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="" autocomplete="off" value="{{ old('care_nombre') }}">
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder=""
+                                    autocomplete="off" value="{{ old('tinf_nombre') }}">
                                 @if ($errors->has('nombre'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                             <strong>{{ $errors->first('nombre') }}</strong>
+                                        </div>
+                                    </div>
+                                @endif
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Valor</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-dollar-sign"></i> {{-- ICONO --}}
+                                    </div>
+                                </div>
+
+                                <input type="number" class="form-control" id="valor" name="valor" placeholder=""
+                                    autocomplete="off" value="{{ old('tinf_valor') }}">
+                                @if ($errors->has('valor'))
+                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                        style="width:100%">
+                                        <div class="alert-body">
+                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                            <strong>{{ $errors->first('valor') }}</strong>
                                         </div>
                                     </div>
                                 @endif
@@ -295,7 +354,8 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El tipo de infraestrutura dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">El tipo de infraestrutura dejará de existir dentro del sistema. <br> ¿Desea
+                            continuar de todos
                             modos?</h6>
                         <input type="hidden" id="tinf_codigo" name="tinf_codigo" value="">
                     </div>
