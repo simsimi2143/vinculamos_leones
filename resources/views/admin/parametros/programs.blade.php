@@ -196,7 +196,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Tipo de iniciativa del Programa</label>
+                            <label>Frecuencia</label>
                             <div class="input-group">
                                 <select class="form-control @error('tipo') is-invalid @enderror" id="tipo"
                                     name="tipo">
@@ -476,7 +476,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Tipo de iniciativa del Programa</label>
+                                <label>Frecuencia</label>
                                 <div class="input-group">
                                     <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
                                         @foreach ($tiposIniciativas as $ti)
@@ -485,7 +485,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    
+
                                     @error('tipo')
                                         <div class="invalid-feedback">
                                             {{ $message }}
