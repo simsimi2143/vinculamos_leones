@@ -65,7 +65,7 @@
                                                 <th class="text-center">Total</th>
                                             </tr>
                                             <tr>
-                                                <td><strong>Aportado por la empresa</strong></td>
+                                                <td><strong>Aportado por la institución</strong></td>
                                                 <td>
                                                     <div class="row mb-2">
                                                         <div class="col-12 col-md-12 col-lg-12 text-center"
