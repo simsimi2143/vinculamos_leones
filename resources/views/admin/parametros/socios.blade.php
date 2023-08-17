@@ -179,10 +179,11 @@
                                     <select class="form-control select2" style="width: 100%" id="subgrupo2" name="subgrupo">
                                         <option value="" disabled selected>Seleccione...</option>
                                         @foreach ($subgrupos as $subgrupo )
-                                        <option value="{{ $grupo->grin_codigo }}"
+                                        <option value="{{ $subgrupo->sugr_codigo }}"
                                             {{ $soci->sugr_codigo == $subgrupo->sugr_codigo ? 'selected' : '' }}>
                                             {{ $subgrupo->sugr_nombre }}
                                         </option>
+
                                         @endforeach
                                     </select>
                                     @if ($errors->has('subgrupo'))
