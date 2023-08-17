@@ -234,8 +234,7 @@
                             <div class="input-group">
                                 <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
                                     name="descripcion">
-                                    <option value="" selected disable d>Seleccione...</option>
-                                    <option value="Contribución Interna">Contribución Interna</option>
+                                    <option value="Contribución Interna" selected> Contribución Interna</option>
                                     <option value="Contribución Externa">Contribución Externa</option>
                                 </select>
                                 @error('descripcion')

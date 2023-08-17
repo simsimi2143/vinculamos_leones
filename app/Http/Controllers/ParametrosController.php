@@ -15,6 +15,7 @@ use App\Models\Mecanismos;
 use App\Models\Pais;
 use App\Models\Regiones;
 use App\Models\Programas;
+use App\Models\ProgramasContribuciones;
 use App\Models\Sedes;
 use App\Models\SedesSocios;
 use App\Models\SedesEscuelas;
@@ -215,8 +216,10 @@ class ParametrosController extends Controller
         $ACTIVIDADES = TipoActividades::all();
         $PROGRA_ACTI = ProgramasActividades::all();
         $tiposIniciativas = TipoIniciativas::orderBy('tmec_codigo', 'asc')->get();
+        $CONTRIS = Ambitos::all();
+        $PROCONS = ProgramasContribuciones::all();
 
-        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI', 'tiposIniciativas'));
+        return view('admin.parametros.programs', compact('programas', 'tipos', 'ACTIVIDADES', 'PROGRA_ACTI', 'tiposIniciativas','CONTRIS','PROCONS'));
     }
 
     public function crearProgramas(Request $request)
@@ -256,7 +259,29 @@ class ParametrosController extends Controller
         ]);
 
         if (!$programas) {
-            return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
+            return redirect()->back()->with('errorPrograma', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
+        }
+
+        $prog_codigo = $programas;
+        $proco = [];
+
+        $contris = $request->input('contribucion', []);
+        foreach ($contris as $activ) {
+            array_push($proco, [
+                'prog_codigo' => $prog_codigo,
+                'amb_codigo' => $activ,
+                'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                'proco_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+
+        $procoCrear = ProgramasContribuciones::insert($proco);
+        if (!$procoCrear) {
+            ProgramasContribuciones::where('prog_codigo', $prog_codigo)->delete();
+            return redirect()->back()->with('errorPrograma', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
         }
 
         return redirect()->back()->with('exitoPrograma', 'Programa creado exitosamente')->withInput();
@@ -273,6 +298,7 @@ class ParametrosController extends Controller
 
         // Eliminar actividades relacionadas
         ProgramasActividades::where('prog_codigo', $request->prog_codigo)->delete();
+        ProgramasContribuciones::where('prog_codigo', $request->prog_codigo)->delete();
 
         // Eliminar el programa
         $programa->delete();
@@ -305,6 +331,8 @@ class ParametrosController extends Controller
 
         }
 
+        ProgramasContribuciones::where('prog_codigo', $prog_codigo)->delete();
+
         $programa->prog_nombre = $request->nombre;
         $programa->prog_ano = $request->ano;
         $programa->tmec_codigo = $request->tipo;
@@ -326,6 +354,27 @@ class ParametrosController extends Controller
 
         // Guardar la actualización del programa en la base de datos
         $programa->save();
+
+        $proco = [];
+
+        $contris = $request->input('contribuciont', []);
+        foreach ($contris as $activ) {
+            array_push($proco, [
+                'prog_codigo' => $prog_codigo,
+                'amb_codigo' => $activ,
+                'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                'proco_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+
+        $procoCrear = ProgramasContribuciones::insert($proco);
+        if (!$procoCrear) {
+            ProgramasContribuciones::where('prog_codigo', $prog_codigo)->delete();
+            return redirect()->back()->with('errorPrograma', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
+        }
 
         return redirect()->back()->with('exitoPrograma', 'Programa actualizado exitosamente');
 
@@ -900,36 +949,36 @@ class ParametrosController extends Controller
             'soco_email_contraparte' => $request->input('email'),
         ]);
 
-        /* $seso = [];
+        /* $proco = [];
 
         if ($request->has('nacional')) {
             $sedes = Sedes::select('sede_codigo')->orderBy('sede_codigo', 'asc')->get();
             foreach ($sedes as $sede) {
-                array_push($seso, [
+                array_push($proco, [
                     'sede_codigo' => $sede->sede_codigo,
                     'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
+                    'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                    'proco_rol_mod' => Session::get('admin')->rous_codigo,
                 ]);
             }
         } else {
             $sedes = $request->input('sedesT', []);
             foreach ($sedes as $sede) {
-                array_push($seso, [
+                array_push($proco, [
                     'sede_codigo' => $sede,
                     'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
+                    'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                    'proco_rol_mod' => Session::get('admin')->rous_codigo,
                 ]);
             }
         } */
 
 
 
-        /* $sesoCrear = SedesSocios::insert($seso);
-        if (!$sesoCrear) {
+        /* $procoCrear = SedesSocios::insert($proco);
+        if (!$procoCrear) {
             SedesSocios::where('soco_codigo', $soco_codigo)->delete();
             return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
         } */
@@ -985,34 +1034,34 @@ class ParametrosController extends Controller
 
 
         $soco_codigo = $MacaActi;
-        $seso = [];
+        $proco = [];
 
         if ($request->has('nacional')) {
             $sedes = Sedes::select('sede_codigo')->orderBy('sede_codigo', 'asc')->get();
             foreach ($sedes as $sede) {
-                array_push($seso, [
+                array_push($proco, [
                     'sede_codigo' => $sede->sede_codigo,
                     'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
+                    'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                    'proco_rol_mod' => Session::get('admin')->rous_codigo,
                 ]);
             }
         } else {
             $sedes = $request->input('sedesT', []);
             foreach ($sedes as $sede) {
-                array_push($seso, [
+                array_push($proco, [
                     'sede_codigo' => $sede,
                     'soco_codigo' => $soco_codigo,
-                    'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'seso_rol_mod' => Session::get('admin')->rous_codigo,
+                    'proco_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'proco_nickname_mod' => Session::get('admin')->usua_nickname,
+                    'proco_rol_mod' => Session::get('admin')->rous_codigo,
                 ]);
             }
         }
 
-        $sesoCrear = SedesSocios::insert($seso);
-        if (!$sesoCrear) {
+        $procoCrear = SedesSocios::insert($proco);
+        if (!$procoCrear) {
             SedesSocios::where('inic_codigo', $soco_codigo)->delete();
             return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
         } */
@@ -1059,10 +1108,10 @@ class ParametrosController extends Controller
             return redirect()->back()->with('Mecanismo', 'Ocurrió un error al Crear el mecanismo.')->withInput();
         }
         $meca_codigo = $mecanismo;
-        $seso = [];
-        $activis = $request->input('actividades', []);
-        foreach ($activis as $activ) {
-            array_push($seso, [
+        $proco = [];
+        $contris = $request->input('actividades', []);
+        foreach ($contris as $activ) {
+            array_push($proco, [
                 'meca_codigo' => $meca_codigo,
                 'tiac_codigo' => $activ,
                 'meac_creado' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -1071,8 +1120,8 @@ class ParametrosController extends Controller
                 'meac_rol_mod' => Session::get('admin')->rous_codigo,
             ]);
         }
-        $sesoCrear = MecanismosActividades::insert($seso);
-        if (!$sesoCrear) {
+        $procoCrear = MecanismosActividades::insert($proco);
+        if (!$procoCrear) {
             ProgramasActividades::where('id_meca', $meca_codigo)->delete();
             return redirect()->back()->with('errorMecanismo', 'Ocurrió un error durante el registro de mecanismos, intente más tarde.')->withInput();
         }
