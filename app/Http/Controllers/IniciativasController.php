@@ -544,7 +544,12 @@ class IniciativasController extends Controller
         $mecanismos = Mecanismos::all();
         $convenios = Convenios::all();
         // $programas = Programas::all();
-        $tipoActividad = TipoActividades::all();
+        $tipoActividad = MecanismosActividades::join('mecanismos', 'mecanismos.meca_codigo', 'mecanismos_actividades.meca_codigo')
+            ->join('tipo_actividades', 'tipo_actividades.tiac_codigo', 'mecanismos_actividades.tiac_codigo')
+            ->select('tipo_actividades.tiac_codigo', 'tipo_actividades.tiac_nombre', 'mecanismos.meca_codigo')
+            ->where('mecanismos.meca_codigo', $iniciativaData[0]->meca_codigo)
+            ->distinct()
+            ->get();
         $paises = Pais::all();
         $regiones = Region::all();
         $comunas = Comuna::all();
@@ -1368,16 +1373,16 @@ class IniciativasController extends Controller
         )->first();
 
         if ($corhVerificar)
-        return json_encode(['estado' => false, 'resultado' => 'El recurso humano ya se encuentra asociado a la entidad.']);
-    
-    $tirhConsultar = TipoRrhh::select('trrhh_valor')->where('trrhh_codigo', $request->tiporrhh)->first();
+            return json_encode(['estado' => false, 'resultado' => 'El recurso humano ya se encuentra asociado a la entidad.']);
+
+        $tirhConsultar = TipoRrhh::select('trrhh_valor')->where('trrhh_codigo', $request->tiporrhh)->first();
 
         $corhGuardar = CostosRrhh::create([
             'inic_codigo' => $request->iniciativa,
             'trrhh_codigo' => $request->tiporrhh,
             'enti_codigo' => $request->entidad,
             'corh_horas' => $request->horas,
-            'corh_valorizacion' => $request->horas * $tirhConsultar->tirh_valor,
+            'corh_valorizacion' => $request->horas * $tirhConsultar->trrhh_valor,
             'corh_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'corh_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'corh_vigente' => 1,
@@ -1388,7 +1393,25 @@ class IniciativasController extends Controller
             return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el recurso humano, intente más tarde.']);
         return json_encode(['estado' => true, 'resultado' => 'El recurso humano fue guardado correctamente.']);
     }
-    
+
+    public function eliminarRRHH(Request $request)
+    {
+        $coinVerificar = CostosRrhh::where(
+            [
+                'inic_codigo' => $request->iniciativa,
+                'enti_codigo' => $request->entidad,
+                'trrhh_codigo' => $request->tiporrhh
+            ]
+        )->first();
+        if (!$coinVerificar)
+            return json_encode(['estado' => false, 'resultado' => 'La infraestructura no se encuentra asociada a la iniciativa y entidad.']);
+
+        $coinEliminar = CostosRrhh::where(['inic_codigo' => $request->iniciativa, 'enti_codigo' => $request->entidad, 'trrhh_codigo' => $request->tiporrhh])->delete();
+        if (!$coinEliminar)
+            return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al eliminar la infraestructura, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'El RRHH fue eliminado correctamente.']);
+    }
+
     public function consultarRrhh(Request $request)
     {
         $validacion = Validator::make(

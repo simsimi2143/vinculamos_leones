@@ -41,11 +41,10 @@
                                         <tr>
 
                                             <th>Nombre</th>
-                                            <th>Programas</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
-                                            <th> Fecha de creación</th>
+                                            <th>Fecha de creación</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -53,7 +52,6 @@
                                         @foreach ($iniciativas as $iniciativa)
                                             <tr>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
-                                                <td>{{ $iniciativa->prog_nombre }}</td>
                                                 <td>{{ $iniciativa->escuelas }}</td>
                                                 <td>{{ $iniciativa->carreras }}</td>
                                                 <td>
@@ -104,19 +102,19 @@
                                                         class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Adjuntar evidencia"><i
                                                             class="fas fa-paperclip"></i></a>
-                                                            
+
                                                     <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar cobertura"><i
                                                             class="fas fa-users"></i></a>
 
-                                                    <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                    {{-- <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i
                                                             class="fas fa-flag"></i></a>
 
                                                     <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Evaluar iniciativa"><i
-                                                            class="fas fa-file-signature"></i></a>
+                                                            class="fas fa-file-signature"></i></a> --}}
 
 
                                                 </td>
