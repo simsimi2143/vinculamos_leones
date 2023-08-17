@@ -195,9 +195,9 @@
                                                 </td>
                                             </tr> --}}
 
-                                            <tr>
+                                            {{-- <tr> --}}
                                                 {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
-                                                <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
+                                                {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-sm small">
@@ -223,8 +223,8 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </td>
-                                            </tr>
+                                                </td> --}}
+                                            {{-- </tr> --}}
 
                                             <tr>
                                                 <td><strong>Participantes externos</strong></td>
