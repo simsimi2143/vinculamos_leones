@@ -571,7 +571,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_socios"
-                                                name="meta_socios" value="{{ $prog->prog_meta_socios }}"
+                                                name="meta_socios" value="{{ $prog->prog_meta_socios }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                     </div>
@@ -586,7 +586,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_iniciativas"
-                                                name="meta_iniciativas" value="{{ $prog->prog_meta_iniciativas }}"
+                                                name="meta_iniciativas" value="{{ $prog->prog_meta_iniciativas }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                     </div>
@@ -623,7 +623,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_n_carreras"
-                                                name="meta_n_carreras" value="{{ $prog->prog_meta_n_carreras }}"
+                                                name="meta_n_carreras" value="{{ $prog->prog_meta_n_carreras }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_n_carreras')
@@ -641,7 +641,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_n_asignaturas"
-                                                name="meta_n_asignaturas" value="{{ $prog->prog_meta_n_asignaturas }}"
+                                                name="meta_n_asignaturas" value="{{ $prog->prog_meta_n_asignaturas }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_n_asignaturas')
@@ -662,7 +662,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_estudiantes"
-                                                name="meta_estudiantes" value="{{ $prog->prog_meta_estudiantes }}"
+                                                name="meta_estudiantes" value="{{ $prog->prog_meta_estudiantes }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_estudiantes')
@@ -680,7 +680,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_docentes"
-                                                name="meta_docentes" value="{{ $prog->prog_meta_docentes }}"
+                                                name="meta_docentes" value="{{ $prog->prog_meta_docentes }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_docentes')
@@ -700,7 +700,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_beneficiarios"
-                                                name="meta_beneficiarios" value="{{ $prog->prog_meta_beneficiarios }}"
+                                                name="meta_beneficiarios" value="{{ $prog->prog_meta_beneficiarios }}" placeholder="NO APLICA"
                                                 autocomplete="off">
                                         </div>
                                         @error('meta_beneficiarios')
