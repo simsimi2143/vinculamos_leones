@@ -274,7 +274,8 @@
                                 </div>
                             </div>
                             <div class="row" style="text-align: ">
-                                <div class="col-12 col-md-12 col-lg-12">
+                                <div class="col-4"></div>
+                                <div class="col-4">
 
                                     <button style="position: absolute; top: 50%;width: 70%;left: 15%;"
                                         onclick="modificar()" class="btn btn-primary mr-1 waves-effect"><i
@@ -282,6 +283,7 @@
                                     </button>
 
                                 </div>
+                                <div class="col-4"></div>
                             </div>
 
                             <div class="row" style="margin-top:75px">
@@ -351,7 +353,8 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <input type="hidden" id="iniciativa" name="iniciativa" value="{{ $iniciativa->inic_codigo }}">
+                                        <input type="hidden" id="iniciativa" name="iniciativa"
+                                            value="{{ $iniciativa->inic_codigo }}">
                                     </div>
                                 </div>
                             </div>

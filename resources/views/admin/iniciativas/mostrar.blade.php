@@ -165,7 +165,7 @@
                                                 <td><strong>Ubicaciones</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
+                                                        <table class="table table-bordered table-sm">
                                                             <thead>
                                                                 <th>Región</th>
                                                                 <th>Comunas</th>
@@ -230,7 +230,7 @@
                                                 <td><strong>Participantes externos</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
+                                                        <table class="table table-bordered table-sm ">
                                                             <thead>
                                                                 <th>Grupos</th>
                                                                 <th>Subgrupos</th>
@@ -257,7 +257,7 @@
                                                 <td><strong>Participantes internos</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
+                                                        <table class="table table-bordered table-sm">
                                                             <thead>
                                                                 <th>Escuelas</th>
                                                                 <th>Carreras</th>

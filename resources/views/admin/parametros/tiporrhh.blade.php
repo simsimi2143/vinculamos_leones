@@ -156,6 +156,28 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     @endif
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label>Valorización</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-usd"></i> {{-- ICONO --}}
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="valor" name="valor"
+                                        value="{{ $registro->trrhh_valor }}" autocomplete="off">
+                                    @if ($errors->has('valor'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('valor') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                             {{-- CAMPO TEMPLATE PARA COPIAR Y PEGAR (es en texto, asi que cambiar segun necesidad) --}}
                             {{--
                             <div class="form-group">
@@ -234,6 +256,27 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                             <strong>{{ $errors->first('nombre') }}</strong>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Valorización</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-usd"></i> {{-- ICONO --}}
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="valor" name="valor"
+                                    value="{{ old('valor') }}" autocomplete="off">
+                                @if ($errors->has('valor'))
+                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                        style="width:100%">
+                                        <div class="alert-body">
+                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                            <strong>{{ $errors->first('valor') }}</strong>
                                         </div>
                                     </div>
                                 @endif

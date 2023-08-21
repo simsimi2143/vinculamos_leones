@@ -1483,7 +1483,7 @@ class IniciativasController extends Controller
             [
                 'inic_codigo' => $request->iniciativa,
                 'enti_codigo' => $request->entidad,
-                'trrhh_codigo' => $request->tiporrhh
+                'trrhh_codigo' => $request->tiporrhh,
             ]
         )->first();
 

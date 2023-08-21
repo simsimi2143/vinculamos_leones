@@ -1838,6 +1838,7 @@ class ParametrosController extends Controller
 
         $nuevo = new TipoRRHH();
         $nuevo->trrhh_nombre = $request->input('nombre');
+        $nuevo->trrhh_valor = $request->input('valor');
         $nuevo->trrhh_creado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->trrhh_visible = 1;
@@ -1881,6 +1882,7 @@ class ParametrosController extends Controller
         }
 
         $editado->trrhh_nombre = $request->input('nombre');
+        $editado->trrhh_valor = $request->input('valor');
         $editado->trrhh_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $editado->trrhh_visible = 1;
         $editado->trrhh_nickname_mod = Session::get('admin')->usua_nickname;
