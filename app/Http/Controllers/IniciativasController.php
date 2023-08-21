@@ -87,6 +87,8 @@ class IniciativasController extends Controller
                 'participantes_internos.pain_docentes_final',
                 'participantes_internos.pain_estudiantes',
                 'participantes_internos.pain_estudiantes_final',
+                'participantes_internos.pain_funcionarios',
+                'participantes_internos.pain_funcionarios_final',
                 'participantes_internos.pain_total'
             )
             ->join('carreras', 'participantes_internos.care_codigo', '=', 'carreras.care_codigo')
@@ -105,6 +107,7 @@ class IniciativasController extends Controller
     {
         $docentes_final = $request->input('docentes_final');
         $estudiantes_final = $request->input('estudiantes_final');
+        $funcionarios_final = $request->input('funcionarios_final');
         // dd($docentes_final, $estudiantes_final);
 
         foreach ($docentes_final as $pain_codigo => $docentes_final_value) {
@@ -117,6 +120,7 @@ class IniciativasController extends Controller
                 // Actualizar los valores en la base de datos
                 $resultado->pain_docentes_final = $docentes_final_value;
                 $resultado->pain_estudiantes_final = $estudiantes_final[$pain_codigo];
+                $resultado->pain_funcionarios_final = $funcionarios_final[$pain_codigo];
                 $resultado->save();
             }
         }
@@ -1009,6 +1013,7 @@ class IniciativasController extends Controller
         )->update([
                     'pain_docentes' => $request->pain_docentes,
                     'pain_estudiantes' => $request->pain_estudiantes,
+                    'pain_funcionarios' => $request->pain_funcionarios,
                     'pain_total' => $request->pain_total
                 ]);
 

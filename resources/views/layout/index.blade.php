@@ -83,7 +83,9 @@
                                     @elseif (Session::has('digitador'))
                                         {{ Str::upper(Session::get('digitador.usua_nombre')[0]) . Str::upper(Session::get('digitador.usua_apellido')[0]) }}
                                     @elseif(Session::has('observador'))
-                                        {{ Str::upper(Session::get('observador.usua_nombre')[0]) . Str::upper(Session::get('observador.usua_apellido')[0]) }} @endif
+                                        {{ Str::upper(Session::get('observador.usua_nombre')[0]) . Str::upper(Session::get('observador.usua_apellido')[0]) }}
+                                    @elseif(Session::has('supervisor'))
+                                        {{ Str::upper(Session::get('supervisor.usua_nombre')[0]) . Str::upper(Session::get('supervisor.usua_apellido')[0]) }} @endif
                                 ">
                             </figure>
                             <span class="logo-name" style="font-size: 12px;"id="usuario-nombre">
@@ -96,6 +98,9 @@
                                 @elseif(Session::has('observador'))
                                     {{ Session::get('observador.usua_nombre') }}
                                     {{ Session::get('observador.usua_apellido') }}
+                                @elseif(Session::has('supervisor'))
+                                    {{ Session::get('supervisor.usua_nombre') }}
+                                    {{ Session::get('supervisor.usua_apellido') }}
                                 @endif
                             </span>
                         </a>

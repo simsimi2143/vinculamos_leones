@@ -172,7 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
@@ -182,7 +182,6 @@
                                 </div>
                             </div>
                             <div class="row">
-
                                 <div class="col-4 col-md-4 col-lg-3">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Escuela</label> <label for=""
@@ -218,7 +217,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-2 col-md-2 col-lg-2">
+                                <div class="col-1 col-md-1 col-lg-1">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Estudiantes</label> <label for=""
                                             style="color: red;">*</label>
@@ -237,7 +236,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-2 col-md-2 col-lg-2">
+                                <div class="col-1 col-md-1 col-lg-1">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Docentes</label> <label for=""
                                             style="color: red;">*</label>
@@ -249,6 +248,24 @@
                                                     <button class="close"
                                                         data-dismiss="alert"><span>&times;</span></button>
                                                     <strong>{{ $errors->first('ndocentes') }}</strong>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-2 col-md-2 col-lg-2">
+                                    <div class="form-group">
+                                        <label style="font-size: 110%">Funcionarios/as</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <input type="number" class="form-control" id="nfuncionarios" name="nfuncionarios">
+
+                                        @if ($errors->has('nfuncionarios'))
+                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                                <div class="alert-body">
+                                                    <button class="close"
+                                                        data-dismiss="alert"><span>&times;</span></button>
+                                                    <strong>{{ $errors->first('nfuncionarios') }}</strong>
                                                 </div>
                                             </div>
                                         @endif
@@ -276,6 +293,7 @@
                                                         <th>Carreras</th>
                                                         <th>Estudiantes</th>
                                                         <th>Docentes</th>
+                                                        <th>Funcionarios</th>
                                                         {{-- <th>Total</th> --}}
                                                     </thead>
                                                     <tbody id="body-tabla-internos">
@@ -288,7 +306,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="row">
                                 <div class="col-12 col-md-12 col-log-12">
                                     <div class="text-right">
@@ -542,7 +560,7 @@
         }
 
         function modificar() {
-      
+
             $.ajax({
                 type: 'POST',
                 url: `${window.location.origin}/admin/actualizar/participantes-internos`,
@@ -553,7 +571,8 @@
                     care_codigo: $("#carreras").val(),
                     pain_docentes: $("#ndocentes").val(),
                     pain_estudiantes: $("#nestudiantes").val(),
-                    
+                    pain_funcionarios: $("#nfuncionarios").val(),
+
                     // pain_total: $("#ntotal").val()
                 },
                 success: function(resConsultar) {
@@ -581,12 +600,13 @@
                                 <td>${registro.care_nombre}</td>
                                 <td>${registro.pain_estudiantes}</td>
                                 <td>${registro.pain_docentes}</td>
+                                <td>${registro.pain_funcionarios}</td>
                                 </tr>`
                         $('#body-tabla-internos').append(fila)
                         listarInterno()
                     })
                 }
-               
+
 
             })
         }
@@ -699,6 +719,7 @@
                                     <td>${registro.care_nombre}</td>
                                     <td>${registro.pain_estudiantes}</td>
                                     <td>${registro.pain_docentes}</td>
+                                    <td>${registro.pain_funcionarios}</td>
                                 </tr>`
                         $('#body-tabla-internos').append(fila)
                     })

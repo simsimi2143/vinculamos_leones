@@ -60,10 +60,13 @@ class AutenticationController extends Controller
             return redirect()->route('admin.home');
         } elseif ($usuario->rous_codigo == 2) {
             $request->session()->put('digitador', $usuario);
-            return redirect()->route('admin.iniciativa.listar');
+            return redirect()->route('digitador.home');
         } elseif ($usuario->rous_codigo == 3) {
             $request->session()->put('observador', $usuario);
-            return redirect()->route('admin.iniciativa.listar');
+            return redirect()->route('observador.home');
+        } elseif ($usuario->rous_codigo == 4) {
+            $request->session()->put('supervisor', $usuario);
+            return redirect()->route('supervisor.home');
         } else {
             $request->session()->put('superadmin', $usuario);
             return redirect()->route('superadmin.listar.usuarios');
