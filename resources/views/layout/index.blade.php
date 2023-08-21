@@ -66,7 +66,7 @@
                     <div class="sidebar-brand">
                         <a href="javascript:void(0)"> <img alt="image" src="{{ asset('/img/logoleones.png') }}" {{-- Logo esquina superior derecha --}}
                                 class="header-logo" style="transform: scale(0.35);transform-origin: right;position: fixed;
-                                top: -7%;
+                                top: -10%;
                                 right: 25px;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>
