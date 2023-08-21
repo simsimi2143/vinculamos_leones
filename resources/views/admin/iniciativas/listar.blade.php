@@ -45,15 +45,34 @@
                                             <th>Carreras</th>
                                             <th>Estado</th>
                                             <th>Fecha de creación</th>
-                                            <th>Acciones</th>
+                                            <th style="width: 250px">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($iniciativas as $iniciativa)
                                             <tr>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
-                                                <td>{{ $iniciativa->escuelas }}</td>
-                                                <td>{{ $iniciativa->carreras }}</td>
+                                                <td>
+                                                    @php
+                                                        $escuelasArray = explode(',', $iniciativa->escuelas);
+                                                    @endphp
+                                                    @if (count($escuelasArray) > 3)
+                                                        Todas
+                                                    @else
+                                                        {{ $iniciativa->escuelas }}
+                                                    @endif
+                                                </td>
+                                                {{-- <td>{{ $iniciativa->carreras }}</td> --}}
+                                                <td>
+                                                    @php
+                                                        $carrerasArray = explode(',', $iniciativa->carreras);
+                                                    @endphp
+                                                    @if (count($carrerasArray) > 29)
+                                                        Todas
+                                                    @else
+                                                        {{ $iniciativa->carreras }}
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @php
                                                         $estadoBadges = [
