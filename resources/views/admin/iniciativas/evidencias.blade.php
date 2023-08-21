@@ -33,6 +33,15 @@
                                     </div>
                                 </div>
                             @endif
+
+                            @if (Session::has('errorTipo'))
+                                <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <strong>{{ Session::get('errorTipo') }}</strong>
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <div class="col-3"></div>
                     </div>
@@ -107,7 +116,7 @@
                         @csrf
 
                         <div class="form-group">
-                            <label>Tipo</label>
+                            <label>Mecanismo</label>
                             <div class="input-group">
                                 <select class="form-control" id="inev_nombre" name="inev_nombre">
                                     <option value="Apoyo a PYMES">Apoyo a PYMES</option>
