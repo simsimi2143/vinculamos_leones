@@ -58,7 +58,7 @@
                             <h4>Iniciativa: {{ $iniciativa->inic_nombre }}</h4>
                             <div class="card-header-action">
                                 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" --}}
-                                    {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
+                                {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
                             </div>
                         </div>
 
@@ -190,7 +190,7 @@
                                             style="width: 100%">
                                             <option value="" selected disabled>Seleccione...</option>
                                             @forelse ($escuelas as $escuela)
-                                                <option value="{{ $escuela->escu_codigo }}" >
+                                                <option value="{{ $escuela->escu_codigo }}">
                                                     {{ $escuela->escu_nombre }}
                                                 </option>
                                             @empty
@@ -206,9 +206,9 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="carreras" name="carreras"
                                             style="width: 100%">
-                                            <option value=""  disabled selected>Seleccione...</option>
+                                            <option value="" disabled selected>Seleccione...</option>
                                             @forelse ($carreras as $carrera)
-                                                <option value="{{ $carrera->care_codigo }}" >
+                                                <option value="{{ $carrera->care_codigo }}">
                                                     {{ $carrera->care_nombre }}
                                                 </option>
                                             @empty
@@ -217,7 +217,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-1 col-md-1 col-lg-1">
+                                <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Estudiantes</label> <label for=""
                                             style="color: red;">*</label>
@@ -236,7 +236,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-1 col-md-1 col-lg-1">
+                                <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Docentes</label> <label for=""
                                             style="color: red;">*</label>
@@ -258,7 +258,8 @@
                                     <div class="form-group">
                                         <label style="font-size: 110%">Funcionarios/as</label> <label for=""
                                             style="color: red;">*</label>
-                                        <input type="number" class="form-control" id="nfuncionarios" name="nfuncionarios">
+                                        <input type="number" class="form-control" id="nfuncionarios"
+                                            name="nfuncionarios">
 
                                         @if ($errors->has('nfuncionarios'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
@@ -271,17 +272,19 @@
                                         @endif
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row" style="text-align: ">
+                                <div class="col-12 col-md-12 col-lg-12">
 
-                                <div class="col-2 col-md-2 col-lg-2" style="position: relative;">
-
-                                    <button style="position: absolute; top: 50%; transform: translateY(-50%);"
+                                    <button style="position: absolute; top: 50%;width: 70%;left: 15%;"
                                         onclick="modificar()" class="btn btn-primary mr-1 waves-effect"><i
                                             class="fas fa-plus"></i> Agregar
                                     </button>
 
                                 </div>
                             </div>
-                            <div class="row">
+
+                            <div class="row" style="margin-top:75px">
                                 <div class="col-2"></div>
                                 <div class="col-8">
                                     <div class="card">
@@ -317,11 +320,9 @@
                                                     class="fas fa-chevron-left"></i>
                                                 Paso anterior</a>
                                         </strong>
-                                        <a href="{{route('admin.editar.paso3', $iniciativa->inic_codigo)}}"
-                                            type="button" class="btn btn-primary mr-1 waves-effect"
-                                            >
-                                            Paso siguiente <i
-                                            class="fas fa-chevron-right"></i></a>
+                                        <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}"
+                                            type="button" class="btn btn-primary mr-1 waves-effect">
+                                            Paso siguiente <i class="fas fa-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -451,8 +452,8 @@
 
                             <label>Escuelas Asociadas</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="escuelasT" name="escuelasT[]"
-                                    style="width: 100%" multiple>
+                                <select class="form-control select2" style="width: 100%" id="escuelasT"
+                                    name="escuelasT[]" style="width: 100%" multiple>
                                     <option value="" disabled>Seleccione...</option>
                                     @foreach ($escuelasTotales as $escuela)
                                         <option value="{{ $escuela->escu_codigo }}">{{ $escuela->escu_nombre }}</option>

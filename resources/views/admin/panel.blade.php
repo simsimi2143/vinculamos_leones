@@ -2,7 +2,7 @@
 
 @section('acceso')
     <ul class="sidebar-menu" style="font-size: 110%;">
-    <li class="menu-header">Administrador</li>
+    <li class="menu-header">Administrador/a</li>
 
         <li class="dropdown">
             <a href="{{route('admin.home')}}" class="nav-link">
