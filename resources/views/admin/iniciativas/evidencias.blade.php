@@ -51,7 +51,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th>Descripción</th>
+                                            <th>Tipo</th>
                                             <th>Archivo original</th>
                                             <th>Modificado por</th>
                                             <th>Acción</th>
@@ -62,7 +62,7 @@
                                             <tr>
 
                                                 <td>{{ $evidencia->inev_nombre }}</td>
-                                                <td>{{ $evidencia->inev_descripcion }}</td>
+                                                <td>{{ $evidencia->inev_tipo }}</td>
                                                 <td>{{ $evidencia->inev_nombre_origen }}</td>
                                                 <td>{{ $evidencia->inev_nickname_mod }}</td>
                                                 <td>
@@ -107,18 +107,28 @@
                         @csrf
 
                         <div class="form-group">
-                            <label>Nombre</label>
+                            <label>Tipo</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="inev_nombre" name="inev_nombre"
-                                    placeholder="" autocomplete="off">
+                                <select class="form-control" id="inev_nombre" name="inev_nombre">
+                                    <option value="Apoyo a PYMES">Apoyo a PYMES</option>
+                                    <option value="Aprendizaje más servicio">Aprendizaje más servicio</option>
+                                    <option value="Innovación y emprendimiento">Innovación y emprendimiento</option>
+                                    <option value="Fomento a la empleabilidad">Fomento a la empleabilidad</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
+                            <label>Tipo</label>
                             <div class="input-group">
-                                <textarea class="formbold-form-input" id="inev_descripcion" name="inev_descripcion" rows="3" style="width: 100%;"></textarea>
+                                <select class="form-control" id="inev_tipo" name="inev_tipo">
+                                    <option value="Carta de acuerdo">Carta de acuerdo</option>
+                                    <option value="Lista de participantes">Lista de participantes</option>
+                                    <option value="Fotografías">Fotografías</option>
+                                    <option value="Informe de cierre">Informe de cierre</option>
+                                </select>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label>Archivo</label>
                             <div class="input-group">
@@ -126,7 +136,7 @@
                                 </div>
                             </div>
                             <input type="file" id="inev_archivo" name="inev_archivo"
-                                accept=".png,.jpg,.jpeg,.pdf,.xls,.xlsx,.ppt,.pptx,.doc,.docx,.csv,.mp3,.mp4,.avi"><br>
+                                ><br>
                             <small>Tamaño máximo de archivo: 10 MB</small>
                         </div>
                         <div class="text-center">
@@ -154,15 +164,25 @@
                         @csrf
 
                         <div class="form-group">
-                            <label>Nombre</label>
+                            <label>Tipo</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="inev_nombre_edit" name="inev_nombre_edit" placeholder="" autocomplete="off">
+                                <select class="form-control" id="inev_nombre_edit" name="inev_nombre_edit">
+                                    <option value="Apoyo a PYMES">Apoyo a PYMES</option>
+                                    <option value="Aprendizaje más servicio">Aprendizaje más servicio</option>
+                                    <option value="Innovación y emprendimiento">Innovación y emprendimiento</option>
+                                    <option value="Fomento a la empleabilidad">Fomento a la empleabilidad</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
+                            <label>Tipo</label>
                             <div class="input-group">
-                                <textarea class="formbold-form-input" id="inev_descripcion_edit" name="inev_descripcion_edit" rows="3" style="width: 100%;"></textarea>
+                                <select class="form-control" id="inev_tipo_edit" name="inev_tipo_edit">
+                                    <option value="Carta de acuerdo">Carta de acuerdo</option>
+                                    <option value="Lista de participantes">Lista de participantes</option>
+                                    <option value="Fotografías">Fotografías</option>
+                                    <option value="Informe de cierre">Informe de cierre</option>
+                                </select>
                             </div>
                         </div>
                         <div class="text-center">

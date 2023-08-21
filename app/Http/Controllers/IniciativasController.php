@@ -264,7 +264,7 @@ class IniciativasController extends Controller
             [
                 'inev_nombre' => 'required|max:50',
                 // 'inev_descripcion' => 'required|max:500',
-                'inev_archivo' => 'required|mimes:png,jpg,jpeg,pdf,xls,xlsx,ppt,pptx,doc,docx,csv,mp3,mp4,avi|max:10000',
+                'inev_archivo' => 'required|max:10000',
             ],
             [
                 'inev_nombre.required' => 'El nombre de la evidencia es requerido.',
@@ -277,11 +277,12 @@ class IniciativasController extends Controller
             ]
         );
         if ($validarEntradas->fails())
-            return redirect()->route('admin.evidencia.listar', $inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
+            return redirect()->route('admin.evidencias.listar', $inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
 
         $inevGuardar = IniciativasEvidencias::insertGetId([
             'inic_codigo' => $inic_codigo,
             'inev_nombre' => $request->inev_nombre,
+            'inev_tipo' => $request->inev_tipo,// Todo: nuevo campo a la BD
             'inev_descripcion' => $request->inev_descripcion,
             'inev_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -341,6 +342,7 @@ class IniciativasController extends Controller
             $inevActualizar = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->update([
                 'inev_nombre' => $request->inev_nombre_edit,
                 'inev_descripcion' => $request->inev_descripcion_edit,
+                'inev_tipo' => $request->inev_tipo_edit,
                 'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'inev_rol_mod' => Session::get('admin')->rous_codigo,
                 'inev_nickname_mod' => Session::get('admin')->usua_nickname
