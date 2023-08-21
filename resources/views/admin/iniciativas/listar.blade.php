@@ -96,8 +96,8 @@
                                                 <td>
                                                     <div class="dropdown d-inline">
                                                         <button class="btn btn-primary dropdown-toggle"
-                                                            id="dropdownMenuButton2"
-                                                            data-toggle="dropdown"title="Opciones"> <i class="fas fa-cog"></i> </button>
+                                                            id="dropdownMenuButton2" data-toggle="dropdown"title="Opciones">
+                                                            <i class="fas fa-cog"></i> </button>
                                                         <div class="dropdown-menu dropright">
 
                                                             <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
@@ -126,6 +126,10 @@
                                                         class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar cobertura"><i
                                                             class="fas fa-users"></i></a>
+                                                    <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                        data-placement="top" title="Ingresar resultado"><i
+                                                            class="fas fa-flag"></i></a>
 
                                                     {{-- <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i

@@ -312,132 +312,6 @@ function crearEspecie(enti_codigo) {
     $('#modalEspecies').modal('show');
 }
 
-function guardarEspecie() {
-    let coes_nombre = $('#nombreespecie').val();
-    let coes_valor = $('#valorespecie').val();
-    let inic_codigo = $('#codigo').val();
-    let enti_codigo = $('#entidadespecie').val();
-    let respuesta;
-    $('#div-alert-especie').html('');
-    $('#div-alert-recursos').html('');
-
-    // petición para guardar una especie aportada por la entidad
-    $.ajax({
-        type: 'POST',
-        url: window.location.origin + '/admin/crear-iniciativa/guardar-especie',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            iniciativa: inic_codigo,
-            entidad: enti_codigo,
-            nombre: coes_nombre,
-            valorizacion: coes_valor
-        },
-        success: function(resGuardar) {
-            respuesta = JSON.parse(resGuardar);
-            if (!respuesta.estado) {
-                alertError =
-                    `<div class="alert alert-warning alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
-                $('#div-alert-especie').html(alertError);
-                return;
-            }
-            alertExito =
-                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
-            $('#modalEspecies').modal('hide');
-            $('#div-alert-recursos').html(alertExito);
-            listarEspecies();
-        },
-        error: function(error) {
-            //console.error(error);
-        }
-    });
-}
-
-function listarEspecies() {
-    let inic_codigo = $('#codigo').val();
-    let datosEspecies, fila;
-
-    // petición para listar las especies aportadas por las entidades
-    $.ajax({
-        type: 'GET',
-        url: window.location.origin + '/admin/crear-iniciativa/listar-especies',
-        data: {
-            iniciativa: inic_codigo
-        },
-        success: function(resListar) {
-            respuesta = JSON.parse(resListar);
-            $('#tabla-empresa-especies').empty();
-            $('#tabla-externo-especies').empty();
-            cargarEspecies();
-            cargarRecursos();
-
-            if (!respuesta.estado) {
-                if (respuesta.resultado != '') {
-                    alertError =
-                        `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
-                    $('#div-alert-recursos').html(alertError);
-                }
-                return;
-            }
-
-            datosEspecies = respuesta.resultado;
-            datosEspecies.forEach(registro => {
-                fila = '<tr>' +
-                    '<td>' + registro.coes_nombre + '</td>' +
-                    '<td>' + '$' + new Intl.NumberFormat('es-CL', {
-                        maximumSignificantDigits: 3
-                    }).format(registro.coes_valorizacion) + '</td>' +
-                    '<td>' +
-                    '<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="eliminarEspecie(' +
-                    registro.coes_codigo + ', ' + registro.inic_codigo + ', ' + registro
-                    .enti_codigo + ')"><i class="fas fa-trash"></i></button>' +
-                    '</td>' +
-                    '</tr>';
-                if (registro.enti_codigo == 1) $('#tabla-empresa-especies').append(fila);
-                else $('#tabla-externo-especies').append(fila);
-            });
-        },
-        error: function(error) {
-            //console.error(error);
-        }
-    });
-}
-
-function eliminarEspecie(coes_codigo, inic_codigo, enti_codigo) {
-    let alertError, alertExito;
-    $('#div-alert-recursos').html('');
-
-    // petición para eliminar una especie aportada por la entidad
-    $.ajax({
-        type: 'POST',
-        url: window.location.origin + '/admin/crear-iniciativa/eliminar-especie',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            especie: coes_codigo,
-            iniciativa: inic_codigo,
-            entidad: enti_codigo
-        },
-        success: function(resEliminar) {
-            respuesta = JSON.parse(resEliminar);
-            if (!respuesta.estado) {
-                alertError =
-                    `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
-                $('#div-alert-recursos').html(alertError);
-                return;
-            }
-            alertExito =
-                `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
-            listarEspecies();
-            $('#div-alert-recursos').html(alertExito);
-        },
-        error: function(error) {
-            //console.error(error);
-        }
-    });
-}
 
 function crearInfra(enti_codigo) {
     let datosInfra;
@@ -504,6 +378,7 @@ function guardarInfra() {
     let enti_codigo = $('#entidadinfra').val();
     let tinf_codigo = $('#codigoinfra').val();
     let coin_horas = $('#horasinfra').val();
+    let coin_cantidad = $('#cantidadinfra').val();
     let respuesta, alertError, alertExito;
     $('#div-alert-infraestructura').html('');
     $('#div-alert-recursos').html('');
@@ -520,7 +395,8 @@ function guardarInfra() {
             iniciativa: inic_codigo,
             entidad: enti_codigo,
             tipoinfra: tinf_codigo,
-            horas: coin_horas
+            horas: coin_horas,
+            cantidad: coin_cantidad,
         },
         success: function(resGuardar) {
             respuesta = JSON.parse(resGuardar);
@@ -574,6 +450,7 @@ function listarInfraestructura() {
                 fila = '<tr>' +
                     '<td>' + registro.tinf_nombre + '</td>' +
                     '<td>' + registro.coin_horas + '</td>' +
+                    '<td>' + registro.coin_cantidad + '</td>' +
                     '<td>' + '$' + new Intl.NumberFormat('es-CL', {
                         maximumSignificantDigits: 3
                     }).format(registro.coin_valorizacion) + '</td>' +
@@ -693,6 +570,7 @@ function guardarRrhh() {
     let enti_codigo = $('#entidadrrhh').val();
     let trrhh_codigo = $('#codigorrhh').val();
     let corh_horas = $('#horasrrhh').val();
+    let corh_cantidad = $('#cantidadhh').val();
     let respuesta, alertError, alertExito;
     $('#div-alert-rrhh').html('');
     $('#div-alert-recursos').html('');
@@ -708,7 +586,8 @@ function guardarRrhh() {
             iniciativa: inic_codigo,
             entidad: enti_codigo,
             tiporrhh: trrhh_codigo,
-            horas: corh_horas
+            horas: corh_horas,
+            cantidad: corh_cantidad,
         },
         success: function(resGuardar) {
             respuesta = JSON.parse(resGuardar);
@@ -763,6 +642,7 @@ function listarRrhh() {
                 fila = '<tr>' +
                     '<td>' + registro.trrhh_nombre + '</td>' +
                     '<td>' + registro.corh_horas + '</td>' +
+                    '<td>' + registro.corh_cantidad + '</td>' +
                     '<td>' + '$' + new Intl.NumberFormat('es-CL', {
                         maximumSignificantDigits: 3
                     }).format(registro.corh_valorizacion) + '</td>' +
