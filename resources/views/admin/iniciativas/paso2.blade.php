@@ -58,7 +58,7 @@
                             <h4>Iniciativa: {{ $iniciativa->inic_nombre }}</h4>
                             <div class="card-header-action">
                                 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" --}}
-                                    {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
+                                {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
                             </div>
                         </div>
 
@@ -190,7 +190,7 @@
                                             style="width: 100%">
                                             <option value="" selected disabled>Seleccione...</option>
                                             @forelse ($escuelas as $escuela)
-                                                <option value="{{ $escuela->escu_codigo }}" >
+                                                <option value="{{ $escuela->escu_codigo }}">
                                                     {{ $escuela->escu_nombre }}
                                                 </option>
                                             @empty
@@ -206,9 +206,9 @@
                                             style="color: red;">*</label>
                                         <select class="form-control select2" id="carreras" name="carreras"
                                             style="width: 100%">
-                                            <option value=""  disabled selected>Seleccione...</option>
+                                            <option value="" disabled selected>Seleccione...</option>
                                             @forelse ($carreras as $carrera)
-                                                <option value="{{ $carrera->care_codigo }}" >
+                                                <option value="{{ $carrera->care_codigo }}">
                                                     {{ $carrera->care_nombre }}
                                                 </option>
                                             @empty
@@ -258,7 +258,8 @@
                                     <div class="form-group">
                                         <label style="font-size: 110%">Funcionarios/as</label> <label for=""
                                             style="color: red;">*</label>
-                                        <input type="number" class="form-control" id="nfuncionarios" name="nfuncionarios">
+                                        <input type="number" class="form-control" id="nfuncionarios"
+                                            name="nfuncionarios">
 
                                         @if ($errors->has('nfuncionarios'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
@@ -293,7 +294,7 @@
                                                         <th>Carreras</th>
                                                         <th>Estudiantes</th>
                                                         <th>Docentes</th>
-                                                        <th>Funcionarios</th>
+                                                        <th>Funcionarios/as</th>
                                                         {{-- <th>Total</th> --}}
                                                     </thead>
                                                     <tbody id="body-tabla-internos">
@@ -306,6 +307,52 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <h6>Resultados esperados</h6>
+                                    <div class="row mt-3">
+                                        <div class="col-3 col-md-3 col-lg-3">
+                                            <div class="form-group">
+                                                <label>Cuantificación</label> <label for=""
+                                                    style="color: red;">*</label>
+                                                <input type="number" class="form-control" id="cuantificacion"
+                                                    name="cuantificacion" autocomplete="off" min="0">
+                                            </div>
+                                        </div>
+                                        <div class="col-7 col-md-7 col-lg-7">
+                                            <div class="form-group">
+                                                <label>Resultado esperado</label> <label for=""
+                                                    style="color: red;">*</label>
+                                                <input type="text" class="form-control" id="resultado"
+                                                    name="resultado" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="col-2 col-md-2 col-lg-2" style="position: relative;">
+                                            <button style="position: absolute; top: 50%; transform: translateY(-50%);"
+                                                type="button" class="btn btn-primary waves-effect"
+                                                onclick="agregarResultado()"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 text-center" id="div-alert-resultado">
+                                        </div>
+                                    </div>
+                                    <div class="card" id="card-tabla-resultados" style="display: none;">
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-md">
+                                                    <tr>
+                                                        <th>Cuantificación</th>
+                                                        <th>Resultado</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                    <tbody id="body-tabla-resultados">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="iniciativa" name="iniciativa" value="{{ $iniciativa->inic_codigo }}">
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-12 col-md-12 col-log-12">
@@ -317,11 +364,9 @@
                                                     class="fas fa-chevron-left"></i>
                                                 Paso anterior</a>
                                         </strong>
-                                        <a href="{{route('admin.editar.paso3', $iniciativa->inic_codigo)}}"
-                                            type="button" class="btn btn-primary mr-1 waves-effect"
-                                            >
-                                            Paso siguiente <i
-                                            class="fas fa-chevron-right"></i></a>
+                                        <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}"
+                                            type="button" class="btn btn-primary mr-1 waves-effect">
+                                            Paso siguiente <i class="fas fa-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -451,8 +496,8 @@
 
                             <label>Escuelas Asociadas</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="escuelasT" name="escuelasT[]"
-                                    style="width: 100%" multiple>
+                                <select class="form-control select2" style="width: 100%" id="escuelasT"
+                                    name="escuelasT[]" style="width: 100%" multiple>
                                     <option value="" disabled>Seleccione...</option>
                                     @foreach ($escuelasTotales as $escuela)
                                         <option value="{{ $escuela->escu_codigo }}">{{ $escuela->escu_nombre }}</option>
@@ -489,6 +534,7 @@
             modificar();
             sociosBySubgrupos();
             listarExterno();
+            listarResultados();
         });
 
         function getURLParams(url) {
@@ -499,6 +545,131 @@
             return params;
         }
 
+        function listarResultados() {
+            var inic_codigo = $('#iniciativa').val();
+            var datosResultados, fila, alertError;
+            $('#div-alert-resultado').html('');
+
+            // TODO: petición para listar resultados asociados a la iniciativa
+            $.ajax({
+                type: 'GET',
+                url: `${window.location.origin}/admin/iniciativa/listar-resultados`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    iniciativa: inic_codigo
+                },
+                success: function(resListar) {
+                    respuesta = JSON.parse(resListar);
+                    console.log(respuesta);
+
+                    $('#body-tabla-resultados').empty();
+
+                    if (!respuesta.estado) {
+                        if (respuesta.resultado != '') {
+                            alertError =
+                                `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                            $('#div-alert-resultado').html(alertError);
+                        }
+                        $('#card-tabla-resultados').hide();
+                        return;
+                    }
+
+                    datosResultados = respuesta.resultado;
+                    datosResultados.forEach(registro => {
+                        fila = '<tr>' +
+                            '<td>' + registro.resu_cuantificacion_inicial + '</td>' +
+                            '<td>' + registro.resu_nombre + '</td>' +
+                            '<td>' +
+                            '<button type="button" class="btn btn-icon btn-danger" onclick="eliminarResultado(' +
+                            registro.resu_codigo + ', ' + registro.inic_codigo +
+                            ')"><i class="fas fa-trash"></i></button>' +
+                            '</td>' +
+                            '</tr>';
+                        $('#body-tabla-resultados').append(fila);
+                    });
+                    $('#card-tabla-resultados').show();
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function agregarResultado() {
+            var inic_codigo = $('#iniciativa').val();
+            console.log(inic_codigo);
+            var resu_cantidad = $('#cuantificacion').val();
+            var resu_nombre = $('#resultado').val();
+            var alertError, alertExito;
+            $('#div-alert-resultado').html('');
+
+            // petición para guardar un resultado asociado a la iniciativa
+            $.ajax({
+                type: 'POST',
+                url: window.location.origin + '/admin/iniciativa/guardar-resultado',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    inic_codigo: inic_codigo,
+                    cantidad: resu_cantidad,
+                    nombre: resu_nombre
+                },
+                success: function(resGuardar) {
+                    respuesta = JSON.parse(resGuardar);
+                    if (!respuesta.estado) {
+                        alertError =
+                            `<div class="alert alert-warning alert-dismissible show fade"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                        $('#div-alert-resultado').html(alertError);
+                        return;
+                    }
+                    alertExito =
+                        `<div class="alert alert-success alert-dismissible show fade"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    $('#cuantificacion').val('');
+                    $('#resultado').val('');
+                    listarResultados();
+                    $('#div-alert-resultado').html(alertExito);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function eliminarResultado(resu_codigo, inic_codigo) {
+            var alertError, alertExito;
+            $('#div-alert-resultado').html('');
+
+            // petición para eliminar un resultado asociada a la iniciativa
+            $.ajax({
+                type: 'POST',
+                url: `${window.location.origin}/admin/iniciativa/eliminar-resultado`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    resu_codigo: resu_codigo,
+                    inic_codigo: inic_codigo
+                },
+                success: function(resEliminar) {
+                    respuesta = JSON.parse(resEliminar);
+                    if (!respuesta.estado) {
+                        alertError =
+                            `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                        $('#div-alert-resultado').html(alertError);
+                        return;
+                    }
+                    alertExito =
+                        `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    listarResultados();
+                    $('#div-alert-resultado').html(alertExito);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
 
 
         function escuelasBySedesPaso2() {
@@ -577,7 +748,7 @@
                 },
                 success: function(resConsultar) {
                     respuesta = JSON.parse(resConsultar);
-                    console.log(respuesta)
+                    // console.log(respuesta)
                     $('#body-tabla-internos').empty();
 
                     datosInternos = respuesta.resultado;

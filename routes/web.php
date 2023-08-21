@@ -207,6 +207,8 @@ Route::middleware('verificar.admin')->group(function () {
     //TODO: Inicio de rutas para iniciativas
     Route::get('admin/iniciativas/listar', [IniciativasController::class, 'listarIniciativas'])->name('admin.iniciativa.listar');
     Route::get('admin/iniciativas/{inic_codigo}/detalles', [IniciativasController::class, 'mostrarDetalles'])->name('admin.iniciativas.detalles');
+    Route::get('admin/iniciativas/{inic_codigo}/listar/resultado',[IniciativasController::class,'listadoResultados'])->name('admin.resultados.listado');
+    Route::post('admin/iniciativas/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('admin.resultados.actualizar');
     Route::get('admin/iniciativas/crear/paso1', [IniciativasController::class, 'crearPaso1'])->name('admin.inicitiativas.crear.primero');
     Route::get('admin/iniciativas/{inic_codigo}/editar/paso1', [IniciativasController::class, 'editarPaso1'])->name('admin.editar.paso1');
     Route::put('admin/iniciativas/{inic_codigo}/paso1', [IniciativasController::class, 'actualizarPaso1'])->name('admin.actualizar.paso1');
@@ -214,6 +216,9 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/iniciativas/crear/paso1', [IniciativasController::class, 'verificarPaso1'])->name('admin.paso1.verificar');
     Route::post('admin/iniciativas/crear/{inic_codigo}/paso2', [IniciativasController::class, 'verificarPaso2'])->name('admin.paso2.verificar');
     Route::get('admin/iniciativas/{inic_codigo}/paso2', [IniciativasController::class, 'editarPaso2'])->name('admin.editar.paso2');
+    Route::post('admin/iniciativa/guardar-resultado', [IniciativasController::class, 'guardarResultado'])->name('admin.resultado.guardar');
+    Route::get('admin/iniciativa/listar-resultados', [IniciativasController::class, 'listarResultados'])->name('admin.resultados.listar');
+    Route::post('admin/iniciativa/eliminar-resultado', [IniciativasController::class, 'eliminarResultado'])->name('admin.resultado.eliminar');
     // TODO: PASO 3
     Route::get('admin/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('admin.editar.paso3');
     Route::post('admin/crear-iniciativa/guardar-dinero', [IniciativasController::class, 'guardarDinero'])->name('admin.dinero.guardar');

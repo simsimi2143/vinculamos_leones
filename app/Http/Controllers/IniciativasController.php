@@ -13,6 +13,7 @@ use App\Models\IniciativasParticipantes;
 use App\Models\IniciativasRegiones;
 use App\Models\IniciativasTematicas;
 use App\Models\ParticipantesInternos;
+use App\Models\Resultados;
 use App\Models\SedesSocios;
 use App\Models\SociosComunitarios;
 use App\Models\SubGruposInteres;
@@ -227,6 +228,28 @@ class IniciativasController extends Controller
             'iniciativas' => $inicVerificar,
             'evidencias' => $inevListar
         ]);
+    }
+
+    public function actualizarResultados(Request $request, $inic_codigo)
+    {
+        $resultados_final = $request->input('resultados');
+        // dd($resultadosfinal);
+
+        foreach ($resultados_final as $resu_codigo => $resultados_final_value) {
+            // Obtener el resultado correspondiente según el $inpr_codigo
+            $resultado = Resultados::where('resu_codigo', $resu_codigo)
+                ->where('inic_codigo', $inic_codigo)
+                ->first();
+
+            if ($resultado) {
+                // Actualizar los valores en la base de datos
+                $resultado->resu_cuantificacion_final = $resultados_final_value;
+                // dd($resultado->inpr_total_final = $participantes_final_value);
+                $resultado->save();
+            }
+        }
+
+        return redirect()->back()->with('exitoExterno', 'Resultados actualizados correctamente.');
     }
 
     public function guardarEvidencia(Request $request, $inic_codigo)
@@ -830,6 +853,20 @@ class IniciativasController extends Controller
         return redirect()->route('admin.iniciativa.listar')->with('exitoIniciativa', 'La iniciativa se registró correctamente');
     }
 
+    public function listadoResultados($inic_codigo){
+        $resuVerificar = Resultados::where('inic_codigo', $inic_codigo)->count();
+        // return $resuVerificar;
+
+        if ($resuVerificar == 0)
+            return redirect()->back()->with('errorIniciativa', 'La iniciativa no posee resultados esperados.');
+
+        $inicObtener = Iniciativas::where('inic_codigo', $inic_codigo)->first();
+
+        $participantes = Resultados::where('inic_codigo', $inic_codigo)->get();
+
+        return view('admin.iniciativas.resultados', ['iniciativa' => $inicObtener, 'participantes' => $participantes]);
+    }
+
     public function eliminarIniciativas(Request $request)
     {
         $iniciativa = Iniciativas::where('inic_codigo', $request->inic_codigo)->first();
@@ -1170,6 +1207,63 @@ class IniciativasController extends Controller
         return json_encode(['estado' => true, 'resultado' => $codiListar]);
     }
 
+
+    public function guardarResultado(Request $request) {
+        $validacion = Validator::make($request->all(),
+            [
+                'iniciativa' => 'exists:iniciativas,inic_codigo',
+                'cantidad' => 'required|integer|min:1',
+                'nombre' => 'required|max:100'
+            ],
+            [
+                'iniciativa.exists' => 'La iniciativa no se encuentra registrada.',
+                'cantidad.required' => 'La cuantificación es requerida.',
+                'cantidad.integer' => 'La cuantificación debe ser un número entero.',
+                'cantidad.min' => 'La cuantificación debe ser un número mayor o igual que uno.',
+                'nombre.required' => 'Nombre del resultado es requerido.',
+                'nombre.max' => 'Nombre del resultado excede el máximo de caracteres permitidos (100).'
+            ]
+        );
+        if ($validacion->fails()) return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $resuGuardar = Resultados::create([
+            'inic_codigo' => $request->inic_codigo,
+            'resu_nombre' => $request->nombre,
+            'resu_cuantificacion_inicial' => $request->cantidad,
+            'resu_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'resu_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'resu_visible' => 1,
+            'resu_nickname_mod' => Session::get('admin')->usua_nickname,
+            'resu_rol_mod' => Session::get('admin')->rous_codigo
+        ]);
+        if (!$resuGuardar) return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el resultado esperado, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'El resultado esperado fue registrado correctamente.']);
+    }
+
+    public function listarResultados(Request $request) {
+        $validacion = Validator::make($request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails()) return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $resuListar = Resultados::join('iniciativas', 'iniciativas.inic_codigo', '=', 'resultados.inic_codigo')
+            ->select('resu_codigo', 'resultados.inic_codigo', 'resu_nombre', 'resu_cuantificacion_inicial')
+            ->where('resultados.inic_codigo', $request->iniciativa)
+            ->orderBy('resu_creado', 'asc')
+            ->get();
+        if (sizeof($resuListar) == 0) return json_encode(['estado' => false, 'resultado' => '']);
+        return json_encode(['estado' => true, 'resultado' => $resuListar]);
+    }
+
+    public function eliminarResultado(Request $request) {
+        $resuVerificar = Resultados::where(['inic_codigo' => $request->inic_codigo, 'resu_codigo' => $request->resu_codigo])->first();
+        if (!$resuVerificar) return json_encode(['estado' => false, 'resultado' => 'El resultado esperado no se encuentra asociado a la iniciativa.']);
+
+        $resuEliminar = Resultados::where(['inic_codigo' => $request->inic_codigo, 'resu_codigo' => $request->resu_codigo])->delete();
+        if (!$resuEliminar) return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al eliminar el resultado esperado, intente más tarde.']);
+        return json_encode(['estado' => true, 'resultado' => 'El resultado esperado fue eliminado correctamente.']);
+    }
     public function buscarTipoInfra(Request $request)
     {
         $tiinConsultar = TipoInfraestructura::select(
