@@ -15,7 +15,7 @@
                                         data-toggle="dropdown">Iniciativa</button>
                                     <div class="dropdown-menu dropright">
 
-                                        <a href="{{ route('admin.cobertura.index', $iniciativa[0]->inic_codigo) }}"
+                                        <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
                                             class="dropdown-item has-icon"><i class="fas fa-users"></i>Ingresar
                                             cobertura</a>
                                         {{-- <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
@@ -31,7 +31,7 @@
                                         data-toggle="dropdown">Estados</button>
                                     <div class="dropdown-menu dropright">
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="3">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -41,7 +41,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="2">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -51,7 +51,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="4">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -62,7 +62,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="5">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -72,7 +72,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="6">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -96,7 +96,7 @@
                                     <i class="fas fa-paperclip"></i>
                                 </a>
 
-                                <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo) }}" type="button"
+                                <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}" type="button"
                                     data-toggle="tooltip" class="btn btn-warning" data-placemet="top"
                                     title="Editar iniciativa">
                                     <i class="fas fa-edit"></i>
@@ -121,7 +121,7 @@
                                                     <strong>Nombre de la iniciativa</strong>
                                                 </td>
                                                 <td>
-                                                    {{ $iniciativa[0]->inic_nombre }}
+                                                    {{ $iniciativa->inic_nombre }}
                                                 </td>
                                             </tr>
 
@@ -130,7 +130,7 @@
                                                     <strong>Año</strong>
                                                 </td>
                                                 <td>
-                                                    {{ $iniciativa[0]->inic_anho }}
+                                                    {{ $iniciativa->inic_anho }}
                                                 </td>
                                             </tr>
 
@@ -139,28 +139,26 @@
                                                     <strong>Descripción</strong>
                                                 </td>
                                                 <td>
-                                                    {{ $iniciativa[0]->inic_descripcion }}
+                                                    {{ $iniciativa->inic_descripcion }}
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Programas</strong></td>
-                                                <td>{{ $iniciativa[0]->prog_nombre }}</td>
+                                                <td>{{ $iniciativa->prog_nombre }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Tipo de actividad</strong></td>
                                                 <td>
-                                                    @foreach ($iniciativa as $key => $ini)
-                                                        {{ $key + 1 }}. {{ $ini->tiac_nombre }}<br>
-                                                    @endforeach
+                                                    {{$iniciativa->tiac_nombre}}
                                                 </td>
 
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Convenio</strong></td>
-                                                <td>{{ $iniciativa[0]->conv_nombre }}</td>
+                                                <td>{{ $iniciativa->conv_nombre }}</td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Ubicaciones</strong></td>

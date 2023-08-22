@@ -167,7 +167,7 @@ class IniciativasController extends Controller
                 'programas.prog_nombre'
             )
             ->where('iniciativas.inic_codigo', $inic_codigo)
-            ->get();
+            ->first();
 
 
         $participantes = ParticipantesInternos::join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
