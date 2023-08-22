@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CostosInfraestructura;
 use App\Models\CostosRrhh;
+use App\Models\Entidades;
 use App\Models\Grupos;
 use App\Models\IniciativasComunas;
 use App\Models\IniciativasEvidencias;
@@ -206,6 +207,25 @@ class IniciativasController extends Controller
             ->join('grupos_interes', 'grupos_interes.grin_codigo', 'sub_grupos_interes.grin_codigo')
             ->where('iniciativas_participantes.inic_codigo', $inic_codigo)->get();
 
+        $entidadesRecursos = Entidades::select('enti_codigo', 'enti_nombre')->get();
+        $costosDinero = CostosDinero::select(DB::raw('IFNULL(SUM(codi_valorizacion), 0) AS codi_valorizacion'))->where('inic_codigo', $inic_codigo)->first();
+        $costosInfraestructura = CostosInfraestructura::select(DB::raw('IFNULL(SUM(coin_valorizacion), 0) AS coin_valorizacion'))->where('inic_codigo', $inic_codigo)->first();
+        $costosRrhh = CostosRrhh::select(DB::raw('IFNULL(SUM(corh_valorizacion), 0) AS corh_valorizacion'))->where('inic_codigo', $inic_codigo)->first();
+
+        $codiListar = CostosDinero::select('enti_codigo', DB::raw('IFNULL(SUM(codi_valorizacion), 0) AS suma_dinero'))->where('inic_codigo', $inic_codigo)->groupBy('enti_codigo')->get();
+        $coinListar = CostosInfraestructura::select('enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', DB::raw('IFNULL(SUM(coin_valorizacion), 0) AS suma_infraestructura'))
+            ->join('tipo_infraestructura', 'tipo_infraestructura.tinf_codigo', '=', 'costos_infraestructura.tinf_codigo')
+            ->where('inic_codigo', $inic_codigo)
+            ->groupBy('enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre')
+            ->get();
+
+        $corhListar = CostosRrhh::select('enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', DB::raw('IFNULL(SUM(corh_valorizacion), 0) AS suma_rrhh'))
+            ->join('tipo_rrhh', 'tipo_rrhh.trrhh_codigo', '=', 'costos_rrhh.trrhh_codigo')
+            ->where('inic_codigo', $inic_codigo)
+            ->groupBy('enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre')
+            ->get();
+
+        // return $costosDinero;
 
         return view('admin.iniciativas.mostrar', [
             'iniciativa' => $iniciativa,
@@ -213,7 +233,14 @@ class IniciativasController extends Controller
             'grupos' => $grupos,
             'tematicas' => $tematicas,
             'externos' => $participantes_externos,
-            'internos' => $participantes
+            'internos' => $participantes,
+            'dinero' => $costosDinero,
+            'infraestructura' => $costosInfraestructura,
+            'rrhh' => $costosRrhh,
+            'recursoDinero' => $codiListar,
+            'recursoInfraestructura' => $coinListar,
+            'recursoRrhh' => $corhListar,
+            'entidades' => $entidadesRecursos,
         ]);
     }
 
@@ -1341,7 +1368,7 @@ class IniciativasController extends Controller
             'tinf_codigo' => $request->tipoinfra,
             'coin_horas' => $request->horas,
             'coin_cantidad' => $request->cantidad,
-            'coin_valorizacion' => $request->horas * $tiinConsultar->tinf_valor*$request->cantidad,
+            'coin_valorizacion' => $request->horas * $tiinConsultar->tinf_valor * $request->cantidad,
             'coin_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'coin_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'coin_vigente' => 'S',
@@ -1364,7 +1391,7 @@ class IniciativasController extends Controller
             return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
 
         $coinListar = DB::table('costos_infraestructura')
-            ->select('inic_codigo', 'enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', 'coin_horas','coin_cantidad', 'coin_valorizacion')
+            ->select('inic_codigo', 'enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', 'coin_horas', 'coin_cantidad', 'coin_valorizacion')
             ->join('tipo_infraestructura', 'tipo_infraestructura.tinf_codigo', '=', 'costos_infraestructura.tinf_codigo')
             ->where('inic_codigo', $request->iniciativa)
             ->orderBy('coin_creado', 'asc')
@@ -1447,7 +1474,7 @@ class IniciativasController extends Controller
             return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
 
         $corhListar = DB::table('costos_rrhh')
-            ->select('inic_codigo', 'enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', 'corh_horas','corh_cantidad', 'corh_valorizacion')
+            ->select('inic_codigo', 'enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', 'corh_horas', 'corh_cantidad', 'corh_valorizacion')
             ->join('tipo_rrhh', 'tipo_rrhh.trrhh_codigo', '=', 'costos_rrhh.trrhh_codigo')
             ->where('inic_codigo', $request->iniciativa)
             ->orderBy('corh_creado', 'asc')

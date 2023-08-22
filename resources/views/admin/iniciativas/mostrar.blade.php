@@ -15,8 +15,9 @@
                                         data-toggle="dropdown">Iniciativa</button>
                                     <div class="dropdown-menu dropright">
 
-                                        <a href="{{route('admin.cobertura.index', $iniciativa[0]->inic_codigo)}}" class="dropdown-item has-icon"><i
-                                                class="fas fa-users"></i>Ingresar cobertura</a>
+                                        <a href="{{ route('admin.cobertura.index', $iniciativa[0]->inic_codigo) }}"
+                                            class="dropdown-item has-icon"><i class="fas fa-users"></i>Ingresar
+                                            cobertura</a>
                                         {{-- <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
                                             resultados</a>
                                         <a href="" class="dropdown-item has-icon"><i
@@ -196,8 +197,8 @@
                                             </tr> --}}
 
                                             {{-- <tr> --}}
-                                                {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
-                                                {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
+                                            {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
+                                            {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-sm small">
@@ -309,6 +310,98 @@
                                                     </div>
                                                 </td>
                                             </tr>
+
+                                            <tr>
+                                                <td><strong>Total de recursos invertidos</strong></td>
+                                                <td>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-sm">
+                                                            <thead>
+                                                                <th></th>
+                                                                <th>Dinero</th>
+                                                                <th>Infraestructura</th>
+                                                                <th>Recursos humanos</th>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                @php
+                                                                    $totalDinero = 0;
+                                                                    $totalInfraestructura = 0;
+                                                                    $totalRrhh = 0;
+                                                                @endphp
+                                                                @foreach ($entidades as $entidad)
+                                                                    @php
+                                                                        $entidadDinero = 0;
+                                                                        $entidadInfraestructura = 0;
+                                                                        $entidadRrhh = 0;
+                                                                    @endphp
+
+                                                                    <tr>
+                                                                        <td>{{ $entidad->enti_nombre }}</td>
+                                                                        <td>
+                                                                            @if (sizeof($recursoDinero) == 0)
+                                                                                $0
+                                                                            @else
+                                                                                @foreach ($recursoDinero as $dinero)
+                                                                                    @if ($entidad->enti_codigo == $dinero->enti_codigo)
+                                                                                        @php
+                                                                                            $entidadDinero = $dinero->suma_dinero;
+                                                                                        @endphp
+                                                                                        ${{ number_format($dinero->suma_dinero, 0, ',', '.') }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (sizeof($recursoInfraestructura) == 0)
+                                                                                $0
+                                                                            @else
+                                                                                @foreach ($recursoInfraestructura as $infraestructura)
+                                                                                    @if ($entidad->enti_codigo == $infraestructura->enti_codigo)
+                                                                                        @php
+                                                                                            $entidadInfraestructura = $infraestructura->suma_infraestructura;
+                                                                                        @endphp
+                                                                                        ${{ number_format($infraestructura->suma_infraestructura, 0, ',', '.') }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (sizeof($recursoRrhh) == 0)
+                                                                                $0
+                                                                            @else
+                                                                                @foreach ($recursoRrhh as $rrhh)
+                                                                                    @if ($entidad->enti_codigo == $rrhh->enti_codigo)
+                                                                                        @php
+                                                                                            $entidadRrhh = $rrhh->suma_rrhh;
+                                                                                        @endphp
+                                                                                        ${{ number_format($rrhh->suma_rrhh, 0, ',', '.') }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                    @php
+                                                                        $totalDinero += $entidadDinero;
+                                                                        $totalInfraestructura += $entidadInfraestructura;
+                                                                        $totalRrhh += $entidadRrhh;
+                                                                    @endphp
+                                                                @endforeach
+                                                                <tr>
+                                                                    <td>Total General</td>
+                                                                    <td>${{ number_format($totalDinero, 0, ',', '.') }}</td>
+                                                                    <td>${{ number_format($totalInfraestructura, 0, ',', '.') }}
+                                                                    </td>
+                                                                    <td>${{ number_format($totalRrhh, 0, ',', '.') }}</td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
 
                                         </tbody>
                                     </table>
