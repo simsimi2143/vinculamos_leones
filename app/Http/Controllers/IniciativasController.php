@@ -65,7 +65,7 @@ class IniciativasController extends Controller
             ->orderBy('inic_creado', 'desc') // Ordenar por fecha de creación formateada en orden descendente
             ->get();
 
-        $mecanismos = Mecanismos::all();
+            $mecanismos = Mecanismos::select('meca_codigo', 'meca_nombre')->orderBy('meca_nombre', 'asc')->get();
 
         return view('admin.iniciativas.listar', compact('iniciativas','mecanismos'));
     }
