@@ -145,7 +145,7 @@
 
                                             <tr>
                                                 <td><strong>Programas</strong></td>
-                                                <td>{{ $iniciativa->prog_nombre }}</td>
+                                                <td>{{ $iniciativa->meca_nombre }}</td>
                                             </tr>
 
                                             <tr>
