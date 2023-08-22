@@ -41,6 +41,7 @@
                                         <tr>
 
                                             <th>Nombre</th>
+                                            <th>Mecanismo</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -52,6 +53,7 @@
                                         @foreach ($iniciativas as $iniciativa)
                                             <tr>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
+                                                <td>{{ $iniciativa->meca_nombre }}</td>
                                                 <td>
                                                     @php
                                                         $escuelasArray = explode(',', $iniciativa->escuelas);

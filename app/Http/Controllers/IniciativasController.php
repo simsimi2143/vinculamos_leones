@@ -48,7 +48,7 @@ class IniciativasController extends Controller
 {
     public function listarIniciativas()
     {
-        $iniciativa = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
+        $iniciativas = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
             ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
             ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
             ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
@@ -65,9 +65,9 @@ class IniciativasController extends Controller
             ->orderBy('inic_creado', 'desc') // Ordenar por fecha de creación formateada en orden descendente
             ->get();
 
+        $mecanismos = Mecanismos::all();
 
-
-        return view('admin.iniciativas.listar', ["iniciativas" => $iniciativa]);
+        return view('admin.iniciativas.listar', compact('iniciativas','mecanismos'));
     }
 
 

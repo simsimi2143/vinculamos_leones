@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mecanismos;
 
 class Iniciativas extends Model
 {
@@ -17,9 +18,10 @@ class Iniciativas extends Model
         'inic_codigo',
         'conv_codigo',
         'prog_codigo',
+        'meca_codigo',
         'inic_nombre',
         'inic_territorio',
-        'inic_descripcion',	
+        'inic_descripcion',
         'inic_estado',
         'inic_anho',
         'inic_creado',
