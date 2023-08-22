@@ -59,9 +59,9 @@
                                 <table class="table table-striped" id="table-1">
                                     <thead>
                                         <tr>
-
+                                            <th>#</th>
                                             <th>Nombre</th>
-                                            {{-- <th>Mecanismo</th> --}}
+                                            <th>Mecanismo</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -72,8 +72,9 @@
                                     <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
                                             <tr data-meca="{{ $iniciativa->meca_nombre }}">
+                                                <td>{{ $iniciativa->inic_codigo }}</td>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
-                                                {{-- <td>{{ $iniciativa->meca_nombre }}</td> --}}
+                                                <td>{{ $iniciativa->meca_nombre }}</td>
                                                 <td>
                                                     @php
                                                         $escuelasArray = explode(',', $iniciativa->escuelas);
