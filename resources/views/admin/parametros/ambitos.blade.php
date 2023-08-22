@@ -151,12 +151,12 @@
                                     <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
                                         name="descripcion">
                                         <option value="" selected disable d>Seleccione...</option>
-                                        <option value="Contribución Interno"
+                                        <option value="Contribución Interna"
                                             {{ 'Contribución Interna' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
-                                            Interna</option>
-                                        <option value="Contribución Externo"
+                                            Interna </option>
+                                        <option value="Contribución Externa"
                                             {{ 'Contribución Externa' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
-                                            Externa</option>
+                                            Externa </option>
                                     </select>
                                     @error('descripcion')
                                         <div class="invalid-feedback">
