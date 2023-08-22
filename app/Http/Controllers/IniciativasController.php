@@ -154,6 +154,7 @@ class IniciativasController extends Controller
         $iniciativa = Iniciativas::join('convenios', 'convenios.conv_codigo', '=', 'iniciativas.conv_codigo')
             ->join('tipo_actividades', 'tipo_actividades.tiac_codigo', '=', 'iniciativas.tiac_codigo')
             ->join('mecanismos', 'mecanismos.meca_codigo', '=', 'iniciativas.meca_codigo')
+            ->join('programas','programas.prog_codigo','iniciativas.prog_codigo')
             ->select(
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
@@ -162,7 +163,8 @@ class IniciativasController extends Controller
                 'iniciativas.inic_estado',
                 'mecanismos.meca_nombre',
                 'tipo_actividades.tiac_nombre',
-                'convenios.conv_nombre'
+                'convenios.conv_nombre',
+                'programas.prog_nombre'
             )
             ->where('iniciativas.inic_codigo', $inic_codigo)
             ->get();
