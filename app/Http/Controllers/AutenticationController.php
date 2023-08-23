@@ -64,7 +64,7 @@ class AutenticationController extends Controller
         } elseif ($usuario->rous_codigo == 3) {
             $request->session()->put('observador', $usuario);
             return redirect()->route('observador.home');
-        } elseif ($usuario->rous_codigo == 4) {
+        } elseif ($usuario->rous_codigo == 5) {
             $request->session()->put('supervisor', $usuario);
             return redirect()->route('supervisor.home');
         } else {
