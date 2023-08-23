@@ -235,6 +235,7 @@
                                                                 <th>Subgrupos</th>
                                                                 <th>Nombre del socio</th>
                                                                 <th>Beneficiarios</th>
+                                                                <th>Beneficiarios final</th>
                                                             </thead>
 
                                                             <tbody>
@@ -244,6 +245,7 @@
                                                                         <td>{{ $externo->sugr_nombre }}</td>
                                                                         <td>{{ $externo->soco_nombre_socio }}</td>
                                                                         <td>{{ $externo->inpr_total }}</td>
+                                                                        <td>{{ $externo->inpr_total_final }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

@@ -99,10 +99,27 @@ class IniciativasController extends Controller
             ->join('escuelas', 'carreras.escu_codigo', '=', 'escuelas.escu_codigo')
             ->where('participantes_internos.inic_codigo', $inic_codigo)
             ->get();
+        $participantes = Iniciativas::join('iniciativas_participantes', 'iniciativas_participantes.inic_codigo', 'iniciativas.inic_codigo')
+            ->join('sub_grupos_interes', 'sub_grupos_interes.sugr_codigo', 'iniciativas_participantes.sugr_codigo')
+            ->join('socios_comunitarios', 'socios_comunitarios.soco_codigo', 'iniciativas_participantes.soco_codigo')
+            ->select(
+                'sub_grupos_interes.sugr_nombre',
+                'sub_grupos_interes.sugr_codigo',
+                'socios_comunitarios.soco_codigo',
+                'socios_comunitarios.soco_nombre_socio',
+                'iniciativas.inic_codigo',
+                'iniciativas.inic_nombre',
+                'iniciativas_participantes.inpr_codigo',
+                'iniciativas_participantes.inpr_total',
+                'iniciativas_participantes.inpr_total_final',
+            )
+            ->where('iniciativas.inic_codigo', $inic_codigo)
+            ->get();
 
         return view('admin.iniciativas.coberturas', [
             'iniciativa' => $inicObtener,
-            'resultados' => $resuObtener
+            'resultados' => $resuObtener,
+            'participantes' => $participantes
         ]);
     }
 
@@ -130,9 +147,30 @@ class IniciativasController extends Controller
         }
 
         return redirect()->route('admin.cobertura.index', $inic_codigo)
-            ->with('success', 'Resultados actualizados correctamente.');
+            ->with('exitoInterno', 'Participacion interna actualizada correctamente.');
     }
 
+    public function actualizarCoberturaEx(Request $request, $inic_codigo)
+    {
+        $participantes_final = $request->input('participantes');
+        // dd($participantes_final);
+
+        foreach ($participantes_final as $inpr_codigo => $participantes_final_value) {
+            // Obtener el resultado correspondiente según el $inpr_codigo
+            $resultado = IniciativasParticipantes::where('inpr_codigo', $inpr_codigo)
+                ->where('inic_codigo', $inic_codigo)
+                ->first();
+
+            if ($resultado) {
+                // Actualizar los valores en la base de datos
+                $resultado->inpr_total_final = $participantes_final_value;
+                // dd($resultado->inpr_total_final = $participantes_final_value);
+                $resultado->save();
+            }
+        }
+
+        return redirect()->back()->with('exitoExterno', 'Participantes externos actualizados correctamente.');
+    }
 
     public function updateState(Request $request)
     {

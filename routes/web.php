@@ -248,8 +248,9 @@ Route::middleware('verificar.admin')->group(function () {
     //todo: Update state iniciativa
     Route::post('/admin/iniciativas/update-state', [IniciativasController::class, 'updateState'])->name('admin.iniciativas.updateState');
     //todo: Add result iniciativa
-    Route::get('/admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('admin.cobertura.index');
-    Route::post('admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'actualizarCobertura'])->name('admin.cobertura.update');
+    Route::get('admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('admin.cobertura.index');
+    Route::post('admin/iniciativa/{inic_codigo}/cobertura-interna', [IniciativasController::class, 'actualizarCobertura'])->name('admin.cobertura.interna.update');
+    Route::post('admin/iniciativa/{inic_codigo}/cobertura-externa', [IniciativasController::class, 'actualizarCoberturaEx'])->name('admin.cobertura.externa.update');
 
     //todo:evidencias de iniciativas
 
