@@ -50,7 +50,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4">
+                                    {{-- <div class="col-4 col-md-4 col-lg-4">
                                         <div class="form-group">
                                             <label>Filtrar por Año</label>
                                             <select class="form-control select2" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
@@ -62,7 +62,7 @@
                                                 @endforelse
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     {{-- <div class="col-4 col-md-4 col-lg-4  mb-4">
                                         <a href="{{ route('admin.iniciativa.listar') }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-broom"></i> Limpiar</a>
                                     </div> --}}
@@ -75,7 +75,7 @@
 
                                             <th>Nombre</th>
                                             <th>Mecanismo</th>
-                                            <th>Año</th>
+                                            {{-- <th>Año</th> --}}
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -85,10 +85,10 @@
                                     </thead>
                                     <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
-                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}">
+                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" {{-- data-ano="{{ $iniciativa->inic_anho }}" --}}>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
                                                 <td>{{ $iniciativa->meca_nombre }}</td>
-                                                <td>{{ $iniciativa->inic_anho }}</td>
+                                                {{-- <td>{{ $iniciativa->inic_anho }}</td> --}}
                                                 <td>
                                                     @php
                                                         $escuelasArray = explode(',', $iniciativa->escuelas);
@@ -236,7 +236,7 @@
         }
 
 
-        function filtrarTablaxMecanismo() {
+        /* function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
             selectElement.selectedIndex = 3;
             const changeEvent = new Event('change', { bubbles: true });
@@ -258,49 +258,38 @@
                 } else {
                     fila.style.display = 'none'; // Ocultar la fila
                 }
-                /* if (mecaSeleccionado === '' && anoSeleccionado === '') {
-                    selectElement.selectedIndex = 0;
-                    selectElement.dispatchEvent(changeEvent);
-                    fila.style.display = 'table-row'; // Mostrar la fila
-
-                }else if(mecaSeleccionado === mecaFila && anoSeleccionado === anoFila){
-                    fila.style.display = 'table-row'; // Mostrar la fila
-                }
-                else {
-                    fila.style.display = 'none'; // Ocultar la fila
-                } */
                 if (mecaSeleccionado === '' && anoSeleccionado === '' ) {
                     selectElement.selectedIndex = 0;
                     selectElement.dispatchEvent(changeEvent);
                     fila.style.display = 'table-row';
                 }
             });
-            }
+            } */
 
-            /* function filtrarTablaxAno() {
+            function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
             selectElement.selectedIndex = 3;
             const changeEvent = new Event('change', { bubbles: true });
             selectElement.dispatchEvent(changeEvent);
-            const anoSeleccionado = document.getElementById('ano').value;
+            const mecaSeleccionado = document.getElementById('mecanismo').value;
             const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
 
 
             filasTabla.forEach(function (fila) {
                 const mecaFila = fila.getAttribute('data-meca');
-                if (anoSeleccionado === '') {
+                if (mecaSeleccionado === '') {
                     selectElement.selectedIndex = 0;
                     selectElement.dispatchEvent(changeEvent);
                     fila.style.display = 'table-row'; // Mostrar la fila
 
-                }else if(anoSeleccionado === mecaFila){
+                }else if(mecaSeleccionado === mecaFila){
                     fila.style.display = 'table-row'; // Mostrar la fila
                 }
                 else {
                     fila.style.display = 'none'; // Ocultar la fila
                 }
             });
-            } */
+            }
         // Llamar a la función cuando se carga la página
     </script>
 @endsection

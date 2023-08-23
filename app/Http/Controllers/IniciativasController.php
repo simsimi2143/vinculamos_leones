@@ -56,7 +56,7 @@ class IniciativasController extends Controller
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
                 'iniciativas.inic_estado',
-                'iniciativas.inic_anho',
+                /* 'iniciativas.inic_anho', */
                 'mecanismos.meca_nombre',
                 DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas'),
                 DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras'),
@@ -67,9 +67,9 @@ class IniciativasController extends Controller
             ->get();
 
             $mecanismos = Mecanismos::select('meca_codigo', 'meca_nombre')->orderBy('meca_nombre', 'asc')->get();
-            $anhos = Iniciativas::select('inic_anho')->distinct('inic_anho')->orderBy('inic_anho', 'asc')->get();
+            /* $anhos = Iniciativas::select('inic_anho')->distinct('inic_anho')->orderBy('inic_anho', 'asc')->get(); */
 
-        return view('admin.iniciativas.listar', compact('iniciativas','mecanismos','anhos'));
+        return view('admin.iniciativas.listar', compact('iniciativas','mecanismos'));
     }
 
 
