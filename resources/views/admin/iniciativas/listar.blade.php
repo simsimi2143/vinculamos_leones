@@ -40,7 +40,7 @@
                                     <div class="col-4 col-md-4 col-lg-4">
                                         <div class="form-group">
                                             <label>Filtrar por Mecanismo</label>
-                                            <select class="form-control select2" id="mecanismo" name="mecanismo" onchange="filtrarTabla()">
+                                            <select class="form-control select2" id="mecanismo" name="mecanismo" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($mecanismos as $mecanismo)
                                                     <option value="{{ $mecanismo->meca_nombre }}" {{ Request::get('mecanismo') == $mecanismo->meca_nombre ? 'selected' : '' }}>{{ $mecanismo->meca_nombre }}</option>
@@ -50,18 +50,32 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4 {{-- text-right --}} mb-4">
-                                        <a href="{{ route('admin.iniciativa.listar') }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-broom"></i> Limpiar</a>
+                                    <div class="col-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>Filtrar por Año</label>
+                                            <select class="form-control select2" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
+                                                <option value="" selected>TODOS</option>
+                                                @forelse ($anhos as $ann)
+                                                    <option value="{{ $ann->inic_anho }}" {{ Request::get('mecanismo') == $ann->inic_anho ? 'selected' : '' }}>{{ $ann->inic_anho }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
                                     </div>
+                                    {{-- <div class="col-4 col-md-4 col-lg-4  mb-4">
+                                        <a href="{{ route('admin.iniciativa.listar') }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-broom"></i> Limpiar</a>
+                                    </div> --}}
                                 </div>
                             </form>
                             <div class="table-responsive">
                                 <table class="table table-striped" id="table-1">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+
                                             <th>Nombre</th>
                                             <th>Mecanismo</th>
+                                            <th>Año</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -71,10 +85,10 @@
                                     </thead>
                                     <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
-                                            <tr data-meca="{{ $iniciativa->meca_nombre }}">
-                                                <td>{{ $iniciativa->inic_codigo }}</td>
+                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}">
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
                                                 <td>{{ $iniciativa->meca_nombre }}</td>
+                                                <td>{{ $iniciativa->inic_anho }}</td>
                                                 <td>
                                                     @php
                                                         $escuelasArray = explode(',', $iniciativa->escuelas);
@@ -204,36 +218,89 @@
         </div>
     </div>
     <script>
+        window.onload = function () {
+        // Inicializar tabla
+        filtrarTabla();
+
+        // Agregar listeners para cada filtro
+        const mecanismoSelect = document.getElementById('mecanismo');
+        mecanismoSelect.addEventListener('change', filtrarTabla);
+
+        const estadoSelect = document.getElementById('estado');
+        estadoSelect.addEventListener('change', filtrarTabla);
+        };
+
         function eliminarIniciativa(inic_codigo) {
             $('#inic_codigo').val(inic_codigo);
             $('#modalEliminaIniciativa').modal('show');
         }
 
-        function filtrarTabla() {
+
+        function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
             selectElement.selectedIndex = 3;
             const changeEvent = new Event('change', { bubbles: true });
             selectElement.dispatchEvent(changeEvent);
             const mecaSeleccionado = document.getElementById('mecanismo').value;
+            const anoSeleccionado = document.getElementById('ano').value;
             const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
 
 
             filasTabla.forEach(function (fila) {
                 const mecaFila = fila.getAttribute('data-meca');
-                if (mecaSeleccionado === '') {
+                const anoFila = fila.getAttribute('data-ano');
+
+                const filtroMeca = mecaSeleccionado === '' || mecaSeleccionado === mecaFila;
+                const filtroEstado = anoSeleccionado === '' || anoSeleccionado === anoFila;
+
+                if (filtroMeca && filtroEstado) {
+                    fila.style.display = ''; // Mostrar la fila
+                } else {
+                    fila.style.display = 'none'; // Ocultar la fila
+                }
+                /* if (mecaSeleccionado === '' && anoSeleccionado === '') {
                     selectElement.selectedIndex = 0;
                     selectElement.dispatchEvent(changeEvent);
                     fila.style.display = 'table-row'; // Mostrar la fila
 
-                }else if(mecaSeleccionado === mecaFila){
+                }else if(mecaSeleccionado === mecaFila && anoSeleccionado === anoFila){
+                    fila.style.display = 'table-row'; // Mostrar la fila
+                }
+                else {
+                    fila.style.display = 'none'; // Ocultar la fila
+                } */
+                if (mecaSeleccionado === '' && anoSeleccionado === '' ) {
+                    selectElement.selectedIndex = 0;
+                    selectElement.dispatchEvent(changeEvent);
+                    fila.style.display = 'table-row';
+                }
+            });
+            }
+
+            /* function filtrarTablaxAno() {
+            const selectElement = document.querySelector('select[name="table-1_length"]');
+            selectElement.selectedIndex = 3;
+            const changeEvent = new Event('change', { bubbles: true });
+            selectElement.dispatchEvent(changeEvent);
+            const anoSeleccionado = document.getElementById('ano').value;
+            const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
+
+
+            filasTabla.forEach(function (fila) {
+                const mecaFila = fila.getAttribute('data-meca');
+                if (anoSeleccionado === '') {
+                    selectElement.selectedIndex = 0;
+                    selectElement.dispatchEvent(changeEvent);
+                    fila.style.display = 'table-row'; // Mostrar la fila
+
+                }else if(anoSeleccionado === mecaFila){
                     fila.style.display = 'table-row'; // Mostrar la fila
                 }
                 else {
                     fila.style.display = 'none'; // Ocultar la fila
                 }
             });
-            }
-
+            } */
         // Llamar a la función cuando se carga la página
     </script>
 @endsection
