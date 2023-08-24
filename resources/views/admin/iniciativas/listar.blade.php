@@ -50,7 +50,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-4 col-md-4 col-lg-4">
+                                    <div class="col-4 col-md-4 col-lg-4">
                                         <div class="form-group">
                                             <label>Filtrar por Año</label>
                                             <select class="form-control select2" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
@@ -62,10 +62,10 @@
                                                 @endforelse
                                             </select>
                                         </div>
-                                    </div> --}}
-                                    {{-- <div class="col-4 col-md-4 col-lg-4  mb-4">
+                                    </div>
+                                    <div class="col-4 col-md-4 col-lg-4  mb-4">
                                         <a href="{{ route('admin.iniciativa.listar') }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-broom"></i> Limpiar</a>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </form>
                             <div class="table-responsive">
@@ -75,7 +75,7 @@
 
                                             <th>Nombre</th>
                                             <th>Mecanismo</th>
-                                            {{-- <th>Año</th> --}}
+                                            <th>Año</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -85,10 +85,10 @@
                                     </thead>
                                     <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
-                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" {{-- data-ano="{{ $iniciativa->inic_anho }}" --}}>
+                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}">
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
                                                 <td>{{ $iniciativa->meca_nombre }}</td>
-                                                {{-- <td>{{ $iniciativa->inic_anho }}</td> --}}
+                                                <td>{{ $iniciativa->inic_anho }}</td>
                                                 <td>
                                                     @php
                                                         $escuelasArray = explode(',', $iniciativa->escuelas);
@@ -236,7 +236,7 @@
         }
 
 
-        /* function filtrarTablaxMecanismo() {
+        function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
             selectElement.selectedIndex = 3;
             const changeEvent = new Event('change', { bubbles: true });
@@ -264,9 +264,9 @@
                     fila.style.display = 'table-row';
                 }
             });
-            } */
+            }
 
-            function filtrarTablaxMecanismo() {
+            /* function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
             selectElement.selectedIndex = 3;
             const changeEvent = new Event('change', { bubbles: true });
@@ -289,7 +289,7 @@
                     fila.style.display = 'none'; // Ocultar la fila
                 }
             });
-            }
+            } */
         // Llamar a la función cuando se carga la página
     </script>
 @endsection

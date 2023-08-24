@@ -56,20 +56,20 @@ class IniciativasController extends Controller
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
                 'iniciativas.inic_estado',
-                /* 'iniciativas.inic_anho', */
+                'iniciativas.inic_anho',
                 'mecanismos.meca_nombre',
                 DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas'),
                 DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras'),
                 DB::raw('DATE_FORMAT(iniciativas.inic_creado, "%d/%m/%Y %H:%i:%s") as inic_creado')
             )
-            ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'mecanismos.meca_nombre', 'inic_creado') // Agregamos inic_creado al GROUP BY
+            ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'iniciativas.inic_anho','mecanismos.meca_nombre', 'inic_creado') // Agregamos inic_creado al GROUP BY
             ->orderBy('inic_creado', 'desc') // Ordenar por fecha de creación formateada en orden descendente
             ->get();
 
             $mecanismos = Mecanismos::select('meca_codigo', 'meca_nombre')->orderBy('meca_nombre', 'asc')->get();
-            /* $anhos = Iniciativas::select('inic_anho')->distinct('inic_anho')->orderBy('inic_anho', 'asc')->get(); */
+            $anhos = Iniciativas::select('inic_anho')->distinct('inic_anho')->orderBy('inic_anho', 'asc')->get();
 
-        return view('admin.iniciativas.listar', compact('iniciativas','mecanismos'));
+        return view('admin.iniciativas.listar', compact('iniciativas','mecanismos','anhos'));
     }
 
 
