@@ -94,6 +94,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::delete('admin/eliminar-convenios/', [ParametrosController::class, 'eliminarConvenios'])->name('admin.eliminar.convenios');
     Route::post('admin/convenios/crear', [ParametrosController::class, 'crearConvenios'])->name('admin.crear.convenios');
     Route::post('admin/convenios/{conv_codigo}/actualizar', [ParametrosController::class, 'actualizarConvenios'])->name('admin.actualizar.convenios');
+    Route::post('admin/convenios/{conv_codigo}/descargar', [ParametrosController::class, 'descargarConvenios'])->name('admin.descargar.convenios');
 
     //Sedes
     Route::get('admin/listar-sedes', [ParametrosController::class, 'listarSedes'])->name('admin.listar.sedes');

@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 
 class ParametrosController extends Controller
@@ -392,6 +393,32 @@ class ParametrosController extends Controller
         ]);
     }
 
+    public function descargarConvenios($conv_codigo)
+    {
+        try {
+            $convenio = Convenios::where('conv_codigo', $conv_codigo)->first();
+            if (!$convenio) {
+                return redirect()->back()->with('errorConvenio', 'El documento de colaboración no se encuentra registrado o vigente en el sistema.');
+            }
+            $archivo = public_path($convenio->conv_ruta_archivo);
+            if (!file_exists($archivo)) {
+                return redirect()->back()->with('errorConvenio', 'El archivo no se encuentra en la ruta especificada.');
+            }
+            $nombreArchivo = pathinfo($archivo, PATHINFO_FILENAME);
+            $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+
+            $cabeceras = [
+                'Content-Type' => mime_content_type($archivo),
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+            ];
+
+            return response()->download($archivo, $nombreArchivo . '.' . $extension, $cabeceras);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('errorConvenio', 'Ocurrió un problema al descargar el documento de colaboración, intente más tarde.');
+        }
+    }
+
     public function eliminarConvenios(Request $request)
     {
         $verificarDrop = Convenios::where('conv_codigo', $request->conv_codigo)->first();
@@ -400,12 +427,12 @@ class ParametrosController extends Controller
         }
 
         try {
-            $verificarDropFile = unlink('public/' . $verificarDrop->conv_ruta_archivo);
+            $verificarDropFile = unlink($verificarDrop->conv_ruta_archivo);
         } catch (\Exception $e) {
             echo "Archivo no encontrado: " . $e->getMessage();
         }
 
-        $verificar = Iniciativas::select('inic_codigo')->where('conv_codigo', $request->conv_codigo);
+        $verificar = Iniciativas::select('inic_codigo')->where('conv_codigo', $request->conv_codigo)->first();
         if ($verificar) {
             return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'No es posible eliminar, el documento de colaboración está siendo utilizado en una iniciativa');
         }

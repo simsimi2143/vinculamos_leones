@@ -65,7 +65,7 @@
                                             <th>Nombre</th>
                                             <th>Descripción</th>
                                             <th>Documento de colaboración</th>
-                                            <th>Acciones</th>
+                                            <th style="width: 150px">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -82,12 +82,16 @@
                                                 <td>{{ $conv->conv_descripcion }}</td>
                                                 <td>{{ $conv->conv_nombre_archivo }}</td>
                                                 <td>
+                                                    <form action="{{ route('admin.descargar.convenios', $conv->conv_codigo) }}" method="POST" style="display: inline-block">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title="Descargar"><i class="fas fa-download"></i></button>
+                                                    </form>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
                                                         onclick="editarConv({{ $conv->conv_codigo }})" data-toggle="tooltip"
                                                         data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger"
                                                         onclick="eliminarConv({{ $conv->conv_codigo }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Eliminar conv"><i
+                                                        data-toggle="tooltip" data-placement="top" title="Eliminar"><i
                                                             class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
