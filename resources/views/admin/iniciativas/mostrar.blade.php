@@ -91,10 +91,10 @@
                                     <i class="fas fa-backward"></i>
                                 </a>
 
-                                <a href="" type="button" data-toggle="tooltip" class="btn btn-primary"
+                                {{-- <a href="" type="button" data-toggle="tooltip" class="btn btn-primary"
                                     data-placemet="top" title="Adjuntar evidencia">
                                     <i class="fas fa-paperclip"></i>
-                                </a>
+                                </a> --}}
 
                                 <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}" type="button"
                                     data-toggle="tooltip" class="btn btn-warning" data-placemet="top"
