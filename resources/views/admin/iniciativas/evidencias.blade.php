@@ -114,8 +114,14 @@
                     <form action="{{ route('admin.evidencia.guardar', $iniciativas->inic_codigo) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-
                         <div class="form-group">
+                            <label>Nombre</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="inev_nombre" name="inev_nombre"
+                                    placeholder="" autocomplete="off">
+                            </div>
+                        </div>
+                        {{-- <div class="form-group">
                             <label>Mecanismo</label>
                             <div class="input-group">
                                 <select class="form-control" id="inev_nombre" name="inev_nombre">
@@ -136,7 +142,7 @@
                                     <option value="Informe de cierre">Informe de cierre</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label>Archivo</label>
@@ -171,8 +177,14 @@
                     <form method="POST" id="form-editar-evidencia">
                         @method('PUT')
                         @csrf
-
                         <div class="form-group">
+                            <label>Nombre</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="inev_nombre_edit" name="inev_nombre_edit"
+                                    placeholder="" autocomplete="off">
+                            </div>
+                        </div>
+                        {{-- <div class="form-group">
                             <label>Tipo</label>
                             <div class="input-group">
                                 <select class="form-control" id="inev_nombre_edit" name="inev_nombre_edit">
@@ -193,7 +205,7 @@
                                     <option value="Informe de cierre">Informe de cierre</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect"><i class="fas fa-undo-alt"></i> Actualizar</button>
                         </div>

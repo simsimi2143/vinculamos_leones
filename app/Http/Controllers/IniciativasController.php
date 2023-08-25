@@ -349,7 +349,7 @@ class IniciativasController extends Controller
         $inevGuardar = IniciativasEvidencias::insertGetId([
             'inic_codigo' => $inic_codigo,
             'inev_nombre' => $request->inev_nombre,
-            'inev_tipo' => $request->inev_tipo,
+            // 'inev_tipo' => $request->inev_tipo,
             // Todo: nuevo campo a la BD
             'inev_descripcion' => $request->inev_descripcion,
             'inev_creado' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -410,7 +410,7 @@ class IniciativasController extends Controller
             $inevActualizar = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->update([
                 'inev_nombre' => $request->inev_nombre_edit,
                 'inev_descripcion' => $request->inev_descripcion_edit,
-                'inev_tipo' => $request->inev_tipo_edit,
+                // 'inev_tipo' => $request->inev_tipo_edit,
                 'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'inev_rol_mod' => Session::get('admin')->rous_codigo,
                 'inev_nickname_mod' => Session::get('admin')->usua_nickname
