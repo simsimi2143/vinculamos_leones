@@ -1209,7 +1209,7 @@ class ParametrosController extends Controller
         // Añade el resto de los campos del modelo si son necesarios.
         $grupo->save();
 
-        return redirect()->route('admin.listar.grupos_int')->with('exitoGrupo', 'Grupo de interes creado exitosamente.');
+        return redirect()->route('admin.listar.grupos_int')->with('exitoGrupo', 'Grupo de interés creado exitosamente.');
     }
 
     public function eliminarGrupo(Request $request)
@@ -1217,12 +1217,12 @@ class ParametrosController extends Controller
         $grupo = GruposInteres::where('grin_codigo', $request->grin_codigo)->first();
 
         if (!$grupo) {
-            return redirect()->route('admin.listar.grupos_int')->with('errorGrupo', 'El grupo de interes no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.grupos_int')->with('errorGrupo', 'El grupo de interés no se encuentra registrado en el sistema.');
         }
 
         $grupo->delete();
 
-        return redirect()->route('admin.listar.grupos_int')->with('exitoGrupo', 'El grupo de interes fue eliminado correctamente.');
+        return redirect()->route('admin.listar.grupos_int')->with('exitoGrupo', 'El grupo de interés fue eliminado correctamente.');
     }
 
     public function actualizarGrupos(Request $request, $grin_codigo)
@@ -1241,14 +1241,14 @@ class ParametrosController extends Controller
         $grupo = GruposInteres::find($grin_codigo);
 
         if (!$grupo) {
-            return redirect()->route('admin.listar.grupos_int')->with('errorGrupo', 'El grupo de interes no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.grupos_int')->with('errorGrupo', 'El grupo de interés no se encuentra registrado en el sistema.');
         }
 
         $grupo->grin_nombre = $request->input('grin_nombre');
         // Añade el resto de los campos del modelo si son necesarios.
         $grupo->save();
 
-        return redirect()->route('admin.listar.grupos_int')->with('exitoGrupo', 'Grupo de interes actualizado exitosamente.');
+        return redirect()->route('admin.listar.grupos_int')->with('exitoGrupo', 'Grupo de interés actualizado exitosamente.');
     }
 
     //TODO: funciones para el tipo de actividad

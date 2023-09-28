@@ -75,7 +75,7 @@
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger"
                                                         onclick="eliminarGrupo({{ $grin->grin_codigo }})"
                                                         data-toggle="tooltip" data-placement="top"
-                                                        title="Eliminar grupos de interes"><i class="fas fa-trash"></i></a>
+                                                        title="Eliminar grupos de interés"><i class="fas fa-trash"></i></a>
 
 
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
@@ -110,7 +110,7 @@
                     <form action="{{ route('admin.crear.grupos_int') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del grupo de interes</label>
+                            <label>Nombre del grupo de interés</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -203,7 +203,7 @@
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El grupo de interes dejará de existir dentro del sistema. <br> ¿Desea continuar
+                        <h6 class="mt-2">El grupo de interés dejará de existir dentro del sistema. <br> ¿Desea continuar
                             de todos
                             modos?</h6>
                         <input type="hidden" id="grin_codigo" name="grin_codigo" value="">

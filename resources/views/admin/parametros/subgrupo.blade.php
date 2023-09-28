@@ -73,7 +73,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado sub grupos de interes</h4>
+                            <h4>Listado sub grupos de interés</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#modalCrearregistro"><i class="fas fa-plus"></i> Nuevo Sub-grupo de interés</button>
