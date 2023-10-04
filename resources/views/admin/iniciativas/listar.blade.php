@@ -37,10 +37,10 @@
                         <div class="card-body">
                             <form action="{{ route('admin.iniciativa.listar') }}" method="GET">
                                 <div class="row">
-                                    <div class="col-4 col-md-4 col-lg-4">
+                                    <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Escuela</label>
-                                            <select class="form-control select2" id="filtro2" name="filtro2" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="filtro2" name="filtro2" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($escuelas as $escuela)
                                                     <option value="{{ $escuela->escu_nombre }}" {{ Request::get('escuela') == $escuela->escu_nombre ? 'selected' : '' }}>{{ $escuela->escu_nombre }}</option>
@@ -50,10 +50,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4">
+                                    <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Carreras</label>
-                                            <select class="form-control select2" id="filtro3" name="filtro3" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="filtro3" name="filtro3" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($carreras as $carrera)
                                                     <option value="{{ $carrera->care_nombre }}" {{ Request::get('carrera') == $carrera->care_nombre ? 'selected' : '' }}>{{ $carrera->care_nombre }}</option>
@@ -63,10 +63,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4">
+                                    <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Mecanismo</label>
-                                            <select class="form-control select2" id="mecanismo" name="mecanismo" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="mecanismo" name="mecanismo" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($mecanismos as $mecanismo)
                                                     <option value="{{ $mecanismo->meca_nombre }}" {{ Request::get('mecanismo') == $mecanismo->meca_nombre ? 'selected' : '' }}>{{ $mecanismo->meca_nombre }}</option>
@@ -76,10 +76,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4">
+                                    <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Año</label>
-                                            <select class="form-control select2" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($anhos as $ann)
                                                     <option value="{{ $ann->inic_anho }}" {{ Request::get('mecanismo') == $ann->inic_anho ? 'selected' : '' }}>{{ $ann->inic_anho }}</option>
