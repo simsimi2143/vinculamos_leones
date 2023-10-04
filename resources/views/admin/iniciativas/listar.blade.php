@@ -39,6 +39,32 @@
                                 <div class="row">
                                     <div class="col-4 col-md-4 col-lg-4">
                                         <div class="form-group">
+                                            <label>Filtrar por Escuela</label>
+                                            <select class="form-control select2" id="filtro2" name="filtro2" onchange="filtrarTablaxMecanismo()">
+                                                <option value="" selected>TODOS</option>
+                                                @forelse ($escuelas as $escuela)
+                                                    <option value="{{ $escuela->escu_nombre }}" {{ Request::get('escuela') == $escuela->escu_nombre ? 'selected' : '' }}>{{ $escuela->escu_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>Filtrar por Carreras</label>
+                                            <select class="form-control select2" id="filtro3" name="filtro3" onchange="filtrarTablaxMecanismo()">
+                                                <option value="" selected>TODOS</option>
+                                                @forelse ($carreras as $carrera)
+                                                    <option value="{{ $carrera->care_nombre }}" {{ Request::get('carrera') == $carrera->care_nombre ? 'selected' : '' }}>{{ $carrera->care_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
                                             <label>Filtrar por Mecanismo</label>
                                             <select class="form-control select2" id="mecanismo" name="mecanismo" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
@@ -63,9 +89,9 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4  mb-4">
+                                    {{-- <div class="col-4 col-md-4 col-lg-4  mb-4">
                                         <a href="{{ route('admin.iniciativa.listar') }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-broom"></i> Limpiar</a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                             <div class="table-responsive">
@@ -85,13 +111,16 @@
                                     </thead>
                                     <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
-                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}">
+                                        <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}"
+
+                                            data-filtro2="{{ json_encode(explode('/ ', $iniciativa->escuelas)) }}"
+                                            data-filtro3="{{ json_encode(explode(', ', $iniciativa->carreras)) }}">
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
                                                 <td>{{ $iniciativa->meca_nombre }}</td>
                                                 <td>{{ $iniciativa->inic_anho }}</td>
                                                 <td>
                                                     @php
-                                                        $escuelasArray = explode(',', $iniciativa->escuelas);
+                                                        $escuelasArray = explode('/', $iniciativa->escuelas);
                                                     @endphp
                                                     @if (count($escuelasArray) > 3)
                                                         Todas
@@ -218,17 +247,7 @@
         </div>
     </div>
     <script>
-        window.onload = function () {
-        // Inicializar tabla
-        filtrarTabla();
 
-        // Agregar listeners para cada filtro
-        const mecanismoSelect = document.getElementById('mecanismo');
-        mecanismoSelect.addEventListener('change', filtrarTabla);
-
-        const estadoSelect = document.getElementById('estado');
-        estadoSelect.addEventListener('change', filtrarTabla);
-        };
 
         function eliminarIniciativa(inic_codigo) {
             $('#inic_codigo').val(inic_codigo);
@@ -241,30 +260,40 @@
             selectElement.selectedIndex = 3;
             const changeEvent = new Event('change', { bubbles: true });
             selectElement.dispatchEvent(changeEvent);
+
             const mecaSeleccionado = document.getElementById('mecanismo').value;
             const anoSeleccionado = document.getElementById('ano').value;
+            const filtro2Seleccionado = document.getElementById('filtro2').value;
+            const filtro3Seleccionado = document.getElementById('filtro3').value;
+
+            console.log(filtro2Seleccionado);
+
             const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
 
 
             filasTabla.forEach(function (fila) {
                 const mecaFila = fila.getAttribute('data-meca');
                 const anoFila = fila.getAttribute('data-ano');
+                const data_filtro2 = JSON.parse(fila.getAttribute('data-filtro2')); // Parsea JSON a objeto o array
+                const data_filtro3 = JSON.parse(fila.getAttribute('data-filtro3')); // Parsea JSON a objeto o array
 
                 const filtroMeca = mecaSeleccionado === '' || mecaSeleccionado === mecaFila;
                 const filtroEstado = anoSeleccionado === '' || anoSeleccionado === anoFila;
+                const resultado2 = filtro2Seleccionado === '' || data_filtro2.includes(filtro2Seleccionado);
+                const resultado3 = filtro3Seleccionado === '' || data_filtro3.includes(filtro3Seleccionado);
 
-                if (filtroMeca && filtroEstado) {
+                if (filtroMeca && filtroEstado && resultado2 && resultado3) {
                     fila.style.display = ''; // Mostrar la fila
                 } else {
                     fila.style.display = 'none'; // Ocultar la fila
                 }
-                if (mecaSeleccionado === '' && anoSeleccionado === '' ) {
+                if (mecaSeleccionado === '' && anoSeleccionado === '' && filtro2Seleccionado === '' && filtro3Seleccionado === '') {
                     selectElement.selectedIndex = 0;
                     selectElement.dispatchEvent(changeEvent);
                     fila.style.display = 'table-row';
                 }
             });
-            }
+        }
 
             /* function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
