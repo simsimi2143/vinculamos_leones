@@ -1,3 +1,21 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
 
 @section('contenido')
@@ -204,6 +222,10 @@
                                                     <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Evaluar iniciativa"><i
                                                             class="fas fa-file-signature"></i></a> --}}
+
+                                                    <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}" class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                        data-placement="top" title="Evaluar iniciativa"><i
+                                                            class="fas fa-file-signature"></i></a>
 
 
                                                 </td>

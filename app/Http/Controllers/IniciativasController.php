@@ -1610,4 +1610,28 @@ class IniciativasController extends Controller
         $corhListar = CostosRrhh::select('enti_codigo', DB::raw('COALESCE(SUM(corh_valorizacion), 0) AS suma_rrhh'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
         return json_encode(['estado' => true, 'resultado' => $corhListar]);
     }
+
+    public function evaluarIniciativa($inic_codigo)
+    {
+        $iniciativa = Iniciativas::where('inic_codigo',$inic_codigo)->get();
+        $resultados = Resultados::where('inic_codigo',$inic_codigo)->get();
+
+        $mecanismo = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
+        ->select('mecanismos.meca_nombre','iniciativas.inic_codigo')
+        ->where('iniciativas.inic_codigo',$inic_codigo)
+        ->get();
+
+        // return $mecanismo[0]->meca_nombre;
+        $ambitos = Programas::join('programas_contribuciones','programas_contribuciones.prog_codigo','programas.prog_codigo')
+        ->join('ambito','ambito.amb_codigo','programas_contribuciones.amb_codigo')
+        ->select('ambito.amb_nombre')
+        ->where('prog_nombre',$mecanismo[0]->meca_nombre)
+        ->get();
+        // return $ambitos;
+        return view('admin.iniciativas.evaluacion', compact('iniciativa','resultados','ambitos'));
+    }
+    public function guardarEvaluacion(){
+        return 'hola mundo';
+    }
+
 }

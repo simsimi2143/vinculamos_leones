@@ -286,6 +286,10 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/clave-usuario/{usua_nickname}', [UsuariosController::class, 'actualizarClaveUsuario'])->name('admin.actualizar.claveusuario');
     //fin de rutas para administrar usuarios
 
+    //TODO: Evaluacion de evidenciavinculam_demo_v2
+    Route::get('admin/iniciativas/{inic_codigo}/evaluar', [IniciativasController::class, 'evaluarIniciativa'])->name('admin.evaluar.iniciativa');
+    Route::post('admin/iniciativas/evaluar',[IniciativasController::class,'guardarEvaluacion'])->name('admin.guardar.evaluacion');
+
     // TODO: inicio rutas ODS
     Route::get('admin/ods', function () {
         return view('admin.ods.listar');
