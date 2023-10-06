@@ -40,6 +40,7 @@ use App\Models\Convenios;
 use App\Models\SedesEscuelas;
 use App\Models\Region;
 use App\Models\Comuna;
+use App\Models\Evaluacion;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -1630,8 +1631,35 @@ class IniciativasController extends Controller
         // return $ambitos;
         return view('admin.iniciativas.evaluacion', compact('iniciativa','resultados','ambitos'));
     }
-    public function guardarEvaluacion(){
-        return 'hola mundo';
+    public function guardarEvaluacion(Request $request){
+
+        $nuevo = new Evaluacion();
+        $nuevo->inic_codigo = $request->iniciativa_codigo;
+        $nuevo->eval_evaluador = $request->tipo_data;
+        $nuevo->eval_conocimiento_1 = $request->conocimiento_1_data;
+        $nuevo->eval_conocimiento_2 = $request->conocimiento_2_data;
+        $nuevo->eval_conocimiento_3 = $request->conocimiento_3_data;
+        $nuevo->eval_cumplimiento_1 = $request->cumplimiento_1_data;
+        $nuevo->eval_cumplimiento_2 = $request->cumplimiento_2_data;
+        $nuevo->eval_cumplimiento_3 = $request->cumplimiento_3_data;
+        $nuevo->eval_calidad_1 = $request->calidad_1_data;
+        $nuevo->eval_calidad_2 = $request->calidad_2_data;
+        $nuevo->eval_calidad_3 = $request->calidad_3_data;
+        $nuevo->eval_calidad_4 = $request->calidad_4_data;
+        $nuevo->eval_competencia_1 = $request->competencia_1_data;
+        $nuevo->eval_competencia_2 = $request->competencia_2_data;
+        $nuevo->eval_competencia_3 = $request->competencia_3_data;
+
+        $nuevo->eval_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->eval_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->eval_vigente = 1;
+        $nuevo->eval_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->eval_rol_mod = Session::get('admin')->rous_codigo;
+
+        $nuevo->save();
+
+        # PARA RETORNAR AL LISTADO
+        return response()->json(['redirect' => route('admin.iniciativa.listar')]);
     }
 
 }

@@ -28,6 +28,7 @@
 
                             <h4>Evaluación de la iniciativa N°: <span class="badge badge-primary"
                                     style="font-size: 120%">{{ $iniciativa[0]->inic_codigo }}</span> </h4>
+                            <input type="hidden" name="iniciativa_codigo" id="iniciativa_codigo" value="{{ $iniciativa[0]->inic_codigo }}">
 
                             <div class="card-header-action">
                                 <a href="{{ route($role . '.iniciativa.listar') }}" data-toggle="tooltip" data-placemet="top"
@@ -80,20 +81,20 @@
                                                                     <div class="form-group">
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="estu_conocimiento_1_SINO_1"
-                                                                                id="estu_conocimiento_1_SINO_1_si"
-                                                                                value="SI" checked>
+                                                                                name="conocimiento_1_SINO_1"
+                                                                                id="conocimiento_1_SINO_1_si" value="100"
+                                                                                checked>
                                                                             <label class="form-check-label"
-                                                                                for="estu_conocimiento_1_SINO_1_si">
+                                                                                for="conocimiento_1_SINO_1_si">
                                                                                 SI</label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="estu_conocimiento_1_SINO_1"
-                                                                                id="estu_conocimiento_1_SINO_1_no"
-                                                                                value="NO">>
+                                                                                name="conocimiento_1_SINO_1"
+                                                                                id="conocimiento_1_SINO_1_no"
+                                                                                value="0">
                                                                             <label class="form-check-label"
-                                                                                for="estu_conocimiento_1_SINO_1_no">NO</label>
+                                                                                for="conocimiento_1_SINO_1_no">NO</label>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -122,20 +123,19 @@
                                                                     <div class="form-group">
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="estu_conocimiento_2_SINO"
-                                                                                id="estu_conocimiento_2_SINO_si"
-                                                                                value="SI" checked>
+                                                                                name="conocimiento_2_SINO"
+                                                                                id="conocimiento_2_SINO_si" value="100"
+                                                                                checked>
                                                                             <label class="form-check-label"
-                                                                                for="estu_conocimiento_2_SINO_si">
+                                                                                for="conocimiento_2_SINO_si">
                                                                                 SI </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="estu_conocimiento_2_SINO"
-                                                                                id="estu_conocimiento_2_SINO_no"
-                                                                                value="NO">
+                                                                                name="conocimiento_2_SINO"
+                                                                                id="conocimiento_2_SINO_no" value="0">
                                                                             <label class="form-check-label"
-                                                                                for="estu_conocimiento_2_SINO_no">
+                                                                                for="conocimiento_2_SINO_no">
                                                                                 NO </label>
                                                                         </div>
                                                                     </div>
@@ -165,20 +165,19 @@
                                                                     <div class="form-group">
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="estu_conocimiento_3_SINO"
-                                                                                id="estu_conocimiento_3_SINO_si"
-                                                                                value="SI" checked>
+                                                                                name="conocimiento_3_SINO"
+                                                                                id="conocimiento_3_SINO_si" value="100"
+                                                                                checked>
                                                                             <label class="form-check-label"
-                                                                                for="estu_conocimiento_3_SINO_si">
+                                                                                for="conocimiento_3_SINO_si">
                                                                                 SI </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="estu_conocimiento_3_SINO"
-                                                                                id="estu_conocimiento_3_SINO_no"
-                                                                                value="NO">
+                                                                                name="conocimiento_3_SINO"
+                                                                                id="conocimiento_3_SINO_no" value="0">
                                                                             <label class="form-check-label"
-                                                                                for="estu_conocimiento_3_SINO_no">
+                                                                                for="conocimiento_3_SINO_no">
                                                                                 NO </label>
                                                                         </div>
                                                                     </div>
@@ -209,44 +208,43 @@
                                                                     <div class="form-group">
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_1"
-                                                                                id="est_cumplimiento_1_0" value="0"
+                                                                                name="cumplimiento_1"
+                                                                                id="cumplimiento_1_0" value="0"
                                                                                 checked>
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_1_0">
+                                                                                for="cumplimiento_1_0">
                                                                                 No se cumplió </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_1"
-                                                                                id="est_cumplimiento_1_25" value="25">
+                                                                                name="cumplimiento_1"
+                                                                                id="cumplimiento_1_25" value="25">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_1_25">
+                                                                                for="cumplimiento_1_25">
                                                                                 25 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_1"
-                                                                                id="est_cumplimiento_1_50" value="50">
+                                                                                name="cumplimiento_1"
+                                                                                id="cumplimiento_1_50" value="50">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_1_50">
+                                                                                for="cumplimiento_1_50">
                                                                                 50 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_1"
-                                                                                id="est_cumplimiento_1_75" value="75">
+                                                                                name="cumplimiento_1"
+                                                                                id="cumplimiento_1_75" value="75">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_1_75">
+                                                                                for="cumplimiento_1_75">
                                                                                 75 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_1"
-                                                                                id="est_cumplimiento_1_100"
-                                                                                value="100">
+                                                                                name="cumplimiento_1"
+                                                                                id="cumplimiento_1_100" value="100">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_1_100">
+                                                                                for="cumplimiento_1_100">
                                                                                 100 % </label>
                                                                         </div>
                                                                     </div>
@@ -264,44 +262,43 @@
                                                                     <div class="form-group">
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_2"
-                                                                                id="est_cumplimiento_2_0" value="0"
+                                                                                name="cumplimiento_2"
+                                                                                id="cumplimiento_2_0" value="0"
                                                                                 checked>
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_2_0">
+                                                                                for="cumplimiento_2_0">
                                                                                 No se cumplió </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_2"
-                                                                                id="est_cumplimiento_2_25" value="25">
+                                                                                name="cumplimiento_2"
+                                                                                id="cumplimiento_2_25" value="25">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_2_25">
+                                                                                for="cumplimiento_2_25">
                                                                                 25 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_2"
-                                                                                id="est_cumplimiento_2_50" value="50">
+                                                                                name="cumplimiento_2"
+                                                                                id="cumplimiento_2_50" value="50">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_2_50">
+                                                                                for="cumplimiento_2_50">
                                                                                 50 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_2"
-                                                                                id="est_cumplimiento_2_75" value="75">
+                                                                                name="cumplimiento_2"
+                                                                                id="cumplimiento_2_75" value="75">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_2_75">
+                                                                                for="cumplimiento_2_75">
                                                                                 75 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_2"
-                                                                                id="est_cumplimiento_2_100"
-                                                                                value="100">
+                                                                                name="cumplimiento_2"
+                                                                                id="cumplimiento_2_100" value="100">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_2_100">
+                                                                                for="cumplimiento_2_100">
                                                                                 100 % </label>
                                                                         </div>
                                                                     </div>
@@ -320,44 +317,43 @@
                                                                     <div class="form-group">
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_3"
-                                                                                id="est_cumplimiento_3_0" value="0"
+                                                                                name="cumplimiento_3"
+                                                                                id="cumplimiento_3_0" value="0"
                                                                                 checked>
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_3_0">
+                                                                                for="cumplimiento_3_0">
                                                                                 No se cumplirán </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_3"
-                                                                                id="est_cumplimiento_3_25" value="25">
+                                                                                name="cumplimiento_3"
+                                                                                id="cumplimiento_3_25" value="25">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_3_25">
+                                                                                for="cumplimiento_3_25">
                                                                                 25 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_3"
-                                                                                id="est_cumplimiento_3_50" value="50">
+                                                                                name="cumplimiento_3"
+                                                                                id="cumplimiento_3_50" value="50">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_3_50">
+                                                                                for="cumplimiento_3_50">
                                                                                 50 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_3"
-                                                                                id="est_cumplimiento_3_75" value="75">
+                                                                                name="cumplimiento_3"
+                                                                                id="cumplimiento_3_75" value="75">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_3_75">
+                                                                                for="cumplimiento_3_75">
                                                                                 75 % </label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
-                                                                                name="est_cumplimiento_3"
-                                                                                id="est_cumplimiento_3_100"
-                                                                                value="100">
+                                                                                name="cumplimiento_3"
+                                                                                id="cumplimiento_3_100" value="100">
                                                                             <label class="form-check-label"
-                                                                                for="est_cumplimiento_3_100">
+                                                                                for="cumplimiento_3_100">
                                                                                 100 % </label>
                                                                         </div>
                                                                     </div>
@@ -445,47 +441,51 @@
                                                                             <div class="form-check form-check-inline">
                                                                                 <input class="form-check-input"
                                                                                     type="radio"
-                                                                                    name="est_calidad_{{ $i }}"
-                                                                                    id="est_calidad_{{ $i }}_0">
+                                                                                    name="calidad_{{ $i }}"
+                                                                                    id="calidad_{{ $i }}_0"
+                                                                                    value="0">
                                                                                 <label class="form-check-label"
-                                                                                    for="est_calidad_{{ $i }}_0">
+                                                                                    for="calidad_{{ $i }}_0">
                                                                                     0 </label>
                                                                             </div>
                                                                             <div class="form-check form-check-inline">
                                                                                 <input class="form-check-input"
                                                                                     type="radio"
-                                                                                    name="est_calidad_{{ $i }}"
-                                                                                    id="est_calidad_{{ $i }}_1">
+                                                                                    name="calidad_{{ $i }}"
+                                                                                    id="calidad_{{ $i }}_1"
+                                                                                    value="1">
                                                                                 <label class="form-check-label"
-                                                                                    for="est_calidad_{{ $i }}_1">
+                                                                                    for="calidad_{{ $i }}_1">
                                                                                     1 </label>
                                                                             </div>
                                                                             <div class="form-check form-check-inline">
                                                                                 <input class="form-check-input"
                                                                                     type="radio"
-                                                                                    name="est_calidad_{{ $i }}"
-                                                                                    id="est_calidad_{{ $i }}_2">
+                                                                                    name="calidad_{{ $i }}"
+                                                                                    id="calidad_{{ $i }}_2"
+                                                                                    value="2">
                                                                                 <label class="form-check-label"
-                                                                                    for="est_calidad_{{ $i }}_2">
+                                                                                    for="calidad_{{ $i }}_2">
                                                                                     2 </label>
                                                                             </div>
                                                                             <div class="form-check form-check-inline">
                                                                                 <input class="form-check-input"
                                                                                     type="radio"
-                                                                                    name="est_calidad_{{ $i }}"
-                                                                                    id="est_calidad_{{ $i }}_3">
+                                                                                    name="calidad_{{ $i }}"
+                                                                                    id="calidad_{{ $i }}_3"
+                                                                                    value="3">
                                                                                 <label class="form-check-label"
-                                                                                    for="est_calidad_{{ $i }}_3">
+                                                                                    for="calidad_{{ $i }}_3">
                                                                                     3 </label>
                                                                             </div>
                                                                             <div class="form-check form-check-inline">
                                                                                 <input class="form-check-input"
                                                                                     type="radio"
-                                                                                    name="est_calidad_{{ $i }}"
-                                                                                    id="est_calidad_{{ $i }}_NO"
-                                                                                    checked>
+                                                                                    name="calidad_{{ $i }}"
+                                                                                    id="calidad_{{ $i }}_NO"
+                                                                                    checked value="-1">
                                                                                 <label class="form-check-label"
-                                                                                    for="est_calidad_{{ $i }}_NO">
+                                                                                    for="calidad_{{ $i }}_NO">
                                                                                     No Aplica </label>
                                                                             </div>
                                                                         </div>
@@ -553,38 +553,41 @@
                                                                                 <div class="form-check form-check-inline">
                                                                                     <input class="form-check-input"
                                                                                         type="radio"
-                                                                                        name="est_competencia_{{ $i }}"
-                                                                                        id="est_competencia_{{ $i }}_0"
-                                                                                        checked>
+                                                                                        name="competencia_{{ $i }}"
+                                                                                        id="competencia_{{ $i }}_0"
+                                                                                        checked value="0">
                                                                                     <label class="form-check-label"
-                                                                                        for="est_competencia_{{ $i }}_0">
+                                                                                        for="competencia_{{ $i }}_0">
                                                                                         0 </label>
                                                                                 </div>
                                                                                 <div class="form-check form-check-inline">
                                                                                     <input class="form-check-input"
                                                                                         type="radio"
-                                                                                        name="est_competencia_{{ $i }}"
-                                                                                        id="est_competencia_{{ $i }}_1">
+                                                                                        name="competencia_{{ $i }}"
+                                                                                        id="competencia_{{ $i }}_1"
+                                                                                        value="1">
                                                                                     <label class="form-check-label"
-                                                                                        for="est_competencia_{{ $i }}_1">
+                                                                                        for="competencia_{{ $i }}_1">
                                                                                         1 </label>
                                                                                 </div>
                                                                                 <div class="form-check form-check-inline">
                                                                                     <input class="form-check-input"
                                                                                         type="radio"
-                                                                                        name="est_competencia_{{ $i }}"
-                                                                                        id="est_competencia_{{ $i }}_2">
+                                                                                        name="competencia_{{ $i }}"
+                                                                                        id="competencia_{{ $i }}_2"
+                                                                                        value="2">
                                                                                     <label class="form-check-label"
-                                                                                        for="est_competencia_{{ $i }}_2">
+                                                                                        for="competencia_{{ $i }}_2">
                                                                                         2 </label>
                                                                                 </div>
                                                                                 <div class="form-check form-check-inline">
                                                                                     <input class="form-check-input"
                                                                                         type="radio"
-                                                                                        name="est_competencia_{{ $i }}"
-                                                                                        id="est_competencia_{{ $i }}_3">
+                                                                                        name="competencia_{{ $i }}"
+                                                                                        id="competencia_{{ $i }}_3"
+                                                                                        value="3">
                                                                                     <label class="form-check-label"
-                                                                                        for="est_competencia_{{ $i }}_3">
+                                                                                        for="competencia_{{ $i }}_3">
                                                                                         3 </label>
                                                                                 </div>
                                                                             </div>
@@ -604,13 +607,16 @@
                                 <div class="row">
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
-                                            <a href="#" class="btn btn-icon icon-left btn-success">
+                                            <a href="#" class="btn btn-icon icon-left btn-success"
+                                                onclick="enviarDatos()" data-toggle="modal"
+                                                data-target=".bd-example-modal-sm">
                                                 <i class="fas fa-check"></i>
                                                 <span style="font-size: 150%">FINALIZAR EVALUACIÓN</span>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -618,8 +624,27 @@
             </div>
         </div>
     </div>
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mySmallModalLabel">Datos Guardados</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Redirigiendo al listado de Iniciativas....
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
+        var token = '{{ csrf_token() }}';
+
         function mostrarOcultar() {
             var selectBox = document.getElementById("tipo");
 
@@ -661,6 +686,43 @@
             for (let i = 0; i < etiquetas.length; i++) {
                 etiquetas[i].style.display = 'block';
             }
+        }
+
+        function enviarDatos() {
+            // Recopilar los datos
+            var datos = {
+                iniciativa_codigo: $("#iniciativa_codigo").val(),
+                tipo_data: $("#tipo").val(),
+                conocimiento_1_data: $("input[name='conocimiento_1_SINO_1']:checked").val(),
+                conocimiento_2_data: $("input[name='conocimiento_2_SINO']:checked").val(),
+                conocimiento_3_data: $("input[name='conocimiento_3_SINO']:checked").val(),
+                cumplimiento_1_data: $("input[name='cumplimiento_1']:checked").val(),
+                cumplimiento_2_data: $("input[name='cumplimiento_2']:checked").val(),
+                cumplimiento_3_data: $("input[name='cumplimiento_3']:checked").val(),
+                calidad_1_data: $("input[name='calidad_1']:checked").val(),
+                calidad_2_data: $("input[name='calidad_2']:checked").val(),
+                calidad_3_data: $("input[name='calidad_3']:checked").val(),
+                calidad_4_data: $("input[name='calidad_4']:checked").val(),
+                competencia_1_data: $("input[name='competencia_1']:checked").val(),
+                competencia_2_data: $("input[name='competencia_2']:checked").val(),
+                competencia_3_data: $("input[name='competencia_3']:checked").val(),
+            };
+
+            $.ajax({
+                type: "GET",
+                url: window.location.origin + '/admin/iniciativas/evaluar',
+                data: datos,
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                success: function(response) {
+                    /* console.log(response); */
+                    window.location.href = response.redirect;
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
         }
     </script>
 @endsection
