@@ -30,6 +30,7 @@ class Evaluacion extends Model
         'eval_competencia_1',
         'eval_competencia_2',
         'eval_competencia_3',
+        'eval_puntaje',
         'eval_creado',
         'eval_actualizado',
         'eval_vigente',

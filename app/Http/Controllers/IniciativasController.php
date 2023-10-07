@@ -1631,7 +1631,83 @@ class IniciativasController extends Controller
         // return $ambitos;
         return view('admin.iniciativas.evaluacion', compact('iniciativa','resultados','ambitos'));
     }
+
+    public function evaluarIniciativa2($inic_codigo)
+    {
+        $iniciativa = Iniciativas::where('inic_codigo',$inic_codigo)->get();
+        $resultados = Resultados::where('inic_codigo',$inic_codigo)->get();
+
+        $mecanismo = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
+        ->select('mecanismos.meca_nombre','iniciativas.inic_codigo')
+        ->where('iniciativas.inic_codigo',$inic_codigo)
+        ->get();
+
+        // return $mecanismo[0]->meca_nombre;
+        $ambitos = Programas::join('programas_contribuciones','programas_contribuciones.prog_codigo','programas.prog_codigo')
+        ->join('ambito','ambito.amb_codigo','programas_contribuciones.amb_codigo')
+        ->select('ambito.amb_nombre')
+        ->where('prog_nombre',$mecanismo[0]->meca_nombre)
+        ->get();
+        // return $ambitos;
+        return view('admin.iniciativas.evaluacion', compact('iniciativa', 'resultados', 'ambitos'))->with('exito', "Evaluación ingresada correctamente.");
+    }
+
     public function guardarEvaluacion(Request $request){
+
+        $ponderado_1 = 0;
+        $ponderado_2 = 0;
+        $ponderado_3 = 0;
+        $ponderado_4 = 0;
+        $ponderado_final = 0;
+
+        if($request->tipo_data == 1){
+            $ponderado_1 = 0.15;
+            $ponderado_2 = 0.30;
+            $ponderado_3 = 0.15;
+            $ponderado_4 = 0.40;
+            $ponderado_final = 0.7;
+        }
+
+        if($request->tipo_data == 2){
+            $ponderado_1 = 0.15;
+            $ponderado_2 = 0.30;
+            $ponderado_3 = 0.15;
+            $ponderado_4 = 0.40;
+            $ponderado_final = 0.3;
+        }
+
+        if($request->tipo_data == 3){
+            $ponderado_1 = 0.20;
+            $ponderado_2 = 0.50;
+            $ponderado_3 = 0.30;
+            $ponderado_final = 1;
+            /* $ponderado_4 = 0; */
+        }
+
+        $puntaje_conocimiento = ($request->conocimiento_1_data + $request->conocimiento_2_data + $request->conocimiento_3_data) /3 * $ponderado_1;
+        $puntaje_cumplimiento = ($request->cumplimiento_1_data + $request->cumplimiento_2_data + $request->cumplimiento_3_data) /3 * $ponderado_2;
+
+        # VER SI APLICA: es para solo considerar los que no tenga NO APLICA marcado
+        $count = 0; # Para dividir en los puntos que si aplica
+        $aux1 = $request->calidad_1_data;
+        $aux2 = $request->calidad_2_data;
+        $aux3 = $request->calidad_3_data;
+        $aux4 = $request->calidad_4_data;
+        if ($aux1 != "") {$count = $count + 1;} else {$aux1 = 0;}
+        if ($aux2 != "") {$count = $count + 1;} else {$aux2 = 0;}
+        if ($aux3 != "") {$count = $count + 1;} else {$aux3 = 0;}
+        if ($aux4 != "") {$count = $count + 1;} else {$aux4 = 0;}
+
+        $puntaje_calidad = ($aux1 + $aux2 + $aux3 + $aux4) / $count * $ponderado_3;
+
+
+        if($request->tipo_data == 1 || $request->tipo_data == 2 ){
+            $puntaje_competencia = ($request->competencia_1_data + $request->competencia_2_data + $request->competencia_3_data) /3 * $ponderado_4;
+        } else {
+            $puntaje_competencia = 0;
+        }
+
+        $puntaje = ($puntaje_conocimiento + $puntaje_cumplimiento + $puntaje_calidad + $puntaje_competencia) * $ponderado_final;
 
         $nuevo = new Evaluacion();
         $nuevo->inic_codigo = $request->iniciativa_codigo;
@@ -1649,6 +1725,7 @@ class IniciativasController extends Controller
         $nuevo->eval_competencia_1 = $request->competencia_1_data;
         $nuevo->eval_competencia_2 = $request->competencia_2_data;
         $nuevo->eval_competencia_3 = $request->competencia_3_data;
+        $nuevo->eval_puntaje = $puntaje;
 
         $nuevo->eval_creado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->eval_actualizado = Carbon::now()->format('Y-m-d H:i:s');
@@ -1659,7 +1736,7 @@ class IniciativasController extends Controller
         $nuevo->save();
 
         # PARA RETORNAR AL LISTADO
-        return response()->json(['redirect' => route('admin.iniciativa.listar')]);
+        return view('admin.iniciativas.redireccion', ['inic_codigo' => $request->iniciativa_codigo]);
     }
 
 }

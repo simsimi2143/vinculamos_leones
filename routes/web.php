@@ -288,6 +288,7 @@ Route::middleware('verificar.admin')->group(function () {
 
     //TODO: Evaluacion de evidenciavinculam_demo_v2
     Route::get('admin/iniciativas/{inic_codigo}/evaluar', [IniciativasController::class, 'evaluarIniciativa'])->name('admin.evaluar.iniciativa');
+    Route::get('admin/iniciativas/{inic_codigo}/evaluar2', [IniciativasController::class, 'evaluarIniciativa2'])->name('admin.evaluar.iniciativa2');
     Route::get('admin/iniciativas/evaluar',[IniciativasController::class,'guardarEvaluacion']);
 
     // TODO: inicio rutas ODS

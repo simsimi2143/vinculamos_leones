@@ -23,16 +23,37 @@
         <div class="section-body">
             <div class="row">
                 <div class="col-12">
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6 alert-container" id="exito">
+                            @if (Session::has('exito'))
+                                <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <strong>{{ Session::get('exito') }}</strong>
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="col-3"></div>
+                        <div class="col-6 alert-container" id="error">
+
+                        </div>
+                        <div class="col-3"></div>
+                    </div>
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
 
                             <h4>Evaluación de la iniciativa N°: <span class="badge badge-primary"
                                     style="font-size: 120%">{{ $iniciativa[0]->inic_codigo }}</span> </h4>
-                            <input type="hidden" name="iniciativa_codigo" id="iniciativa_codigo" value="{{ $iniciativa[0]->inic_codigo }}">
+                            <input type="hidden" name="iniciativa_codigo" id="iniciativa_codigo"
+                                value="{{ $iniciativa[0]->inic_codigo }}">
 
                             <div class="card-header-action">
-                                <a href="{{ route($role . '.iniciativa.listar') }}" data-toggle="tooltip" data-placemet="top"
-                                    type="button" class="btn btn-info btn-icon icon-left" title="Ir a iniciativas">
+                                <a href="{{ route($role . '.iniciativa.listar') }}" data-toggle="tooltip"
+                                    data-placemet="top" type="button" class="btn btn-info btn-icon icon-left"
+                                    title="Ir a iniciativas">
                                     <i class="fas fa-bars"></i>
                                     Volver al listado
                                 </a>
@@ -175,7 +196,8 @@
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="conocimiento_3_SINO"
-                                                                                id="conocimiento_3_SINO_no" value="0">
+                                                                                id="conocimiento_3_SINO_no"
+                                                                                value="0">
                                                                             <label class="form-check-label"
                                                                                 for="conocimiento_3_SINO_no">
                                                                                 NO </label>
@@ -453,7 +475,7 @@
                                                                                     type="radio"
                                                                                     name="calidad_{{ $i }}"
                                                                                     id="calidad_{{ $i }}_1"
-                                                                                    value="1">
+                                                                                    value="33">
                                                                                 <label class="form-check-label"
                                                                                     for="calidad_{{ $i }}_1">
                                                                                     1 </label>
@@ -463,7 +485,7 @@
                                                                                     type="radio"
                                                                                     name="calidad_{{ $i }}"
                                                                                     id="calidad_{{ $i }}_2"
-                                                                                    value="2">
+                                                                                    value="66">
                                                                                 <label class="form-check-label"
                                                                                     for="calidad_{{ $i }}_2">
                                                                                     2 </label>
@@ -473,7 +495,7 @@
                                                                                     type="radio"
                                                                                     name="calidad_{{ $i }}"
                                                                                     id="calidad_{{ $i }}_3"
-                                                                                    value="3">
+                                                                                    value="100">
                                                                                 <label class="form-check-label"
                                                                                     for="calidad_{{ $i }}_3">
                                                                                     3 </label>
@@ -483,7 +505,7 @@
                                                                                     type="radio"
                                                                                     name="calidad_{{ $i }}"
                                                                                     id="calidad_{{ $i }}_NO"
-                                                                                    checked value="-1">
+                                                                                    checked value="">
                                                                                 <label class="form-check-label"
                                                                                     for="calidad_{{ $i }}_NO">
                                                                                     No Aplica </label>
@@ -555,7 +577,7 @@
                                                                                         type="radio"
                                                                                         name="competencia_{{ $i }}"
                                                                                         id="competencia_{{ $i }}_0"
-                                                                                        checked value="0">
+                                                                                        value="0">
                                                                                     <label class="form-check-label"
                                                                                         for="competencia_{{ $i }}_0">
                                                                                         0 </label>
@@ -565,7 +587,7 @@
                                                                                         type="radio"
                                                                                         name="competencia_{{ $i }}"
                                                                                         id="competencia_{{ $i }}_1"
-                                                                                        value="1">
+                                                                                        value="33">
                                                                                     <label class="form-check-label"
                                                                                         for="competencia_{{ $i }}_1">
                                                                                         1 </label>
@@ -575,7 +597,7 @@
                                                                                         type="radio"
                                                                                         name="competencia_{{ $i }}"
                                                                                         id="competencia_{{ $i }}_2"
-                                                                                        value="2">
+                                                                                        value="66">
                                                                                     <label class="form-check-label"
                                                                                         for="competencia_{{ $i }}_2">
                                                                                         2 </label>
@@ -585,7 +607,7 @@
                                                                                         type="radio"
                                                                                         name="competencia_{{ $i }}"
                                                                                         id="competencia_{{ $i }}_3"
-                                                                                        value="3">
+                                                                                        value="100">
                                                                                     <label class="form-check-label"
                                                                                         for="competencia_{{ $i }}_3">
                                                                                         3 </label>
@@ -608,15 +630,13 @@
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
                                             <a href="#" class="btn btn-icon icon-left btn-success"
-                                                onclick="enviarDatos()" data-toggle="modal"
-                                                data-target=".bd-example-modal-sm">
+                                                onclick="enviarDatos()">
                                                 <i class="fas fa-check"></i>
                                                 <span style="font-size: 150%">FINALIZAR EVALUACIÓN</span>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -625,7 +645,7 @@
         </div>
     </div>
     <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-        aria-hidden="true">
+        aria-hidden="true" id="myModal">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -689,7 +709,42 @@
         }
 
         function enviarDatos() {
+            var tipo_data = $("#tipo").val();
+            var competencia1Seleccionada = false;
+            var competencia2Seleccionada = false;
+            var competencia3Seleccionada = false;
             // Recopilar los datos
+            var Validation1 = document.querySelectorAll('input[name="competencia_1"]');
+            var Validation2 = document.querySelectorAll('input[name="competencia_2"]');
+            var Validation3 = document.querySelectorAll('input[name="competencia_3"]');
+
+            Validation1.forEach(function(Validatio) {
+                if (Validatio.checked) {
+                    competencia1Seleccionada = true;
+                }
+            });
+
+            Validation2.forEach(function(Validatio) {
+                if (Validatio.checked) {
+                    competencia2Seleccionada = true;
+                }
+            });
+
+            Validation3.forEach(function(Validatio) {
+                if (Validatio.checked) {
+                    competencia3Seleccionada = true;
+                }
+            });
+
+            if (tipo_data === "1" || tipo_data === "2") {
+                if (competencia1Seleccionada === false || competencia2Seleccionada === false || competencia3Seleccionada ===
+                    false) {
+                    alert('No olvides evaluar TODAS las competencias');
+                    return false;
+                }
+            }
+
+
             var datos = {
                 iniciativa_codigo: $("#iniciativa_codigo").val(),
                 tipo_data: $("#tipo").val(),
@@ -717,12 +772,29 @@
                 },
                 success: function(response) {
                     /* console.log(response); */
-                    window.location.href = response.redirect;
+                    /* $('#myModal').modal('show'); */
+                    /* window.location.href = response.redirect; */
+                    /* $('.alert-container').hide();
+                    $('#exito').show(); */
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
                 },
                 error: function(error) {
                     console.error(error);
+                    /* $('.alert-container').hide();
+                    $('#error').show(); */
                 }
             });
         }
+
+        /* $(document).ready(function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var exito = urlParams.get('exito');
+            if (exito) {
+                // Aquí puedes mostrar tu alerta de éxito
+                alert(exito);
+            }
+        }); */
     </script>
 @endsection
