@@ -50,9 +50,9 @@ class IniciativasController extends Controller
     public function listarIniciativas()
     {
         $iniciativas = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
-            ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
-            ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
-            ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
+            ->leftjoin('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
+            ->leftjoin('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
+            ->leftjoin('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
             ->select(
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
@@ -1749,21 +1749,30 @@ class IniciativasController extends Controller
         );
         if ($validacion->fails()) return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
 
-        $mecanismo = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
+        $mecanismoDato = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
             ->select('mecanismos.meca_nombre','iniciativas.inic_codigo')
-            ->where('iniciativas.inic_codigo',$inic_codigo)
+            ->where('iniciativas.inic_codigo',$request->iniciativa)
             ->get();
 
-        $frecuencia = Iniciativas::leftJoin('programas', 'programas.prog_codigo', '=', 'iniciativas.prog_codigo')
+        $frecuenciaDato = Iniciativas::leftJoin('programas', 'programas.prog_codigo', '=', 'iniciativas.prog_codigo')
             ->select(
-                'programas.prog_descripcion',
                 'iniciativas.inic_codigo',
-                \DB::raw('COALESCE(iniciativas.prog_codigo, 0) AS prog_codigo')
+                'iniciativas.prog_codigo',
+                'programas.prog_descripcion'
             )
-            ->where('iniciativas.inic_codigo', $inic_codigo)
+            ->where('iniciativas.inic_codigo', $request->iniciativa)
             ->get();
 
-        $cobertura = DB::table('participantes_internos')
+
+        $resultados2 = DB::table('resultados')
+            ->select(
+                DB::raw('SUM(resu_cuantificacion_inicial) as suma_inicial'),
+                DB::raw('SUM(resu_cuantificacion_final) as suma_final')
+            )
+            ->where('inic_codigo', $request->iniciativa)
+            ->get();
+
+        $coberturaDato = DB::table('participantes_internos')
             ->select(
                 DB::raw('SUM(IFNULL(pain_docentes, 0)) as total_docentes'),
                 DB::raw('SUM(IFNULL(pain_estudiantes, 0)) as total_estudiantes'),
@@ -1772,18 +1781,19 @@ class IniciativasController extends Controller
                 DB::raw('SUM(IFNULL(pain_estudiantes_final, 0)) as total_estudiantes_final'),
                 DB::raw('SUM(IFNULL(pain_funcionarios_final, 0)) as total_funcionarios_final')
             )
-            ->where('inic_codigo', $inic_codigo)
+            ->where('inic_codigo', $request->iniciativa)
             ->get();
 
-        $partDatos = Participantes::select(DB::raw('IFNULL(part_cantidad_inicial, 0) AS part_cantidad_inicial'), DB::raw('IFNULL(part_cantidad_final, 0) AS part_cantidad_final'))->where('inic_codigo', $request->iniciativa)->get();
-        $resuDatos = Resultados::select(DB::raw('IFNULL(resu_cuantificacion_inicial, 0) AS resu_cuantificacion_inicial'), DB::raw('IFNULL(resu_cuantificacion_final, 0) AS resu_cuantificacion_final'))->where('inic_codigo', $request->iniciativa)->get();
-        $evalDatos = Evaluaciones::select('eval_plazos', 'eval_horarios', 'eval_infraestructura', 'eval_equipamiento', 'eval_conexion_dl', 'eval_desempenho_responsable', 'eval_desempenho_participantes', 'eval_calidad_presentaciones')
-            ->where('inic_codigo', $request->iniciativa)->first();
-        return json_encode(['estado' => true, 'resultado' => [
-            'mecanismo' => $mecaDatos,
-            'frecuencia' => $frecDatos,
-            'cobertura' => $partDatos,
-            'resultados' => $resuDatos,
+        $evalDatos = Evaluacion::select('inic_codigo', DB::raw('COUNT(*) as total_evaluaciones'), DB::raw('SUM(eval_puntaje) as suma_evaluaciones'))
+                ->groupBy('inic_codigo')
+                ->get()
+                ->where('inic_codigo',$request->iniciativa)->first();
+
+        return json_encode(['resultado' => [
+            'mecanismo' => $mecanismoDato,
+            'frecuencia' => $frecuenciaDato,
+            'cobertura' => $coberturaDato,
+            'resultados2' => $resultados2,
             'evaluacion' => $evalDatos
         ]]);
     }

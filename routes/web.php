@@ -49,7 +49,7 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 
 //TODO: Ruta INVI
 Route::get('admin/iniciativa/invi/datos', [IniciativasController::class, 'datosIndice']);
-Route::post('admin/iniciativa/invi/actualizar', [IniciativasController::class, 'actualizarIndice']);
+/* Route::post('admin/iniciativa/invi/actualizar', [IniciativasController::class, 'actualizarIndice']); */
 
 Route::middleware('verificar.superadmin')->group(function () {
     // inicio rutas para gestionar usuarios

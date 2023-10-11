@@ -58,10 +58,13 @@
                                     <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Escuela</label>
-                                            <select class="form-control select2" style="width: 100%" id="filtro2" name="filtro2" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="filtro2"
+                                                name="filtro2" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($escuelas as $escuela)
-                                                    <option value="{{ $escuela->escu_nombre }}" {{ Request::get('escuela') == $escuela->escu_nombre ? 'selected' : '' }}>{{ $escuela->escu_nombre }}</option>
+                                                    <option value="{{ $escuela->escu_nombre }}"
+                                                        {{ Request::get('escuela') == $escuela->escu_nombre ? 'selected' : '' }}>
+                                                        {{ $escuela->escu_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
@@ -71,10 +74,13 @@
                                     <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Carreras</label>
-                                            <select class="form-control select2" style="width: 100%" id="filtro3" name="filtro3" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="filtro3"
+                                                name="filtro3" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($carreras as $carrera)
-                                                    <option value="{{ $carrera->care_nombre }}" {{ Request::get('carrera') == $carrera->care_nombre ? 'selected' : '' }}>{{ $carrera->care_nombre }}</option>
+                                                    <option value="{{ $carrera->care_nombre }}"
+                                                        {{ Request::get('carrera') == $carrera->care_nombre ? 'selected' : '' }}>
+                                                        {{ $carrera->care_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
@@ -84,10 +90,13 @@
                                     <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Mecanismo</label>
-                                            <select class="form-control select2" style="width: 100%" id="mecanismo" name="mecanismo" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="mecanismo"
+                                                name="mecanismo" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($mecanismos as $mecanismo)
-                                                    <option value="{{ $mecanismo->meca_nombre }}" {{ Request::get('mecanismo') == $mecanismo->meca_nombre ? 'selected' : '' }}>{{ $mecanismo->meca_nombre }}</option>
+                                                    <option value="{{ $mecanismo->meca_nombre }}"
+                                                        {{ Request::get('mecanismo') == $mecanismo->meca_nombre ? 'selected' : '' }}>
+                                                        {{ $mecanismo->meca_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
@@ -97,10 +106,13 @@
                                     <div class="col-xl-3 col-md-3 col-lg-3">
                                         <div class="form-group">
                                             <label>Filtrar por Año</label>
-                                            <select class="form-control select2" style="width: 100%" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
+                                            <select class="form-control select2" style="width: 100%" id="ano"
+                                                name="ano" onchange="filtrarTablaxMecanismo()">
                                                 <option value="" selected>TODOS</option>
                                                 @forelse ($anhos as $ann)
-                                                    <option value="{{ $ann->inic_anho }}" {{ Request::get('mecanismo') == $ann->inic_anho ? 'selected' : '' }}>{{ $ann->inic_anho }}</option>
+                                                    <option value="{{ $ann->inic_anho }}"
+                                                        {{ Request::get('mecanismo') == $ann->inic_anho ? 'selected' : '' }}>
+                                                        {{ $ann->inic_anho }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>
                                                 @endforelse
@@ -129,10 +141,10 @@
                                     </thead>
                                     <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
-                                        <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}"
-
-                                            data-filtro2="{{ json_encode(explode('/ ', $iniciativa->escuelas)) }}"
-                                            data-filtro3="{{ json_encode(explode(', ', $iniciativa->carreras)) }}">
+                                            <tr data-meca="{{ $iniciativa->meca_nombre }}"
+                                                data-ano="{{ $iniciativa->inic_anho }}"
+                                                data-filtro2="{{ json_encode(explode('/ ', $iniciativa->escuelas)) }}"
+                                                data-filtro3="{{ json_encode(explode(', ', $iniciativa->carreras)) }}">
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
                                                 <td>{{ $iniciativa->meca_nombre }}</td>
                                                 <td>{{ $iniciativa->inic_anho }}</td>
@@ -200,6 +212,10 @@
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
 
+                                                    <a href="javascript:void(0)" class="btn btn-icon btn-warning"
+                                                        data-toggle="tooltip" data-placement="top" title="Calcular INVI"
+                                                        onclick="calcularIndice({{ $iniciativa->inic_codigo }})"><i
+                                                            class="fas fa-tachometer-alt"></i></a>
 
                                                     <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-warning" data-toggle="tooltip"
@@ -223,7 +239,8 @@
                                                         data-placement="top" title="Evaluar iniciativa"><i
                                                             class="fas fa-file-signature"></i></a> --}}
 
-                                                    <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}" class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                    <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Evaluar iniciativa"><i
                                                             class="fas fa-file-signature"></i></a>
 
@@ -269,7 +286,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalINVI" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+    <div class="modal fade" id="modalINVI" tabindex="-1" role="dialog" aria-labelledby="formModal"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -280,7 +298,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-md" id="table-1" style="border-top: 1px ghostwhite solid;">
+                        <table class="table table-bordered table-md" id="table-1"
+                            style="border-top: 1px ghostwhite solid;">
                             <tbody>
                                 <tr>
                                     <td><strong>Mecanismo</strong></td>
@@ -293,14 +312,14 @@
                                     <td id="frecuencia-puntaje"></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Cobertura</strong></td>
-                                    <td></td>
-                                    <td id="cobertura-puntaje"></td>
-                                </tr>
-                                <tr>
                                     <td><strong>Resultados</strong></td>
                                     <td></td>
                                     <td id="resultados-puntaje"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cobertura</strong></td>
+                                    <td></td>
+                                    <td id="cobertura-puntaje"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Evaluación</strong></td>
@@ -308,7 +327,9 @@
                                     <td id="evaluacion-puntaje"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><h6>Índice de vinculación INVI</h6></td>
+                                    <td colspan="2">
+                                        <h6>Índice de vinculación INVI</h6>
+                                    </td>
                                     <td id="valor-indice"></td>
                                 </tr>
                             </tbody>
@@ -323,8 +344,6 @@
     </div>
 
     <script>
-
-
         function eliminarIniciativa(inic_codigo) {
             $('#inic_codigo').val(inic_codigo);
             $('#modalEliminaIniciativa').modal('show');
@@ -334,7 +353,9 @@
         function filtrarTablaxMecanismo() {
             const selectElement = document.querySelector('select[name="table-1_length"]');
             selectElement.selectedIndex = 3;
-            const changeEvent = new Event('change', { bubbles: true });
+            const changeEvent = new Event('change', {
+                bubbles: true
+            });
             selectElement.dispatchEvent(changeEvent);
 
             const mecaSeleccionado = document.getElementById('mecanismo').value;
@@ -347,7 +368,7 @@
             const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
 
 
-            filasTabla.forEach(function (fila) {
+            filasTabla.forEach(function(fila) {
                 const mecaFila = fila.getAttribute('data-meca');
                 const anoFila = fila.getAttribute('data-ano');
                 const data_filtro2 = JSON.parse(fila.getAttribute('data-filtro2')); // Parsea JSON a objeto o array
@@ -363,7 +384,8 @@
                 } else {
                     fila.style.display = 'none'; // Ocultar la fila
                 }
-                if (mecaSeleccionado === '' && anoSeleccionado === '' && filtro2Seleccionado === '' && filtro3Seleccionado === '') {
+                if (mecaSeleccionado === '' && anoSeleccionado === '' && filtro2Seleccionado === '' &&
+                    filtro3Seleccionado === '') {
                     selectElement.selectedIndex = 0;
                     selectElement.dispatchEvent(changeEvent);
                     fila.style.display = 'table-row';
@@ -371,75 +393,147 @@
             });
         }
 
-        /* function calcularIndice(inic_codigo) {
+        function calcularIndice(inic_codigo) {
             let datos;
             let mecanismo, frecuencia, cobertura, resultados, evaluacion;
+            let mecanismo_puntaje, frecuencia_puntaje, cobertura_puntaje, resultados_puntaje, evaluacion_puntaje;
+            let divisor, dividendo;
             let partInicial, partFinal;
             let resuInicial, resuFinal;
             let indice;
 
-$.ajax({
-    type: 'GET',
-    url: window.location.origin+'/admin/iniciativa/invi/datos',
-    data: {
-        iniciativa: inic_codigo
-    },
-    success: function(resConsultar) {
-        respuesta = JSON.parse(resConsultar);
-        datos = respuesta.resultado;
+            $.ajax({
+                type: 'GET',
+                url: window.location.origin + '/admin/iniciativa/invi/datos',
+                data: {
+                    iniciativa: inic_codigo
+                },
+                success: function(resConsultar) {
+                    respuesta = JSON.parse(resConsultar);
+                    datos = respuesta.resultado;
 
-        mecanismo = datos.mecanismo.meca_puntaje;
-        frecuencia = datos.frecuencia.frec_puntaje;
+                    mecanismo = datos.mecanismo;
+                    frecuencia = datos.frecuencia;
 
-        cobertura = 0;
-        partInicial = 0;
-        partFinal = 0;
-        if (datos.cobertura.length > 0) {
-            datos.cobertura.forEach(registro => {
-                partInicial = partInicial + parseInt(registro.part_cantidad_inicial);
-                partFinal = partFinal + parseInt(registro.part_cantidad_final);
+                    cobertura = datos.cobertura;
+                    resultados = datos.resultados2;
+                    evaluacion = datos.evaluacion;
+                    resultados_puntaje = 0;
+
+
+                    /* Mecanismo */
+                    if (mecanismo.meca_nombre == "Programa de Extensión" || mecanismo.meca_nombre == "Centro de Recursos del Aprendizaje y Bienestar CRAB"){
+                        mecanismo_puntaje = 66;
+                    } else {
+                        mecanismo = mecanismo.meca_nombre;
+                        mecanismo_puntaje = 100;
+                    }
+
+
+                    console.log(datos);
+                    /* Frecuencia */
+                    if (frecuencia[0].prog_descripcion == null){
+                        frecuencia = "Falta Info";
+                        frecuencia_puntaje = 0;
+                    }
+                    if(frecuencia[0].prog_descripcion == 'Temporal' ){
+                        frecuencia = frecuencia.prog_descripcion;
+                        frecuencia_puntaje = 66;
+                    }
+                    if(frecuencia[0].prog_descripcion == 'Permanente'){
+                        frecuencia = frecuencia.prog_descripcion;
+                        frecuencia_puntaje = 100;
+                    }
+
+                    /* Resultados */
+
+
+
+                    /* Cobertura */
+                    if (cobertura == null){
+                        cobertura_puntaje = 0;
+                    } else {
+                        divisor = (isNaN(parseInt(cobertura[0].total_docentes_final)) ? 0 : parseInt(cobertura[0].total_docentes_final)) +
+                            (isNaN(parseInt(cobertura[0].total_estudiantes_final)) ? 0 : parseInt(cobertura[0].total_estudiantes_final)) +
+                            (isNaN(parseInt(cobertura[0].total_funcionarios_final)) ? 0 : parseInt(cobertura[0].total_funcionarios_final));
+                        if (divisor == null || divisor == 0){
+                            divisor = 1;
+                        }
+                        dividendo = (isNaN(parseInt(cobertura[0].total_docentes)) ? 0 : parseInt(cobertura[0].total_docentes)) +
+                            (isNaN(parseInt(cobertura[0].total_estudiantes)) ? 0 : parseInt(cobertura[0].total_estudiantes)) +
+                            (isNaN(parseInt(cobertura[0].total_funcionarios)) ? 0 : parseInt(cobertura[0].total_funcionarios));
+                        if (dividendo == null){
+                            dividendo = 0;
+                        }
+                        cobertura_puntaje = Math.round((dividendo /divisor) * 100);
+                    }
+
+                    /* Evaluacion */
+
+                    if (evaluacion == null ){
+                        evaluacion_puntaje = 0;
+                    } else {
+                        evaluacion_puntaje = parseInt(evaluacion.suma_evaluaciones) / parseInt(evaluacion.total_evaluaciones);
+                    }
+
+
+                    /* if (datos.cobertura.length > 0) {
+                        datos.cobertura.forEach(registro => {
+                            partInicial = partInicial + parseInt(registro.part_cantidad_inicial);
+                            partFinal = partFinal + parseInt(registro.part_cantidad_final);
+                        });
+                        if (partInicial > 0) cobertura = Math.round((partFinal * 100) / partInicial);
+                        if (cobertura > 100) cobertura = 100;
+                    }
+
+                    resultados = 0;
+                    resuInicial = 0;
+                    resuFinal = 0;
+                    if (datos.resultados.length > 0) {
+                        datos.resultados.forEach(registro => {
+                            resuInicial = resuInicial + parseInt(registro.resu_cuantificacion_inicial);
+                            resuFinal = resuFinal + parseInt(registro.resu_cuantificacion_final);
+                        });
+                        if (resuInicial > 0) resultados = Math.round((resuFinal * 100) / resuInicial);
+                        if (resultados > 100) resultados = 100;
+                    }
+
+                    evaluacion = 0;
+                    if (datos.evaluacion != null) {
+                        evaluacion = parseInt(datos.evaluacion.eval_plazos) + parseInt(datos.evaluacion
+                                .eval_horarios) + parseInt(datos.evaluacion.eval_infraestructura) +
+                            parseInt(datos.evaluacion.eval_equipamiento) + parseInt(datos.evaluacion
+                                .eval_conexion_dl) + parseInt(datos.evaluacion.eval_desempenho_responsable) +
+                            parseInt(datos.evaluacion.eval_desempenho_participantes) + parseInt(datos.evaluacion
+                                .eval_calidad_presentaciones);
+                        evaluacion = Math.round((evaluacion * 20) / 8);
+                    }*/
+
+                    indice = Math.round(
+                        0.2 * mecanismo_puntaje +
+                        0.1 * frecuencia_puntaje +
+                        0.25 * resultados_puntaje +
+                        0.1 * cobertura_puntaje +
+                        0.35 * evaluacion_puntaje
+                        );
+
+                    /* $('#mecanismo-nombre').text(datos.mecanismo);
+                    $('#frecuencia-nombre').text(datos.frecuencia); */
+                    $('#mecanismo-puntaje').text(mecanismo_puntaje);
+                    $('#frecuencia-puntaje').text(frecuencia_puntaje);
+                    $('#cobertura-puntaje').text(cobertura_puntaje);
+                    $('#resultados-puntaje').text(resultados_puntaje);
+                    $('#evaluacion-puntaje').text(evaluacion_puntaje);
+                    $('#valor-indice').text(indice);
+                    $('#modalINVI').modal('show');
+                    /* console.log(datos.length);
+                    console.log(cobertura[0]); */
+                },
+                error: function(error) {
+                    console.log(datos);
+                }
             });
-            if (partInicial > 0) cobertura = Math.round((partFinal*100)/partInicial);
-            if (cobertura > 100) cobertura = 100;
         }
-
-        resultados = 0;
-        resuInicial = 0;
-        resuFinal = 0;
-        if (datos.resultados.length > 0) {
-            datos.resultados.forEach(registro => {
-                resuInicial = resuInicial + parseInt(registro.resu_cuantificacion_inicial);
-                resuFinal = resuFinal + parseInt(registro.resu_cuantificacion_final);
-            });
-            if (resuInicial > 0) resultados = Math.round((resuFinal*100)/resuInicial);
-            if (resultados > 100) resultados = 100;
-        }
-
-        evaluacion = 0;
-        if (datos.evaluacion != null) {
-            evaluacion = parseInt(datos.evaluacion.eval_plazos)+parseInt(datos.evaluacion.eval_horarios)+parseInt(datos.evaluacion.eval_infraestructura)+
-                    parseInt(datos.evaluacion.eval_equipamiento)+parseInt(datos.evaluacion.eval_conexion_dl)+parseInt(datos.evaluacion.eval_desempenho_responsable)+
-                    parseInt(datos.evaluacion.eval_desempenho_participantes)+parseInt(datos.evaluacion.eval_calidad_presentaciones);
-            evaluacion = Math.round((evaluacion * 20) / 8);
-        }
-
-        indice = Math.round(0.2*mecanismo + 0.1*frecuencia + 0.1*cobertura + 0.35*evaluacion + 0.25*resultados);
-
-        $('#mecanismo-nombre').text(datos.mecanismo.meca_nombre);
-        $('#frecuencia-nombre').text(datos.frecuencia.frec_nombre);
-        $('#mecanismo-puntaje').text(mecanismo);
-        $('#frecuencia-puntaje').text(frecuencia);
-        $('#cobertura-puntaje').text(cobertura);
-        $('#resultados-puntaje').text(resultados);
-        $('#evaluacion-puntaje').text(evaluacion);
-        $('#valor-indice').text(indice);
-        $('#modalINVI').modal('show');
-    },
-    error: function(error) {
-        console.log(error);
-    }
-}); */
-
 
         /* function calcularIndice(inic_codigo) {
             let datos;
