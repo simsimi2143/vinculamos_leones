@@ -1612,6 +1612,7 @@ class IniciativasController extends Controller
         return json_encode(['estado' => true, 'resultado' => $corhListar]);
     }
 
+    // TODO: Evaluación de iniciativa
     public function evaluarIniciativa($inic_codigo)
     {
         $iniciativa = Iniciativas::where('inic_codigo',$inic_codigo)->get();
@@ -1652,6 +1653,7 @@ class IniciativasController extends Controller
         return view('admin.iniciativas.evaluacion', compact('iniciativa', 'resultados', 'ambitos'))->with('exito', "Evaluación ingresada correctamente.");
     }
 
+    // TODO: Calculo Evaluación
     public function guardarEvaluacion(Request $request){
 
         $ponderado_1 = 0;
@@ -1738,5 +1740,64 @@ class IniciativasController extends Controller
         # PARA RETORNAR AL LISTADO
         return view('admin.iniciativas.redireccion', ['inic_codigo' => $request->iniciativa_codigo]);
     }
+
+    //TODO: INVI
+    public function datosIndice(Request $request) {
+        $validacion = Validator::make($request->all(),
+            ['iniciativa' => 'exists:iniciativas,inic_codigo'],
+            ['iniciativa.exists' => 'La iniciativa no se encuentra registrada.']
+        );
+        if ($validacion->fails()) return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
+
+        $mecanismo = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
+            ->select('mecanismos.meca_nombre','iniciativas.inic_codigo')
+            ->where('iniciativas.inic_codigo',$inic_codigo)
+            ->get();
+
+        $frecuencia = Iniciativas::leftJoin('programas', 'programas.prog_codigo', '=', 'iniciativas.prog_codigo')
+            ->select(
+                'programas.prog_descripcion',
+                'iniciativas.inic_codigo',
+                \DB::raw('COALESCE(iniciativas.prog_codigo, 0) AS prog_codigo')
+            )
+            ->where('iniciativas.inic_codigo', $inic_codigo)
+            ->get();
+
+        $cobertura = DB::table('participantes_internos')
+            ->select(
+                DB::raw('SUM(IFNULL(pain_docentes, 0)) as total_docentes'),
+                DB::raw('SUM(IFNULL(pain_estudiantes, 0)) as total_estudiantes'),
+                DB::raw('SUM(IFNULL(pain_funcionarios, 0)) as total_funcionarios'),
+                DB::raw('SUM(IFNULL(pain_docentes_final, 0)) as total_docentes_final'),
+                DB::raw('SUM(IFNULL(pain_estudiantes_final, 0)) as total_estudiantes_final'),
+                DB::raw('SUM(IFNULL(pain_funcionarios_final, 0)) as total_funcionarios_final')
+            )
+            ->where('inic_codigo', $inic_codigo)
+            ->get();
+
+        $partDatos = Participantes::select(DB::raw('IFNULL(part_cantidad_inicial, 0) AS part_cantidad_inicial'), DB::raw('IFNULL(part_cantidad_final, 0) AS part_cantidad_final'))->where('inic_codigo', $request->iniciativa)->get();
+        $resuDatos = Resultados::select(DB::raw('IFNULL(resu_cuantificacion_inicial, 0) AS resu_cuantificacion_inicial'), DB::raw('IFNULL(resu_cuantificacion_final, 0) AS resu_cuantificacion_final'))->where('inic_codigo', $request->iniciativa)->get();
+        $evalDatos = Evaluaciones::select('eval_plazos', 'eval_horarios', 'eval_infraestructura', 'eval_equipamiento', 'eval_conexion_dl', 'eval_desempenho_responsable', 'eval_desempenho_participantes', 'eval_calidad_presentaciones')
+            ->where('inic_codigo', $request->iniciativa)->first();
+        return json_encode(['estado' => true, 'resultado' => [
+            'mecanismo' => $mecaDatos,
+            'frecuencia' => $frecDatos,
+            'cobertura' => $partDatos,
+            'resultados' => $resuDatos,
+            'evaluacion' => $evalDatos
+        ]]);
+    }
+
+    /* public function actualizarIndice(Request $request) {
+        try {
+            Iniciativas::where('inic_codigo', $request->inic_codigo)->update([
+                'inic_inrel' => $request->inic_inrel,
+                'inic_rut_mod' => Session::get('admin')->usua_rut,
+                'inic_rol_mod' => Session::get('admin')->rous_codigo
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    } */
 
 }

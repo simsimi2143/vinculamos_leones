@@ -47,7 +47,9 @@ Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPa
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
-
+//TODO: Ruta INVI
+Route::get('admin/iniciativa/invi/datos', [IniciativasController::class, 'datosIndice']);
+Route::post('admin/iniciativa/invi/actualizar', [IniciativasController::class, 'actualizarIndice']);
 
 Route::middleware('verificar.superadmin')->group(function () {
     // inicio rutas para gestionar usuarios
@@ -290,6 +292,9 @@ Route::middleware('verificar.admin')->group(function () {
     Route::get('admin/iniciativas/{inic_codigo}/evaluar', [IniciativasController::class, 'evaluarIniciativa'])->name('admin.evaluar.iniciativa');
     Route::get('admin/iniciativas/{inic_codigo}/evaluar2', [IniciativasController::class, 'evaluarIniciativa2'])->name('admin.evaluar.iniciativa2');
     Route::get('admin/iniciativas/evaluar',[IniciativasController::class,'guardarEvaluacion']);
+
+
+
 
     // TODO: inicio rutas ODS
     Route::get('admin/ods', function () {

@@ -268,6 +268,60 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalINVI" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formModal">Índice de vinculación INVI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-md" id="table-1" style="border-top: 1px ghostwhite solid;">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Mecanismo</strong></td>
+                                    <td id="mecanismo-nombre"></td>
+                                    <td id="mecanismo-puntaje"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Frecuencia</strong></td>
+                                    <td id="frecuencia-nombre"></td>
+                                    <td id="frecuencia-puntaje"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cobertura</strong></td>
+                                    <td></td>
+                                    <td id="cobertura-puntaje"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resultados</strong></td>
+                                    <td></td>
+                                    <td id="resultados-puntaje"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Evaluación</strong></td>
+                                    <td></td>
+                                    <td id="evaluacion-puntaje"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><h6>Índice de vinculación INVI</h6></td>
+                                    <td id="valor-indice"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
 
 
@@ -317,30 +371,160 @@
             });
         }
 
-            /* function filtrarTablaxMecanismo() {
-            const selectElement = document.querySelector('select[name="table-1_length"]');
-            selectElement.selectedIndex = 3;
-            const changeEvent = new Event('change', { bubbles: true });
-            selectElement.dispatchEvent(changeEvent);
-            const mecaSeleccionado = document.getElementById('mecanismo').value;
-            const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
+        /* function calcularIndice(inic_codigo) {
+            let datos;
+            let mecanismo, frecuencia, cobertura, resultados, evaluacion;
+            let partInicial, partFinal;
+            let resuInicial, resuFinal;
+            let indice;
+
+$.ajax({
+    type: 'GET',
+    url: window.location.origin+'/admin/iniciativa/invi/datos',
+    data: {
+        iniciativa: inic_codigo
+    },
+    success: function(resConsultar) {
+        respuesta = JSON.parse(resConsultar);
+        datos = respuesta.resultado;
+
+        mecanismo = datos.mecanismo.meca_puntaje;
+        frecuencia = datos.frecuencia.frec_puntaje;
+
+        cobertura = 0;
+        partInicial = 0;
+        partFinal = 0;
+        if (datos.cobertura.length > 0) {
+            datos.cobertura.forEach(registro => {
+                partInicial = partInicial + parseInt(registro.part_cantidad_inicial);
+                partFinal = partFinal + parseInt(registro.part_cantidad_final);
+            });
+            if (partInicial > 0) cobertura = Math.round((partFinal*100)/partInicial);
+            if (cobertura > 100) cobertura = 100;
+        }
+
+        resultados = 0;
+        resuInicial = 0;
+        resuFinal = 0;
+        if (datos.resultados.length > 0) {
+            datos.resultados.forEach(registro => {
+                resuInicial = resuInicial + parseInt(registro.resu_cuantificacion_inicial);
+                resuFinal = resuFinal + parseInt(registro.resu_cuantificacion_final);
+            });
+            if (resuInicial > 0) resultados = Math.round((resuFinal*100)/resuInicial);
+            if (resultados > 100) resultados = 100;
+        }
+
+        evaluacion = 0;
+        if (datos.evaluacion != null) {
+            evaluacion = parseInt(datos.evaluacion.eval_plazos)+parseInt(datos.evaluacion.eval_horarios)+parseInt(datos.evaluacion.eval_infraestructura)+
+                    parseInt(datos.evaluacion.eval_equipamiento)+parseInt(datos.evaluacion.eval_conexion_dl)+parseInt(datos.evaluacion.eval_desempenho_responsable)+
+                    parseInt(datos.evaluacion.eval_desempenho_participantes)+parseInt(datos.evaluacion.eval_calidad_presentaciones);
+            evaluacion = Math.round((evaluacion * 20) / 8);
+        }
+
+        indice = Math.round(0.2*mecanismo + 0.1*frecuencia + 0.1*cobertura + 0.35*evaluacion + 0.25*resultados);
+
+        $('#mecanismo-nombre').text(datos.mecanismo.meca_nombre);
+        $('#frecuencia-nombre').text(datos.frecuencia.frec_nombre);
+        $('#mecanismo-puntaje').text(mecanismo);
+        $('#frecuencia-puntaje').text(frecuencia);
+        $('#cobertura-puntaje').text(cobertura);
+        $('#resultados-puntaje').text(resultados);
+        $('#evaluacion-puntaje').text(evaluacion);
+        $('#valor-indice').text(indice);
+        $('#modalINVI').modal('show');
+    },
+    error: function(error) {
+        console.log(error);
+    }
+}); */
 
 
-            filasTabla.forEach(function (fila) {
-                const mecaFila = fila.getAttribute('data-meca');
-                if (mecaSeleccionado === '') {
-                    selectElement.selectedIndex = 0;
-                    selectElement.dispatchEvent(changeEvent);
-                    fila.style.display = 'table-row'; // Mostrar la fila
+        /* function calcularIndice(inic_codigo) {
+            let datos;
+            let mecanismo, frecuencia, cobertura, resultados, evaluacion;
+            let partInicial, partFinal;
+            let resuInicial, resuFinal;
+            let indice;
 
-                }else if(mecaSeleccionado === mecaFila){
-                    fila.style.display = 'table-row'; // Mostrar la fila
-                }
-                else {
-                    fila.style.display = 'none'; // Ocultar la fila
+            $.ajax({
+                type: 'GET',
+                url: window.location.origin+'/admin/iniciativa/invi/datos',
+                data: {
+                    iniciativa: inic_codigo
+                },
+                success: function(resConsultar) {
+                    respuesta = JSON.parse(resConsultar);
+                    datos = respuesta.resultado;
+
+                    mecanismo = datos.mecanismo.meca_puntaje;
+                    frecuencia = datos.frecuencia.frec_puntaje;
+
+                    cobertura = 0;
+                    partInicial = 0;
+                    partFinal = 0;
+                    if (datos.cobertura.length > 0) {
+                        datos.cobertura.forEach(registro => {
+                            partInicial = partInicial + parseInt(registro.part_cantidad_inicial);
+                            partFinal = partFinal + parseInt(registro.part_cantidad_final);
+                        });
+                        if (partInicial > 0) cobertura = Math.round((partFinal*100)/partInicial);
+                        if (cobertura > 100) cobertura = 100;
+                    }
+
+                    resultados = 0;
+                    resuInicial = 0;
+                    resuFinal = 0;
+                    if (datos.resultados.length > 0) {
+                        datos.resultados.forEach(registro => {
+                            resuInicial = resuInicial + parseInt(registro.resu_cuantificacion_inicial);
+                            resuFinal = resuFinal + parseInt(registro.resu_cuantificacion_final);
+                        });
+                        if (resuInicial > 0) resultados = Math.round((resuFinal*100)/resuInicial);
+                        if (resultados > 100) resultados = 100;
+                    }
+
+                    evaluacion = 0;
+                    if (datos.evaluacion != null) {
+                        evaluacion = parseInt(datos.evaluacion.eval_plazos)+parseInt(datos.evaluacion.eval_horarios)+parseInt(datos.evaluacion.eval_infraestructura)+
+                                parseInt(datos.evaluacion.eval_equipamiento)+parseInt(datos.evaluacion.eval_conexion_dl)+parseInt(datos.evaluacion.eval_desempenho_responsable)+
+                                parseInt(datos.evaluacion.eval_desempenho_participantes)+parseInt(datos.evaluacion.eval_calidad_presentaciones);
+                        evaluacion = Math.round((evaluacion * 20) / 8);
+                    }
+
+                    indice = Math.round(0.2*mecanismo + 0.1*frecuencia + 0.1*cobertura + 0.35*evaluacion + 0.25*resultados);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: window.location.origin+'/admin/iniciativa/invi/actualizar',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            inic_codigo: inic_codigo,
+                            inic_inrel: indice
+                        },
+                        success: function(resActualizar) { },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+
+                    $('#mecanismo-nombre').text(datos.mecanismo.meca_nombre);
+                    $('#frecuencia-nombre').text(datos.frecuencia.frec_nombre);
+                    $('#mecanismo-puntaje').text(mecanismo);
+                    $('#frecuencia-puntaje').text(frecuencia);
+                    $('#cobertura-puntaje').text(cobertura);
+                    $('#resultados-puntaje').text(resultados);
+                    $('#evaluacion-puntaje').text(evaluacion);
+                    $('#valor-indice').text(indice);
+                    $('#modalINVI').modal('show');
+                },
+                error: function(error) {
+                    console.log(error);
                 }
             });
-            } */
-        // Llamar a la función cuando se carga la página
+        } */
     </script>
 @endsection
