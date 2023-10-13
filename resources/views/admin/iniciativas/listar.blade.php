@@ -212,7 +212,7 @@
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
 
-                                                    <a href="javascript:void(0)" class="btn btn-icon btn-warning"
+                                                    <a href="javascript:void(0)" class="btn btn-icon btn-info"
                                                         data-toggle="tooltip" data-placement="top" title="Calcular INVI"
                                                         onclick="calcularIndice({{ $iniciativa->inic_codigo }})"><i
                                                             class="fas fa-tachometer-alt"></i></a>
@@ -313,17 +313,17 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Resultados</strong></td>
-                                    <td></td>
+                                    <td id="resultados-nombre"></td>
                                     <td id="resultados-puntaje"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Cobertura</strong></td>
-                                    <td></td>
+                                    <td id="cobertura-nombre"></td>
                                     <td id="cobertura-puntaje"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Evaluación</strong></td>
-                                    <td></td>
+                                    <td id="evaluacion-nombre"></td>
                                     <td id="evaluacion-puntaje"></td>
                                 </tr>
                                 <tr>
@@ -396,7 +396,9 @@
         function calcularIndice(inic_codigo) {
             let datos;
             let mecanismo, frecuencia, cobertura, resultados, evaluacion;
+            let mecanismo_txt, frecuencia_txt, cobertura_txt, resultados_txt, evaluacion_txt;
             let mecanismo_puntaje, frecuencia_puntaje, cobertura_puntaje, resultados_puntaje, evaluacion_puntaje;
+            let resultado1_aux, resultado2_aux;
             let divisor, dividendo;
             let partInicial, partFinal;
             let resuInicial, resuFinal;
@@ -416,13 +418,17 @@
                     frecuencia = datos.frecuencia;
 
                     cobertura = datos.cobertura;
-                    resultados = datos.resultados2;
+                    resultados2 = datos.resultados2;
                     evaluacion = datos.evaluacion;
                     resultados_puntaje = 0;
 
 
                     /* Mecanismo */
-                    if (mecanismo.meca_nombre == "Programa de Extensión" || mecanismo.meca_nombre == "Centro de Recursos del Aprendizaje y Bienestar CRAB"){
+                    if (mecanismo == null) {
+                        mecanismo_puntaje = 0;
+                    }
+                    if (mecanismo.meca_nombre == "Programa de Extensión" || mecanismo.meca_nombre ==
+                        "Centro de Recursos del Aprendizaje y Bienestar CRAB") {
                         mecanismo_puntaje = 66;
                     } else {
                         mecanismo = mecanismo.meca_nombre;
@@ -432,48 +438,73 @@
 
                     console.log(datos);
                     /* Frecuencia */
-                    if (frecuencia[0].prog_descripcion == null){
-                        frecuencia = "Falta Info";
+                    if (frecuencia[0].prog_descripcion == null) {
+                        frecuencia_txt = "Falta Información";
                         frecuencia_puntaje = 0;
                     }
-                    if(frecuencia[0].prog_descripcion == 'Temporal' ){
-                        frecuencia = frecuencia.prog_descripcion;
+                    if (frecuencia[0].prog_descripcion == 'Temporal') {
+                        frecuencia_txt = frecuencia.prog_descripcion;
                         frecuencia_puntaje = 66;
                     }
-                    if(frecuencia[0].prog_descripcion == 'Permanente'){
-                        frecuencia = frecuencia.prog_descripcion;
+                    if (frecuencia[0].prog_descripcion == 'Permanente') {
+                        frecuencia_txt = frecuencia.prog_descripcion;
                         frecuencia_puntaje = 100;
                     }
 
                     /* Resultados */
+                    if (resultados2 != null) {
+                        dividendo = (isNaN(parseInt(resultados2[0].suma_inicial)) ? 0 : parseInt(resultados2[0]
+                            .suma_inicial));
+                        divisor = (isNaN(parseInt(resultados2[0].suma_final)) ? 0 : parseInt(resultados2[0]
+                            .suma_final));
+                        if (divisor == 0) {
+                            resultados_puntaje = 0;
+                        } else {
+                            resultado1_aux = ((dividendo / divisor) * 100) * 0.7;
+                            resultados_puntaje = resultado1_aux; /* CAMBIAR CON RESULTADO 2 */
+                        }
+                    } else {
+                        resultados_puntaje = 0;
+                    }
+
 
 
 
                     /* Cobertura */
-                    if (cobertura == null){
+                    if (cobertura == null) {
                         cobertura_puntaje = 0;
                     } else {
-                        divisor = (isNaN(parseInt(cobertura[0].total_docentes_final)) ? 0 : parseInt(cobertura[0].total_docentes_final)) +
-                            (isNaN(parseInt(cobertura[0].total_estudiantes_final)) ? 0 : parseInt(cobertura[0].total_estudiantes_final)) +
-                            (isNaN(parseInt(cobertura[0].total_funcionarios_final)) ? 0 : parseInt(cobertura[0].total_funcionarios_final));
-                        if (divisor == null || divisor == 0){
+                        divisor = (isNaN(parseInt(cobertura[0].total_docentes_final)) ? 0 : parseInt(
+                                cobertura[0].total_docentes_final)) +
+                            (isNaN(parseInt(cobertura[0].total_estudiantes_final)) ? 0 : parseInt(cobertura[
+                                0].total_estudiantes_final)) +
+                            (isNaN(parseInt(cobertura[0].total_funcionarios_final)) ? 0 : parseInt(
+                                cobertura[0].total_funcionarios_final));
+                        if (divisor == null || divisor == 0) {
                             divisor = 1;
                         }
-                        dividendo = (isNaN(parseInt(cobertura[0].total_docentes)) ? 0 : parseInt(cobertura[0].total_docentes)) +
-                            (isNaN(parseInt(cobertura[0].total_estudiantes)) ? 0 : parseInt(cobertura[0].total_estudiantes)) +
-                            (isNaN(parseInt(cobertura[0].total_funcionarios)) ? 0 : parseInt(cobertura[0].total_funcionarios));
-                        if (dividendo == null){
+                        dividendo = (isNaN(parseInt(cobertura[0].total_docentes)) ? 0 : parseInt(cobertura[
+                                0].total_docentes)) +
+                            (isNaN(parseInt(cobertura[0].total_estudiantes)) ? 0 : parseInt(cobertura[0]
+                                .total_estudiantes)) +
+                            (isNaN(parseInt(cobertura[0].total_funcionarios)) ? 0 : parseInt(cobertura[0]
+                                .total_funcionarios));
+                        if (dividendo == null) {
                             dividendo = 0;
                         }
-                        cobertura_puntaje = Math.round((dividendo /divisor) * 100);
+                        cobertura_puntaje = Math.round((dividendo / divisor) * 100);
+                        if (cobertura_puntaje > 100) {
+                            cobertura_puntaje = 100;
+                        }
                     }
 
                     /* Evaluacion */
 
-                    if (evaluacion == null ){
+                    if (evaluacion == null) {
                         evaluacion_puntaje = 0;
                     } else {
-                        evaluacion_puntaje = parseInt(evaluacion.suma_evaluaciones) / parseInt(evaluacion.total_evaluaciones);
+                        evaluacion_puntaje = parseInt(evaluacion.suma_evaluaciones) / parseInt(evaluacion
+                            .total_evaluaciones);
                     }
 
 
@@ -515,10 +546,19 @@
                         0.25 * resultados_puntaje +
                         0.1 * cobertura_puntaje +
                         0.35 * evaluacion_puntaje
-                        );
+                    );
 
-                    /* $('#mecanismo-nombre').text(datos.mecanismo);
-                    $('#frecuencia-nombre').text(datos.frecuencia); */
+                    if (resultados_puntaje == 0) {
+                        $('#resultados-nombre').text("Sin Datos");
+                    }
+                    if (cobertura_puntaje == 0) {
+                        $('#cobertura-nombre').text("Sin Datos");
+                    }
+                    if (evaluacion_puntaje == 0) {
+                        $('#evaluacion-nombre').text("No Evaluada");
+                    }
+                    /* $('#mecanismo-nombre').text(mecanismo_txt);*/
+                    $('#frecuencia-nombre').text(frecuencia_txt);
                     $('#mecanismo-puntaje').text(mecanismo_puntaje);
                     $('#frecuencia-puntaje').text(frecuencia_puntaje);
                     $('#cobertura-puntaje').text(cobertura_puntaje);
@@ -532,8 +572,9 @@
                 error: function(error) {
                     console.log(datos);
                 }
-            });
-        }
+            })
+        };
+
 
         /* function calcularIndice(inic_codigo) {
             let datos;
