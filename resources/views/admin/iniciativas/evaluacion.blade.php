@@ -25,15 +25,21 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-3"></div>
-                        <div class="col-6 alert-container" id="exito">
-                            @if (Session::has('exito'))
-                                <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
+                        <div class="col-6 alert-container" id="exito_ingresar"  style="display: none;">
+                            <div class="alert alert-success show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('exito') }}</strong>
+                                        <strong>Evaluación ingresada correctamente</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
-                                </div>
-                            @endif
+                            </div>
+                        </div>
+                        <div class="col-6 alert-container" id="exito_crear"  style="display: none;">
+                            <div class="alert alert-success show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <strong>Evaluación creada correctamente</strong>
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    </div>
+                            </div>
                         </div>
                         <div class="col-3"></div>
                         <div class="col-3"></div>
@@ -59,23 +65,52 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-xl-5 col-lg-6">
-                            <div class="card l-bg-green">
-                                <div class="card-statistic-3">
-                                    <div class="card-icon card-icon-large"><i class="fa fa-user"></i></div>
-                                    <div class="card-content">
-                                        <h4 class="card-title">Tipo de evaluador</h4>
-                                        <select class="form-control select2" name="tipo" id="tipo"
-                                            onchange="mostrarOcultar()">
-                                            <option value="" disabled selected>Seleccione...</option>
-                                            <option value="1">Evaluador interno - Estudiante</option>
-                                            <option value="2">Evaluador interno - Docente/Directivo</option>
-                                            <option value="3">Evaluador externo</option>
-                                        </select>
+                        <div class="row">
+                            <div class="col-xl-1 col-lg-1"></div>
+                            <div class="col-xl-5 col-lg-6">
+                                <div class="card l-bg-green">
+                                    <div class="card-statistic-3">
+                                        <div class="card-icon card-icon-large"><i class="fa fa-user"></i></div>
+                                        <div class="card-content">
+                                            <h4 class="card-title">Crear evaluación</h4>
+                                            <span>Tipo de Evaluador</span>
+                                            <select class="form-control select2" name="tipo" id="tipo"
+                                                onchange="mostrarOcultar()">
+                                                <option value="" disabled selected>Seleccione...</option>
+                                                <option value="1">Evaluador interno - Estudiante</option>
+                                                <option value="2">Evaluador interno - Docente/Directivo</option>
+                                                <option value="3">Evaluador externo</option>
+                                                <option value="4">Limpiar</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            @php
+                                $currentYear = now()->year;
+                            @endphp
+
+                            @if (intval($iniciativa[0]->inic_anho) < $currentYear)
+                                <div class="col-xl-5 col-lg-6">
+                                    <div class="card l-bg-cyan">
+                                        <div class="card-statistic-3">
+                                            <div class="card-icon card-icon-large"><i class="fa fa-calendar-times"></i></div>
+                                            <div class="card-content">
+                                                <h4 class="card-title">Ingresar evaluación</h4>
+                                                <span>Tipo de Evalaución</span>
+                                                <select class="form-control select2" name="ingresar" id="ingresar" onchange="ingresarEVAL()">
+                                                    <option value="" disabled selected>Seleccione...</option>
+                                                    <option value="2">Evaluación interno</option>
+                                                    <option value="3">Evaluación externa</option>
+                                                    <option value="4">Limpiar</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
+
                         <div id="AllForm" style="display: none">
                             <div class="card-body">
                                 <div class="row">
@@ -639,6 +674,60 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div id="AllTable" style="display: none">
+                            <div class="card-body">
+
+                                    <div class="row mt-3">
+                                        <div class="col-3"></div>
+                                        <div class="col-6">
+                                            <div class="card">
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-md">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Item</th>
+                                                                    <th scope="col">Año de la Iniciativa</th>
+                                                                    <th scope="col">Puntaje</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="body-tabla-participantes">
+                                                                {{-- {{$resultados}} --}}
+
+                                                                    <tr>
+                                                                        <td name="Eval_Interna">Evaluación Interna</td>
+                                                                        <td name="Eval_Externa">Evaluación Externa</td>
+                                                                        <td>{{$iniciativa[0]->inic_anho}}</td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                id="puntaje_obtenido"
+                                                                                name="puntaje_obtenido"
+                                                                                value=""
+                                                                                min="0"
+                                                                                max="100">
+                                                                        </td>
+                                                                    </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 text-right">
+                                                    <input type="hidden" id="inic_codigo" name="inic_codigo"
+                                                        value="">
+                                                    <button type="submit" class="btn btn-primary mr-1 waves-effect" onclick="enviarEval()"><i
+                                                            class="fas fa-save"></i> Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -665,6 +754,37 @@
     <script>
         var token = '{{ csrf_token() }}';
 
+
+        function ingresarEVAL(){
+            var selectBox = document.getElementById("ingresar");
+            var etiquetasInterna = document.getElementsByName('Eval_Interna');
+            var etiquetasExterna = document.getElementsByName('Eval_Externa');
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            /* Mostrar Tabla */
+            var MostrarTabla = document.getElementById("AllTable");
+            MostrarTabla.style.display = "block";
+            /* Ocultar Formulario */
+            var MostrarSiempre = document.getElementById("AllForm");
+            MostrarSiempre.style.display = "none";
+
+            /* Interna */
+            if (selectedValue === "2") {
+                mostrarEtiquetas(etiquetasInterna);
+                ocultarEtiquetas(etiquetasExterna);
+            }
+            /* Externa */
+            if (selectedValue === "3") {
+                ocultarEtiquetas(etiquetasInterna);
+                mostrarEtiquetas(etiquetasExterna);
+            }
+            /* Limpiar */
+            if (selectedValue === "4") {
+                MostrarTabla.style.display = "none";
+                MostrarSiempre.style.display = "none";
+            }
+
+        }
+
         function mostrarOcultar() {
             var selectBox = document.getElementById("tipo");
 
@@ -676,8 +796,13 @@
 
             // Obtén el div por su ID
             var divAMostrar = document.getElementById("divAMostrar");
+            /* Mostrar Formulario */
             var MostrarSiempre = document.getElementById("AllForm");
             MostrarSiempre.style.display = "block";
+            /* Ocultar Tabla */
+            var MostrarTabla = document.getElementById("AllTable");
+            MostrarTabla.style.display = "none";
+
 
             ocultarEtiquetas(etiquetasEstudiante);
             ocultarEtiquetas(etiquetasOtras);
@@ -693,6 +818,10 @@
                 divAMostrar.style.display = "none";
             } else {
                 divAMostrar.style.display = "block";
+            }
+            if (selectedValue === "4"){
+                MostrarSiempre.style.display = "none";
+                MostrarTabla.style.display = "none";
             }
         }
 
@@ -771,13 +900,21 @@
                     'X-CSRF-TOKEN': token
                 },
                 success: function(response) {
-                    /* console.log(response); */
-                    /* $('#myModal').modal('show'); */
-                    /* window.location.href = response.redirect; */
-                    /* $('.alert-container').hide();
-                    $('#exito').show(); */
+                    /* Mostrar Formulario */
+                    var MostrarSiempre = document.getElementById("AllForm");
+                    MostrarSiempre.style.display = "none";
+                    /* Ocultar Tabla */
+                    var MostrarTabla = document.getElementById("AllTable");
+                    MostrarTabla.style.display = "none";
+
+                    var alerta = document.getElementById("exito_crear");
+                    alerta.style.display = "block";
+
+                    reiniciarRadios();
+
+                    $("#puntaje_obtenido").val("");
                     setTimeout(function() {
-                        window.location.reload();
+                        alerta.style.display = "none";
                     }, 2000);
                 },
                 error: function(error) {
@@ -787,6 +924,78 @@
                 }
             });
         }
+
+        function enviarEval() {
+            var tipo_data = $("#tipo").val();
+            // Recopilar los datos
+
+            var datos = {
+                iniciativa_codigo: $("#iniciativa_codigo").val(),
+                tipo_data: $("#ingresar").val(),
+                puntaje: $("#puntaje_obtenido").val(),
+            };
+
+            $.ajax({
+                type: "GET",
+                url: window.location.origin + '/admin/iniciativas/ingresoEvaluacion',
+                data: datos,
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                success: function(response) {
+                    /* Mostrar Formulario */
+                    var MostrarSiempre = document.getElementById("AllForm");
+                    MostrarSiempre.style.display = "none";
+                    /* Ocultar Tabla */
+                    var MostrarTabla = document.getElementById("AllTable");
+                    MostrarTabla.style.display = "none";
+
+                    var alerta = document.getElementById("exito_ingresar");
+                    alerta.style.display = "block";
+                    $("#puntaje_obtenido").val("");
+
+
+
+                    setTimeout(function() {
+                        alerta.style.display = "none";
+                    }, 2000);
+
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function reiniciarRadios() {
+            // Cambia 'conocimiento_1_SINO_1_si' y 'conocimiento_1_SINO_1_no' a los IDs reales de tus radio buttons
+            $('#conocimiento_1_SINO_1_si').prop('checked', true);
+            $('#conocimiento_2_SINO_si').prop('checked', true);
+            $('#conocimiento_3_SINO_si').prop('checked', true);
+            $('#cumplimiento_1_0').prop('checked', true);
+            $('#cumplimiento_2_0').prop('checked', true);
+            $('#cumplimiento_3_0').prop('checked', true);
+            $('#calidad_1_NO').prop('checked', true);
+            $('#calidad_2_NO').prop('checked', true);
+            $('#calidad_3_NO').prop('checked', true);
+            $('#calidad_4_NO').prop('checked', true);
+            $('#competencia_1_0').prop('checked', false);
+            $('#competencia_1_1').prop('checked', false);
+            $('#competencia_1_2').prop('checked', false);
+            $('#competencia_1_3').prop('checked', false);
+            $('#competencia_2_0').prop('checked', false);
+            $('#competencia_2_1').prop('checked', false);
+            $('#competencia_2_2').prop('checked', false);
+            $('#competencia_2_3').prop('checked', false);
+            $('#competencia_3_0').prop('checked', false);
+            $('#competencia_3_1').prop('checked', false);
+            $('#competencia_3_2').prop('checked', false);
+            $('#competencia_3_3').prop('checked', false);
+            $('#conocimiento_1_SINO_1_si').prop('checked', true);
+        }
+
+        // Llamas a la función para reiniciar los radio buttons cuando sea necesario
+
 
         /* $(document).ready(function() {
             var urlParams = new URLSearchParams(window.location.search);

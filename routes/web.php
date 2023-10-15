@@ -292,6 +292,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::get('admin/iniciativas/{inic_codigo}/evaluar', [IniciativasController::class, 'evaluarIniciativa'])->name('admin.evaluar.iniciativa');
     Route::get('admin/iniciativas/{inic_codigo}/evaluar2', [IniciativasController::class, 'evaluarIniciativa2'])->name('admin.evaluar.iniciativa2');
     Route::get('admin/iniciativas/evaluar',[IniciativasController::class,'guardarEvaluacion']);
+    Route::get('admin/iniciativas/ingresoEvaluacion',[IniciativasController::class,'guardarEvaluacion2']);
 
 
 

@@ -1741,6 +1741,26 @@ class IniciativasController extends Controller
         return view('admin.iniciativas.redireccion', ['inic_codigo' => $request->iniciativa_codigo]);
     }
 
+    // TODO: Calculo Evaluación
+    public function guardarEvaluacion2(Request $request){
+
+        $nuevo = new Evaluacion();
+        $nuevo->inic_codigo = $request->iniciativa_codigo;
+        $nuevo->eval_evaluador = $request->tipo_data;
+        $nuevo->eval_puntaje = $request->puntaje;
+
+        $nuevo->eval_creado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->eval_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+        $nuevo->eval_vigente = 1;
+        $nuevo->eval_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->eval_rol_mod = Session::get('admin')->rous_codigo;
+
+        $nuevo->save();
+
+        # PARA RETORNAR AL LISTADO
+        return json_encode(['estado' => true, 'resultado' => 'La evaluación fue ingresada correctamente.']);
+    }
+
     //TODO: INVI
     public function datosIndice(Request $request) {
         $validacion = Validator::make($request->all(),
