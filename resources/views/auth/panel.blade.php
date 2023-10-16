@@ -7,7 +7,7 @@
             <a href="#" class="menu-toggle nav-link has-dropdown"><i
                     data-feather="book-open"></i><span>Iniciativas</span></a>
             <ul class="dropdown-menu">
-                <li><a class="nav-link" href="">Registro de iniciativas</a></li>
+                <li><a class="nav-link" href="">Listado de iniciativas</a></li>
                 <li><a class="nav-link" href="">Crear iniciativa</a></li>
             </ul>
         </li>
