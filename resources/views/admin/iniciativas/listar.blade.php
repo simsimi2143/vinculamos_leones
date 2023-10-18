@@ -460,7 +460,10 @@
                         if (divisor == 0) {
                             resultados_puntaje = 0;
                         } else {
-                            resultado1_aux = ((dividendo / divisor) * 100) * 0.7;
+                            resultado1_aux = Math.round(((dividendo / divisor) * 100) * 0.7);
+                            /* if (resultado1_aux > 100) {
+                                resultado1_aux = 100;
+                            } */
                             resultados_puntaje = resultado1_aux; /* CAMBIAR CON RESULTADO 2 */
                         }
                     } else {
@@ -503,42 +506,9 @@
                     if (evaluacion == null) {
                         evaluacion_puntaje = 0;
                     } else {
-                        evaluacion_puntaje = parseInt(evaluacion.suma_evaluaciones) / parseInt(evaluacion
-                            .total_evaluaciones);
+                        evaluacion_puntaje = Math.round(parseInt(evaluacion.suma_evaluaciones) / parseInt(evaluacion
+                            .total_evaluaciones));
                     }
-
-
-                    /* if (datos.cobertura.length > 0) {
-                        datos.cobertura.forEach(registro => {
-                            partInicial = partInicial + parseInt(registro.part_cantidad_inicial);
-                            partFinal = partFinal + parseInt(registro.part_cantidad_final);
-                        });
-                        if (partInicial > 0) cobertura = Math.round((partFinal * 100) / partInicial);
-                        if (cobertura > 100) cobertura = 100;
-                    }
-
-                    resultados = 0;
-                    resuInicial = 0;
-                    resuFinal = 0;
-                    if (datos.resultados.length > 0) {
-                        datos.resultados.forEach(registro => {
-                            resuInicial = resuInicial + parseInt(registro.resu_cuantificacion_inicial);
-                            resuFinal = resuFinal + parseInt(registro.resu_cuantificacion_final);
-                        });
-                        if (resuInicial > 0) resultados = Math.round((resuFinal * 100) / resuInicial);
-                        if (resultados > 100) resultados = 100;
-                    }
-
-                    evaluacion = 0;
-                    if (datos.evaluacion != null) {
-                        evaluacion = parseInt(datos.evaluacion.eval_plazos) + parseInt(datos.evaluacion
-                                .eval_horarios) + parseInt(datos.evaluacion.eval_infraestructura) +
-                            parseInt(datos.evaluacion.eval_equipamiento) + parseInt(datos.evaluacion
-                                .eval_conexion_dl) + parseInt(datos.evaluacion.eval_desempenho_responsable) +
-                            parseInt(datos.evaluacion.eval_desempenho_participantes) + parseInt(datos.evaluacion
-                                .eval_calidad_presentaciones);
-                        evaluacion = Math.round((evaluacion * 20) / 8);
-                    }*/
 
                     indice = Math.round(
                         0.2 * mecanismo_puntaje +
@@ -575,91 +545,5 @@
             })
         };
 
-
-        /* function calcularIndice(inic_codigo) {
-            let datos;
-            let mecanismo, frecuencia, cobertura, resultados, evaluacion;
-            let partInicial, partFinal;
-            let resuInicial, resuFinal;
-            let indice;
-
-            $.ajax({
-                type: 'GET',
-                url: window.location.origin+'/admin/iniciativa/invi/datos',
-                data: {
-                    iniciativa: inic_codigo
-                },
-                success: function(resConsultar) {
-                    respuesta = JSON.parse(resConsultar);
-                    datos = respuesta.resultado;
-
-                    mecanismo = datos.mecanismo.meca_puntaje;
-                    frecuencia = datos.frecuencia.frec_puntaje;
-
-                    cobertura = 0;
-                    partInicial = 0;
-                    partFinal = 0;
-                    if (datos.cobertura.length > 0) {
-                        datos.cobertura.forEach(registro => {
-                            partInicial = partInicial + parseInt(registro.part_cantidad_inicial);
-                            partFinal = partFinal + parseInt(registro.part_cantidad_final);
-                        });
-                        if (partInicial > 0) cobertura = Math.round((partFinal*100)/partInicial);
-                        if (cobertura > 100) cobertura = 100;
-                    }
-
-                    resultados = 0;
-                    resuInicial = 0;
-                    resuFinal = 0;
-                    if (datos.resultados.length > 0) {
-                        datos.resultados.forEach(registro => {
-                            resuInicial = resuInicial + parseInt(registro.resu_cuantificacion_inicial);
-                            resuFinal = resuFinal + parseInt(registro.resu_cuantificacion_final);
-                        });
-                        if (resuInicial > 0) resultados = Math.round((resuFinal*100)/resuInicial);
-                        if (resultados > 100) resultados = 100;
-                    }
-
-                    evaluacion = 0;
-                    if (datos.evaluacion != null) {
-                        evaluacion = parseInt(datos.evaluacion.eval_plazos)+parseInt(datos.evaluacion.eval_horarios)+parseInt(datos.evaluacion.eval_infraestructura)+
-                                parseInt(datos.evaluacion.eval_equipamiento)+parseInt(datos.evaluacion.eval_conexion_dl)+parseInt(datos.evaluacion.eval_desempenho_responsable)+
-                                parseInt(datos.evaluacion.eval_desempenho_participantes)+parseInt(datos.evaluacion.eval_calidad_presentaciones);
-                        evaluacion = Math.round((evaluacion * 20) / 8);
-                    }
-
-                    indice = Math.round(0.2*mecanismo + 0.1*frecuencia + 0.1*cobertura + 0.35*evaluacion + 0.25*resultados);
-
-                    $.ajax({
-                        type: 'POST',
-                        url: window.location.origin+'/admin/iniciativa/invi/actualizar',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            inic_codigo: inic_codigo,
-                            inic_inrel: indice
-                        },
-                        success: function(resActualizar) { },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    });
-
-                    $('#mecanismo-nombre').text(datos.mecanismo.meca_nombre);
-                    $('#frecuencia-nombre').text(datos.frecuencia.frec_nombre);
-                    $('#mecanismo-puntaje').text(mecanismo);
-                    $('#frecuencia-puntaje').text(frecuencia);
-                    $('#cobertura-puntaje').text(cobertura);
-                    $('#resultados-puntaje').text(resultados);
-                    $('#evaluacion-puntaje').text(evaluacion);
-                    $('#valor-indice').text(indice);
-                    $('#modalINVI').modal('show');
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        } */
     </script>
 @endsection

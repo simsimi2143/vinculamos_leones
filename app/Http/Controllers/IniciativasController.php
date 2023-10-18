@@ -948,7 +948,7 @@ class IniciativasController extends Controller
         if (!$iniciativa) {
             return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
         }
-
+        Resultados::where('inic_codigo', $request->inic_codigo)->delete();
         IniciativasComunas::where('inic_codigo', $request->inic_codigo)->delete();
         IniciativasGrupos::where('inic_codigo', $request->inic_codigo)->delete();
         IniciativasPais::where('inic_codigo', $request->inic_codigo)->delete();
@@ -957,6 +957,7 @@ class IniciativasController extends Controller
         IniciativasTematicas::where('inic_codigo', $request->inic_codigo)->delete();
         ParticipantesInternos::where('inic_codigo', $request->inic_codigo)->delete();
         Iniciativas::where('inic_codigo', $request->inic_codigo)->delete();
+
 
         return redirect()->route('admin.iniciativa.listar')->with('exitoIniciativa', 'La iniciativa fue eliminada correctamente.');
     }
