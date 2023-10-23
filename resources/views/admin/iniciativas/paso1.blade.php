@@ -270,7 +270,7 @@
                                                 {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
                                                 @forelse ($carreras as $carrera)
                                                     <option value="{{ $carrera->care_codigo }}"
-                                                        {{ collect(old('carreras'))->contains($carrer: a->care_codigo) ? 'selected' : '' }}>
+                                                        {{ collect(old('carreras'))->contains($carrera->care_codigo) ? 'selected' : '' }}>
                                                         {{ $carrera->care_nombre }}</option>
                                                 @empty
                                                     <option value="-1">No existen registros</option>

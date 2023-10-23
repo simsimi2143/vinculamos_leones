@@ -124,7 +124,7 @@
                                 $currentYear = now()->year;
                             @endphp
 
-                            @if (intval($iniciativa[0]->inic_anho) < $currentYear)
+                            {{-- @if (intval($iniciativa[0]->inic_anho) < $currentYear) --}}
                                 <div class="col-xl-5 col-lg-6">
                                     <div class="card l-bg-cyan">
                                         <div class="card-statistic-3">
@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                         </div>
 
                         <div id="AllForm" style="display: none">
