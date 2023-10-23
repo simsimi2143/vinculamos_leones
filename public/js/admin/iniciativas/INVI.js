@@ -85,16 +85,14 @@ function calcularIndice(inic_codigo) {
             if (cobertura == null) {
                 cobertura_puntaje = 0;
             } else {
-                divisor = (isNaN(parseInt(cobertura[0].total_docentes_final)) ? 0 : parseInt(
+                dividendo = (isNaN(parseInt(cobertura[0].total_docentes_final)) ? 0 : parseInt(
                         cobertura[0].total_docentes_final)) +
                     (isNaN(parseInt(cobertura[0].total_estudiantes_final)) ? 0 : parseInt(cobertura[
                         0].total_estudiantes_final)) +
                     (isNaN(parseInt(cobertura[0].total_funcionarios_final)) ? 0 : parseInt(
                         cobertura[0].total_funcionarios_final));
-                if (divisor == null || divisor == 0) {
-                    divisor = 1;
-                }
-                dividendo = (isNaN(parseInt(cobertura[0].total_docentes)) ? 0 : parseInt(cobertura[
+
+                divisor = (isNaN(parseInt(cobertura[0].total_docentes)) ? 0 : parseInt(cobertura[
                         0].total_docentes)) +
                     (isNaN(parseInt(cobertura[0].total_estudiantes)) ? 0 : parseInt(cobertura[0]
                         .total_estudiantes)) +
@@ -103,10 +101,16 @@ function calcularIndice(inic_codigo) {
                 if (dividendo == null) {
                     dividendo = 0;
                 }
-                cobertura_puntaje = Math.round((dividendo / divisor) * 100);
-                if (cobertura_puntaje > 100) {
-                    cobertura_puntaje = 100;
+                if (divisor == null || divisor == 0 || dividendo == 0) {
+                    cobertura_puntaje = 0
+                } else {
+                    cobertura_puntaje = Math.round((dividendo / divisor) * 100);
+                    if (cobertura_puntaje > 100) {
+                        cobertura_puntaje = 100;
+                    }
                 }
+
+
             }
 
             /* Evaluacion */
