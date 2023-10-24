@@ -1618,6 +1618,7 @@ class IniciativasController extends Controller
     {
         $iniciativa = Iniciativas::where('inic_codigo',$inic_codigo)->get();
         $resultados = Resultados::where('inic_codigo',$inic_codigo)->get();
+        $evaluaciones = Evaluacion::where('inic_codigo',$inic_codigo)->get();
 
         $mecanismo = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
         ->select('mecanismos.meca_nombre','iniciativas.inic_codigo')
@@ -1631,7 +1632,7 @@ class IniciativasController extends Controller
         ->where('prog_nombre',$mecanismo[0]->meca_nombre)
         ->get();
         // return $ambitos;
-        return view('admin.iniciativas.evaluacion', compact('iniciativa','resultados','ambitos'));
+        return view('admin.iniciativas.evaluacion', compact('iniciativa','resultados','ambitos','evaluaciones'));
     }
 
     public function evaluarIniciativa2($inic_codigo)
@@ -1652,6 +1653,43 @@ class IniciativasController extends Controller
         ->get();
         // return $ambitos;
         return view('admin.iniciativas.evaluacion', compact('iniciativa', 'resultados', 'ambitos'))->with('exito', "Evaluación ingresada correctamente.");
+    }
+
+    public function listarEvaluaciones(Request $request)
+    {
+        $evaluaciones = Evaluacion::where('inic_codigo',$request->inic_codigo)->get();
+        return json_encode(["estado" => true, "resultado" => $evaluaciones]);
+    }
+
+    public function eliminarEvaluacion(Request $request)
+    {
+        # Return Vista
+        $iniciativa = Iniciativas::where('inic_codigo',$request->inic_codigo)->get();
+        $resultados = Resultados::where('inic_codigo',$request->inic_codigo)->get();
+        $evaluaciones = Evaluacion::where('inic_codigo',$request->inic_codigo)->get();
+
+        $mecanismo = Iniciativas::join('mecanismos','mecanismos.meca_codigo','iniciativas.meca_codigo')
+        ->select('mecanismos.meca_nombre','iniciativas.inic_codigo')
+        ->where('iniciativas.inic_codigo',$request->inic_codigo)
+        ->get();
+
+        // return $mecanismo[0]->meca_nombre;
+        $ambitos = Programas::join('programas_contribuciones','programas_contribuciones.prog_codigo','programas.prog_codigo')
+        ->join('ambito','ambito.amb_codigo','programas_contribuciones.amb_codigo')
+        ->select('ambito.amb_nombre')
+        ->where('prog_nombre',$mecanismo[0]->meca_nombre)
+        ->get();
+
+        #####################################################################################
+        $eval = Evaluacion::where('eval_codigo',$request->eval_codigo)->get();
+
+        if (!$eval) {
+            return view('admin.iniciativas.evaluacion', compact('iniciativa', 'resultados','ambitos','evaluaciones'))->with('error', 'La evaluación no se encuentra registrada en el sistema.');
+        }
+
+        $eval = Evaluacion::where('eval_codigo',$request->eval_codigo)->delete();
+        $evaluaciones = Evaluacion::where('inic_codigo',$request->inic_codigo)->get();
+        return view('admin.iniciativas.evaluacion', compact('iniciativa', 'resultados','ambitos','evaluaciones'))->with('exito', "Evaluación eliminada correctamente.");
     }
 
     // TODO: Calculo Evaluación

@@ -51,6 +51,9 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 Route::get('admin/iniciativa/invi/datos', [IniciativasController::class, 'datosIndice']);
 /* Route::post('admin/iniciativa/invi/actualizar', [IniciativasController::class, 'actualizarIndice']); */
 
+Route::get('admin/iniciativa/listar-evaluaciones', [IniciativasController::class, 'listarEvaluaciones']);
+Route::delete('admin/eliminar-evaluacion/', [IniciativasController::class, 'eliminarEvaluacion'])->name('admin.eliminar.evaluacion');
+
 Route::middleware('verificar.superadmin')->group(function () {
     // inicio rutas para gestionar usuarios
     Route::get('superadmin/listar-usuarios', [SuperadminController::class, 'listarUsuarios'])->name('superadmin.listar.usuarios');

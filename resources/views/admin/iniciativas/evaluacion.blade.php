@@ -25,21 +25,53 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-3"></div>
-                        <div class="col-6 alert-container" id="exito_ingresar"  style="display: none;">
-                            <div class="alert alert-success show fade mb-4 text-center">
+                        <div class="col-6">
+                            @if (Session::has('exito'))
+                                <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>Evaluación ingresada correctamente</strong>
+                                        <strong>{{ Session::get('exitoAmbito') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6 alert-container" id="exito_ingresar" style="display: none;">
+                            <div class="alert alert-success show fade mb-4 text-center">
+                                <div class="alert-body">
+                                    <strong>Evaluación ingresada correctamente</strong>
+                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6 alert-container" id="exito_crear"  style="display: none;">
+                        <div class="col-6 alert-container" id="exito_crear" style="display: none;">
                             <div class="alert alert-success show fade mb-4 text-center">
+                                <div class="alert-body">
+                                    <strong>Evaluación creada correctamente</strong>
+                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            @if (Session::has('exito'))
+                                <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>Evaluación creada correctamente</strong>
+                                        <strong>{{ Session::get('exito') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
-                            </div>
+                                </div>
+                            @endif
+                            @if (Session::has('error'))
+                                <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <strong>{{ Session::get('error') }}</strong>
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <div class="col-3"></div>
                         <div class="col-3"></div>
@@ -56,50 +88,51 @@
                             <input type="hidden" name="iniciativa_codigo" id="iniciativa_codigo"
                                 value="{{ $iniciativa[0]->inic_codigo }}">
 
-                                <div class="card-header-action">
-                                    <div class="dropdown d-inline">
-                                        <a href="{{ route('admin.iniciativas.detalles', $iniciativa[0]->inic_codigo) }}"
-                                            class="btn btn-icon btn-warning icon-left" data-toggle="tooltip"
-                                            data-placement="top" title="Ver detalles de la iniciativa"><i
-                                                class="fas fa-eye"></i>Ver detalle</a>
+                            <div class="card-header-action">
+                                <div class="dropdown d-inline">
+                                    <a href="{{ route('admin.iniciativas.detalles', $iniciativa[0]->inic_codigo) }}"
+                                        class="btn btn-icon btn-warning icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Ver detalles de la iniciativa"><i
+                                            class="fas fa-eye"></i>Ver detalle</a>
 
-                                        <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo) }}"
-                                            class="btn btn-icon btn-primary icon-left" data-toggle="tooltip"
-                                            data-placement="top" title="Editar iniciativa"><i
-                                                class="fas fa-edit"></i>Editar Iniciativa</a>
+                                    <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo) }}"
+                                        class="btn btn-icon btn-primary icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Editar iniciativa"><i class="fas fa-edit"></i>Editar
+                                        Iniciativa</a>
 
-                                        <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left"
-                                            data-toggle="tooltip" data-placement="top" title="Calcular INVI"
-                                            onclick="calcularIndice({{ $iniciativa[0]->inic_codigo }})"><i
-                                                class="fas fa-tachometer-alt"></i>INVI</a>
+                                    <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left"
+                                        data-toggle="tooltip" data-placement="top" title="Calcular INVI"
+                                        onclick="calcularIndice({{ $iniciativa[0]->inic_codigo }})"><i
+                                            class="fas fa-tachometer-alt"></i>INVI</a>
 
-                                        <a href="{{ route('admin.evidencias.listar', $iniciativa[0]->inic_codigo) }}"
-                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
-                                            data-placement="top" title="Adjuntar evidencia"><i
-                                                class="fas fa-paperclip"></i>Evidencias</a>
+                                    <a href="{{ route('admin.evidencias.listar', $iniciativa[0]->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Adjuntar evidencia"><i
+                                            class="fas fa-paperclip"></i>Evidencias</a>
 
-                                        <a href="{{ route('admin.cobertura.index', $iniciativa[0]->inic_codigo) }}"
-                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
-                                            title="Ingresar cobertura"><i class="fas fa-users"></i>Cobertura</a>
+                                    <a href="{{ route('admin.cobertura.index', $iniciativa[0]->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Ingresar cobertura"><i
+                                            class="fas fa-users"></i>Cobertura</a>
 
-                                        <a href="{{ route('admin.resultados.listado', $iniciativa[0]->inic_codigo) }}"
-                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
-                                            data-placement="top" title="Ingresar resultado"><i
-                                                class="fas fa-flag"></i>Resultado/s</a>
+                                    <a href="{{ route('admin.resultados.listado', $iniciativa[0]->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Ingresar resultado"><i
+                                            class="fas fa-flag"></i>Resultado/s</a>
 
-                                        {{-- <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa[0]->inic_codigo) }}"
+                                    {{-- <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa[0]->inic_codigo) }}"
                                             class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
                                             data-placement="top" title="Evaluar iniciativa"><i
                                                 class="fas fa-file-signature"></i>Evaluar</a> --}}
 
-                                        <a href="{{ route('admin.iniciativa.listar') }}"
-                                            class="btn btn-primary mr-1 waves-effect icon-left" type="button">
-                                            <i class="fas fa-angle-left"></i> Volver a listado
-                                        </a>
-                                    </div>
+                                    <a href="{{ route('admin.iniciativa.listar') }}"
+                                        class="btn btn-primary mr-1 waves-effect icon-left" type="button">
+                                        <i class="fas fa-angle-left"></i> Volver a listado
+                                    </a>
                                 </div>
+                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="margin-top: 20px">
                             <div class="col-xl-1 col-lg-1"></div>
                             <div class="col-xl-5 col-lg-6">
                                 <div class="card l-bg-green">
@@ -114,7 +147,7 @@
                                                 <option value="1">Evaluador interno - Estudiante</option>
                                                 <option value="2">Evaluador interno - Docente/Directivo</option>
                                                 <option value="3">Evaluador externo</option>
-                                                <option value="4">Limpiar</option>
+                                                {{-- <option value="4">Limpiar</option> --}}
                                             </select>
                                         </div>
                                     </div>
@@ -125,23 +158,24 @@
                             @endphp
 
                             {{-- @if (intval($iniciativa[0]->inic_anho) < $currentYear) --}}
-                                <div class="col-xl-5 col-lg-6">
-                                    <div class="card l-bg-cyan">
-                                        <div class="card-statistic-3">
-                                            <div class="card-icon card-icon-large"><i class="fa fa-calendar-times"></i></div>
-                                            <div class="card-content">
-                                                <h4 class="card-title">Ingresar evaluación</h4>
-                                                <span>Tipo de Evalaución</span>
-                                                <select class="form-control select2" name="ingresar" id="ingresar" onchange="ingresarEVAL()">
-                                                    <option value="" disabled selected>Seleccione...</option>
-                                                    <option value="2">Evaluación interno</option>
-                                                    <option value="3">Evaluación externa</option>
-                                                    <option value="4">Limpiar</option>
-                                                </select>
-                                            </div>
+                            <div class="col-xl-5 col-lg-6">
+                                <div class="card l-bg-cyan">
+                                    <div class="card-statistic-3">
+                                        <div class="card-icon card-icon-large"><i class="fa fa-calendar-times"></i></div>
+                                        <div class="card-content">
+                                            <h4 class="card-title">Ingresar evaluación</h4>
+                                            <span>Tipo de Evalaución</span>
+                                            <select class="form-control select2" name="ingresar" id="ingresar"
+                                                onchange="ingresarEVAL()">
+                                                <option value="" disabled selected>Seleccione...</option>
+                                                <option value="2">Evaluación interno</option>
+                                                <option value="3">Evaluación externa</option>
+                                                {{-- <option value="4">Limpiar</option> --}}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             {{-- @endif --}}
                         </div>
 
@@ -172,8 +206,8 @@
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="conocimiento_1_SINO_1"
-                                                                                id="conocimiento_1_SINO_1_si" value="100"
-                                                                                checked>
+                                                                                id="conocimiento_1_SINO_1_si"
+                                                                                value="100" checked>
                                                                             <label class="form-check-label"
                                                                                 for="conocimiento_1_SINO_1_si">
                                                                                 SI</label>
@@ -223,7 +257,8 @@
                                                                         <div class="form-check form-check-inline">
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="conocimiento_2_SINO"
-                                                                                id="conocimiento_2_SINO_no" value="0">
+                                                                                id="conocimiento_2_SINO_no"
+                                                                                value="0">
                                                                             <label class="form-check-label"
                                                                                 for="conocimiento_2_SINO_no">
                                                                                 NO </label>
@@ -712,52 +747,49 @@
                         <div id="AllTable" style="display: none">
                             <div class="card-body">
 
-                                    <div class="row mt-3">
-                                        <div class="col-3"></div>
-                                        <div class="col-6">
-                                            <div class="card">
-                                                <div class="card-body p-0">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-md">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Item</th>
-                                                                    <th scope="col">Año de la Iniciativa</th>
-                                                                    <th scope="col">Puntaje</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="body-tabla-participantes">
-                                                                {{-- {{$resultados}} --}}
+                                <div class="row mt-3">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-md">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Item</th>
+                                                                <th scope="col">Año de la Iniciativa</th>
+                                                                <th scope="col">Puntaje</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="body-tabla-participantes">
+                                                            {{-- {{$resultados}} --}}
 
-                                                                    <tr>
-                                                                        <td name="Eval_Interna">Evaluación Interna</td>
-                                                                        <td name="Eval_Externa">Evaluación Externa</td>
-                                                                        <td>{{$iniciativa[0]->inic_anho}}</td>
-                                                                        <td>
-                                                                            <input type="number" class="form-control"
-                                                                                id="puntaje_obtenido"
-                                                                                name="puntaje_obtenido"
-                                                                                value=""
-                                                                                min="0"
-                                                                                max="100">
-                                                                        </td>
-                                                                    </tr>
+                                                            <tr>
+                                                                <td name="Eval_Interna">Evaluación Interna</td>
+                                                                <td name="Eval_Externa">Evaluación Externa</td>
+                                                                <td>{{ $iniciativa[0]->inic_anho }}</td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        id="puntaje_obtenido" name="puntaje_obtenido"
+                                                                        value="" min="0" max="100">
+                                                                </td>
+                                                            </tr>
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12 col-md-12 col-lg-12 text-right">
-                                                    <input type="hidden" id="inic_codigo" name="inic_codigo"
-                                                        value="">
-                                                    <button type="submit" class="btn btn-primary mr-1 waves-effect" onclick="enviarEval()"><i
-                                                            class="fas fa-save"></i> Guardar</button>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 text-right">
+                                                <input type="hidden" id="inic_codigo" name="inic_codigo"
+                                                    value="">
+                                                <button type="submit" class="btn btn-primary mr-1 waves-effect"
+                                                    onclick="enviarEval()"><i class="fas fa-save"></i> Guardar</button>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
 
                             </div>
                         </div>
@@ -765,8 +797,98 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="btn btn-primary collapsed" data-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample" onclick="listarEval({{ $iniciativa[0]->inic_codigo }})">
+                        Evaluaciones creadas
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="collapse" id="collapseExample">
+                        <?php
+                        $totalEvaluaciones = count($evaluaciones);
+                        $promedioPuntajes = $totalEvaluaciones > 0 ? round($evaluaciones->sum('eval_puntaje') / $totalEvaluaciones) : 0;
+                        ?>
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="card card-statistic-2">
+                                    <div class="card-icon l-bg-green">
+                                        <i class="fas fa-file-signature"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="padding-20">
+                                            <div class="text-right">
+                                                <h3 class="font-light mb-0">
+                                                    <i class="ti-arrow-up text-success"></i> <label id="N_evaluacion"></label>
+                                                </h3>
+                                                <span class="text-muted">Evaluaciones</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="card card-statistic-2">
+                                    <div class="card-icon l-bg-cyan">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="padding-20">
+                                            <div class="text-right">
+                                                <h3 class="font-light mb-0">
+                                                    <i class="ti-arrow-up text-success"></i> <label id="P_evaluacion"></label>
+                                                </h3>
+                                                <span class="text-muted">Puntaje Promedio</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="table-1" style="font-size: 110%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Ingresada por</th>
+                                        <th>Tipo de evaluación</th>
+                                        <th>Puntaje de la evaluación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                {{-- {{}} --}}
+                                <tbody id="body-tabla-evaluaciones">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
         aria-hidden="true" id="myModal">
         <div class="modal-dialog modal-sm">
@@ -840,12 +962,46 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalEliminaEvaluacion" tabindex="-1" role="dialog" aria-labelledby="modalEliminar"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{{ route('admin.eliminar.evaluacion') }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEliminar">Eliminar Evaluación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
+                        <h6 class="mt-2">La evaluación dejará de existir dentro del sistema. <br> ¿Desea continuar de
+                            todos modos? <br> Considere que su decición influirá en el valor del indicador INVI</h6>
+                        <input type="hidden" id="eval_codigo" name="eval_codigo" value="">
+                        <input type="hidden" id="inic_codigo" name="inic_codigo" value="{{ $iniciativa[0]->inic_codigo }}">
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="submit" class="btn btn-primary">Continuar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ asset('/js/admin/iniciativas/INVI.js') }}"></script>
     <script>
         var token = '{{ csrf_token() }}';
 
+        function eliminarEval(eval_codigo) {
+            $('#modalEliminaEvaluacion').find('#eval_codigo').val(eval_codigo);
+            $('#modalEliminaEvaluacion').modal('show');
+        }
 
-        function ingresarEVAL(){
+        function ingresarEVAL() {
             var selectBox = document.getElementById("ingresar");
             var etiquetasInterna = document.getElementsByName('Eval_Interna');
             var etiquetasExterna = document.getElementsByName('Eval_Externa');
@@ -909,7 +1065,7 @@
             } else {
                 divAMostrar.style.display = "block";
             }
-            if (selectedValue === "4"){
+            if (selectedValue === "4") {
                 MostrarSiempre.style.display = "none";
                 MostrarTabla.style.display = "none";
             }
@@ -1082,6 +1238,52 @@
             $('#competencia_3_2').prop('checked', false);
             $('#competencia_3_3').prop('checked', false);
             $('#conocimiento_1_SINO_1_si').prop('checked', true);
+        }
+
+        function listarEval(inic_code) {
+            $.ajax({
+                type: 'GET',
+                url: `${window.location.origin}/admin/iniciativa/listar-evaluaciones`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    inic_codigo: inic_code
+                },
+
+                success: function(resConsultar) {
+                    respuesta = JSON.parse(resConsultar);
+                    $('#body-tabla-evaluaciones').empty();
+                    $('#N_evaluacion').empty();
+                    $('#P_evaluacion').empty();
+
+                    datos_evaluaciones = respuesta.resultado;
+                    let contador = 0;
+                    let ptj = 0;
+
+                    datos_evaluaciones.forEach(registro => {
+                        contador = contador + 1;
+                        ptj = ptj + registro.eval_puntaje;
+                        let evaluacionTipo = registro.eval_evaluador === 2 ? 'Evaluación Interna' : 'Evaluación Externa';
+
+                        fila = `<tr>
+                            <td>${contador}</td>
+                            <td>${registro.eval_nickname_mod}</td>
+                            <td>${evaluacionTipo}</td>
+                            <td>${registro.eval_puntaje}</td>
+                            <td>
+                                <a href="javascript:void(0)" class="btn btn-icon btn-danger"
+                                    onclick="eliminarEval(${registro.eval_codigo})"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="Eliminar mecanismo"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>`
+
+                        $('#body-tabla-evaluaciones').append(fila);
+                    });
+
+                    $('#N_evaluacion').text(contador);
+                    $('#P_evaluacion').text(Math.round(ptj / contador));
+                }
+            })
         }
 
         // Llamas a la función para reiniciar los radio buttons cuando sea necesario
