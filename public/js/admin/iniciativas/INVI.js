@@ -18,6 +18,7 @@ function calcularIndice(inic_codigo) {
         success: function(resConsultar) {
             respuesta = JSON.parse(resConsultar);
             datos = respuesta.resultado;
+            console.log(datos);
 
             mecanismo = datos.mecanismo;
             frecuencia = datos.frecuencia;
@@ -42,7 +43,7 @@ function calcularIndice(inic_codigo) {
             }
 
 
-            console.log(mecanismo);
+            /* console.log(mecanismo); */
             /* Frecuencia */
             if (mecanismo == null) {
                 frecuencia_txt = "Falta Información";
@@ -101,8 +102,8 @@ function calcularIndice(inic_codigo) {
                         .total_funcionarios));
 
                 if (coberturaExt != null) {
-                    dividendo = dividendo + (isNaN(parseInt(cobertura[0].total_externos_final)) ? 0 : parseInt(cobertura[0].total_externos_final))
-                    divisor = divisor + (isNaN(parseInt(cobertura[0].total_externos)) ? 0 : parseInt(cobertura[0].total_externos))
+                    dividendo = dividendo + (isNaN(parseInt(coberturaExt[0].total_externos_final)) ? 0 : parseInt(coberturaExt[0].total_externos_final))
+                    divisor = divisor + (isNaN(parseInt(coberturaExt[0].total_externos)) ? 0 : parseInt(coberturaExt[0].total_externos))
                 }
 
                 if (dividendo == null) {
