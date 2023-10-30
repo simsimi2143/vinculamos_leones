@@ -1843,6 +1843,14 @@ class IniciativasController extends Controller
             ->where('inic_codigo', $request->iniciativa)
             ->get();
 
+        $coberturaDatoExt = DB::table('iniciativas_participantes')
+            ->select(
+                DB::raw('SUM(IFNULL(inpr_total, 0)) as total_externos'),
+                DB::raw('SUM(IFNULL(inpr_total_final, 0)) as total_externos_final')
+            )
+            ->where('inic_codigo', $request->iniciativa)
+            ->get();
+
         // $cobertura_externa =
 
 
@@ -1855,6 +1863,7 @@ class IniciativasController extends Controller
             'mecanismo' => $mecanismoDato,
             'frecuencia' => $frecuenciaDato,
             'cobertura' => $coberturaDato,
+            'cobertura2' => $coberturaDatoExt,
             'resultados2' => $resultados2,
             'evaluacion' => $evalDatos
         ]]);

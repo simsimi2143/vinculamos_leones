@@ -23,6 +23,7 @@ function calcularIndice(inic_codigo) {
             frecuencia = datos.frecuencia;
 
             cobertura = datos.cobertura;
+            coberturaExt = datos.cobertura2;
             resultados2 = datos.resultados2;
             evaluacion = datos.evaluacion;
             resultados_puntaje = 0;
@@ -98,6 +99,12 @@ function calcularIndice(inic_codigo) {
                         .total_estudiantes)) +
                     (isNaN(parseInt(cobertura[0].total_funcionarios)) ? 0 : parseInt(cobertura[0]
                         .total_funcionarios));
+
+                if (coberturaExt != null) {
+                    dividendo = dividendo + (isNaN(parseInt(cobertura[0].total_externos_final)) ? 0 : parseInt(cobertura[0].total_externos_final))
+                    divisor = divisor + (isNaN(parseInt(cobertura[0].total_externos)) ? 0 : parseInt(cobertura[0].total_externos))
+                }
+
                 if (dividendo == null) {
                     dividendo = 0;
                 }
