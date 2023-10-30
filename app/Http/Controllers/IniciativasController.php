@@ -1843,6 +1843,9 @@ class IniciativasController extends Controller
             ->where('inic_codigo', $request->iniciativa)
             ->get();
 
+        // $cobertura_externa =
+
+
         $evalDatos = Evaluacion::select('inic_codigo', DB::raw('COUNT(*) as total_evaluaciones'), DB::raw('SUM(eval_puntaje) as suma_evaluaciones'))
                 ->groupBy('inic_codigo')
                 ->get()

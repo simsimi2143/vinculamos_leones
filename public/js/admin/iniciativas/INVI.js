@@ -68,7 +68,7 @@ function calcularIndice(inic_codigo) {
                 if (divisor == 0) {
                     resultados_puntaje = 0;
                 } else {
-                    resultado1_aux = Math.round(((dividendo / divisor) * 100) * 0.7);
+                    resultado1_aux = Math.round(((dividendo / divisor) * 100));
                     /* if (resultado1_aux > 100) {
                         resultado1_aux = 100;
                     } */
