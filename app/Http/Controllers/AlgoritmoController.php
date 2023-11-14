@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Iniciativas;
+use Symfony\Component\Process\Process;
 
 
 
@@ -17,14 +18,14 @@ class AlgoritmoController extends Controller
     public function ejecutarAlgoritmoDesdeDescripcion(Request $request)
     {
         // Obtén la descripción desde la solicitud
-        $descripcion = Iniciativas::where('inic_codigo', 10)->select('inic_descripcion')->first();
-
+        $descripcion = Iniciativas::where('inic_codigo', 10)->select('inic_descripcion')->get();
+        // return $descripcion[0]->inic_descripcion;
         if (!$descripcion) {
             return response()->json(['error' => 'Descripción no encontrada']);
         }
 
         // Asegurarse de que la descripción está en formato UTF-8
-        $descripcionUtf8 = mb_convert_encoding($descripcion->inic_descripcion, 'UTF-8', 'UTF-8');
+        $descripcionUtf8 = mb_convert_encoding($descripcion[0]->inic_descripcion, 'UTF-8', 'UTF-8');
 
         // Rutas a los archivos pkl
         $classifierOdsPath = storage_path('python_scripts/classifier_ods.pkl');
@@ -33,19 +34,12 @@ class AlgoritmoController extends Controller
         $mlbOdsPath = storage_path('python_scripts/mlb_ods.pkl');
         $mlbMetasPath = storage_path('python_scripts/mlb_metas.pkl');
 
-        // Comando para ejecutar el script de Python
-        $command = "python3 " . base_path('tu_script.py') . " '{$descripcionUtf8}' '{$classifierOdsPath}' '{$classifierMetasPath}' '{$vectorizerPath}' '{$mlbOdsPath}' '{$mlbMetasPath}' 2>&1";
+        $algoritmo = new Process(['python', 'public/python_scripts/script.py', $descripcionUtf8]);
 
-        // Ejecutar el script de Python
-        exec($command, $output, $returnCode);
+        $algoritmo->run();
+        $resAlgoritmo = $algoritmo->getOutput();
 
-        // Verificar el código de retorno y manejar la salida como desees
-        if ($returnCode !== 0) {
-            // Manejar el error
-            return response()->json(['error' => 'Error al ejecutar el script']);
-        }
-
-        return response()->json(['result' => $output]);
+        return response()->json(['result' => $resAlgoritmo]);
     }
 }
 
