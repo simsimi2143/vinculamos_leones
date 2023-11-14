@@ -42,8 +42,8 @@
                                     </div>
                                 </div> --}}
                                 <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
-                                    class="btn btn-icon btn-primary icon-left" data-toggle="tooltip"
-                                    data-placement="top" title="Editar iniciativa"><i class="fas fa-edit"></i>Editar
+                                    class="btn btn-icon btn-primary icon-left" data-toggle="tooltip" data-placement="top"
+                                    title="Editar iniciativa"><i class="fas fa-edit"></i>Editar
                                     Iniciativa</a>
 
                                 <div class="dropdown d-inline">
@@ -129,117 +129,186 @@
 
 
 
-                                <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left"
-                                    data-toggle="tooltip" data-placement="top" title="Calcular INVI"
+                                <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left" data-toggle="tooltip"
+                                    data-placement="top" title="Calcular INVI"
                                     onclick="calcularIndice({{ $iniciativa->inic_codigo }})"><i
                                         class="fas fa-tachometer-alt"></i>INVI</a>
 
                                 <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
-                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
-                                    data-placement="top" title="Adjuntar evidencia"><i
-                                        class="fas fa-paperclip"></i>Evidencias</a>
+                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                    title="Adjuntar evidencia"><i class="fas fa-paperclip"></i>Evidencias</a>
 
                                 <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
-                                                class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
-                                                title="Ingresar cobertura"><i class="fas fa-users"></i>Cobertura</a>
+                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                    title="Ingresar cobertura"><i class="fas fa-users"></i>Cobertura</a>
 
                                 <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
-                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
-                                    data-placement="top" title="Ingresar resultado"><i
-                                        class="fas fa-flag"></i>Resultado/s</a>
+                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                    title="Ingresar resultado"><i class="fas fa-flag"></i>Resultado/s</a>
 
                                 <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}"
-                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
-                                    data-placement="top" title="Evaluar iniciativa"><i
-                                        class="fas fa-file-signature"></i>Evaluar</a>
+                                    class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                    title="Evaluar iniciativa"><i class="fas fa-file-signature"></i>Evaluar</a>
 
-                                <a href="javascript:void(0)" class="btn btn-danger icon-left" data-toggle="tooltip" onclick="eliminarIniciativa({{ $iniciativa->inic_codigo }})"
-                                    data-placement="top" title="Eliminar iniciativa"><i class="fas fa-trash"></i>Eliminar</a>
+                                <a href="javascript:void(0)" class="btn btn-danger icon-left" data-toggle="tooltip"
+                                    onclick="eliminarIniciativa({{ $iniciativa->inic_codigo }})" data-placement="top"
+                                    title="Eliminar iniciativa"><i class="fas fa-trash"></i>Eliminar</a>
                                 {{-- <a href="javascript:void(0)" class="dropdown-item has-icon"
                                     onclick="eliminarIniciativa({{ $iniciativa->inic_codigo }})" data-toggle="tooltip"
                                     data-placement="top" title="Eliminar">Eliminar Iniciativa<i
                                         class="fas fa-trash"></i></a> --}}
-                                        <a href="{{ route('admin.iniciativa.listar') }}"
-                                        class="btn btn-primary mr-1 waves-effect icon-left" type="button">
-                                        <i class="fas fa-angle-left"></i> Volver a listado
-                                    </a>
+                                <a href="{{ route('admin.iniciativa.listar') }}"
+                                    class="btn btn-primary mr-1 waves-effect icon-left" type="button">
+                                    <i class="fas fa-angle-left"></i> Volver a listado
+                                </a>
 
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table table-strip table-md">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <strong>Nombre de la iniciativa</strong>
-                                                </td>
-                                                <td>
-                                                    {{ $iniciativa->inic_nombre }}
-                                                </td>
-                                            </tr>
+                                <div class="col-xl-6 col-md-6 col-lg-6">
+                                    <div class="table">
+                                        <div class="row">
+                                            <table class="table table-strip table-md">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Nombre de la iniciativa</strong>
+                                                        </td>
+                                                        <td>
+                                                            {{ $iniciativa->inic_nombre }}
+                                                        </td>
+                                                    </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <strong>Año</strong>
-                                                </td>
-                                                <td>
-                                                    {{ $iniciativa->inic_anho }}
-                                                </td>
-                                            </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Año</strong>
+                                                        </td>
+                                                        <td>
+                                                            {{ $iniciativa->inic_anho }}
+                                                        </td>
+                                                    </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <strong>Descripción</strong>
-                                                </td>
-                                                <td>
-                                                    {{ $iniciativa->inic_descripcion }}
-                                                </td>
-                                            </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Descripción</strong>
+                                                        </td>
+                                                        <td>
+                                                            {{ $iniciativa->inic_descripcion }}
+                                                        </td>
+                                                    </tr>
 
-                                            <tr>
-                                                <td><strong>Programas</strong></td>
-                                                <td>{{ $iniciativa->meca_nombre }}</td>
-                                            </tr>
+                                                    <tr>
+                                                        <td><strong>Programas</strong></td>
+                                                        <td>{{ $iniciativa->meca_nombre }}</td>
+                                                    </tr>
 
-                                            <tr>
-                                                <td><strong>Tipo de actividad</strong></td>
-                                                <td>
-                                                    {{$iniciativa->tiac_nombre}}
-                                                </td>
+                                                    <tr>
+                                                        <td><strong>Tipo de actividad</strong></td>
+                                                        <td>
+                                                            {{ $iniciativa->tiac_nombre }}
+                                                        </td>
 
-                                            </tr>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-md-6 col-lg-6">
+                                    <div class="table">
+                                        <label for="ODS" style="display: block; text-align: center; width: 100%;">ODS abarcadas</label>
 
-                                            <tr>
-                                                <td><strong>Convenio</strong></td>
-                                                <td>{{ $iniciativa->conv_nombre }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Ubicaciones</strong></td>
-                                                <td>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead>
-                                                                <th>Región</th>
-                                                                <th>Comunas</th>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($ubicaciones as $ubicacion)
-                                                                    <tr style="background-color: inherit;">
-                                                                        <td>{{ $ubicacion->regi_nombre }}</td>
-                                                                        <td>{{ $ubicacion->comunas }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <div class="col-12">
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/1.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/2.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/3.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/4.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/5.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/6.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/7.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/8.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/9.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/10.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/11.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/12.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/13.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/14.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/15.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/16.png') }}" width="100">
+                                            </a>
+                                            <a class="btn">
+                                                <img alt="image" src="{{ asset('/img/ods/17.png') }}" width="100">
+                                            </a>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                            {{-- <tr> --}}
-                                            {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
-                                            {{-- <td><strong>Grupos incluidos</strong></td>
+
+                            <table class="table table-strip table-md">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Convenio</strong></td>
+                                        <td>{{ $iniciativa->conv_nombre }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><strong>Ubicaciones</strong></td>
+                                        <td>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-sm">
+                                                    <thead>
+                                                        <th>Región</th>
+                                                        <th>Comunas</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($ubicaciones as $ubicacion)
+                                                            <tr style="background-color: inherit;">
+                                                                <td>{{ $ubicacion->regi_nombre }}</td>
+                                                                <td>{{ $ubicacion->comunas }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    {{-- <tr> --}}
+                                    {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
+                                    {{-- <td><strong>Grupos incluidos</strong></td>
                                                 <td>
                                                     <ol>
                                                     @foreach ($grupos as $grupo)
@@ -249,9 +318,9 @@
                                                 </td>
                                             </tr> --}}
 
-                                            {{-- <tr> --}}
-                                            {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
-                                            {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
+                                    {{-- <tr> --}}
+                                    {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
+                                    {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-sm small">
@@ -278,194 +347,194 @@
                                                         </table>
                                                     </div>
                                                 </td> --}}
-                                            {{-- </tr> --}}
+                                    {{-- </tr> --}}
 
-                                            <tr>
-                                                <td><strong>Participantes externos</strong></td>
-                                                <td>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm ">
-                                                            <thead>
-                                                                <th>Grupos</th>
-                                                                <th>Subgrupos</th>
-                                                                <th>Nombre del socio</th>
-                                                                <th>Beneficiarios</th>
-                                                                <th>Beneficiarios final</th>
-                                                            </thead>
+                                    <tr>
+                                        <td><strong>Participantes externos</strong></td>
+                                        <td>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-sm ">
+                                                    <thead>
+                                                        <th>Grupos</th>
+                                                        <th>Subgrupos</th>
+                                                        <th>Nombre del socio</th>
+                                                        <th>Beneficiarios</th>
+                                                        <th>Beneficiarios final</th>
+                                                    </thead>
 
-                                                            <tbody>
-                                                                @foreach ($externos as $externo)
-                                                                    <tr>
-                                                                        <td>{{ $externo->grin_nombre }}</td>
-                                                                        <td>{{ $externo->sugr_nombre }}</td>
-                                                                        <td>{{ $externo->soco_nombre_socio }}</td>
-                                                                        <td>{{ $externo->inpr_total }}</td>
-                                                                        <td>{{ $externo->inpr_total_final }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    <tbody>
+                                                        @foreach ($externos as $externo)
+                                                            <tr>
+                                                                <td>{{ $externo->grin_nombre }}</td>
+                                                                <td>{{ $externo->sugr_nombre }}</td>
+                                                                <td>{{ $externo->soco_nombre_socio }}</td>
+                                                                <td>{{ $externo->inpr_total }}</td>
+                                                                <td>{{ $externo->inpr_total_final }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                            <tr>
-                                                <td><strong>Participantes internos</strong></td>
-                                                <td>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead>
-                                                                <th>Escuelas</th>
-                                                                <th>Carreras</th>
-                                                                <th>Docentes</th>
-                                                                <th>Docentes final</th>
-                                                                <th>Estudiantes</th>
-                                                                <th>Estudiantes final</th>
-                                                            </thead>
+                                    <tr>
+                                        <td><strong>Participantes internos</strong></td>
+                                        <td>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-sm">
+                                                    <thead>
+                                                        <th>Escuelas</th>
+                                                        <th>Carreras</th>
+                                                        <th>Docentes</th>
+                                                        <th>Docentes final</th>
+                                                        <th>Estudiantes</th>
+                                                        <th>Estudiantes final</th>
+                                                    </thead>
 
-                                                            <tbody>
-                                                                @foreach ($internos as $interno)
-                                                                    <tr>
-                                                                        <td>{{ $interno->escu_nombre }}</td>
-                                                                        <td>{{ $interno->care_nombre }}</td>
-                                                                        <td>
-                                                                            @if ($interno->pain_docentes != null)
-                                                                                {{ $interno->pain_docentes }}
-                                                                            @else
-                                                                                No registrado
+                                                    <tbody>
+                                                        @foreach ($internos as $interno)
+                                                            <tr>
+                                                                <td>{{ $interno->escu_nombre }}</td>
+                                                                <td>{{ $interno->care_nombre }}</td>
+                                                                <td>
+                                                                    @if ($interno->pain_docentes != null)
+                                                                        {{ $interno->pain_docentes }}
+                                                                    @else
+                                                                        No registrado
+                                                                    @endif
+                                                                </td>
+
+                                                                <td>
+                                                                    @if ($interno->pain_docentes_final != null)
+                                                                        {{ $interno->pain_docentes_final }}
+                                                                    @else
+                                                                        No registrado
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if ($interno->pain_estudiantes != null)
+                                                                        {{ $interno->pain_estudiantes }}
+                                                                    @else
+                                                                        No registrado
+                                                                    @endif
+                                                                </td>
+
+                                                                <td>
+                                                                    @if ($interno->pain_estudiantes_final != null)
+                                                                        {{ $interno->pain_estudiantes_final }}
+                                                                    @else
+                                                                        No registrado
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><strong>Total de recursos invertidos</strong></td>
+                                        <td>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-sm">
+                                                    <thead>
+                                                        <th></th>
+                                                        <th>Dinero</th>
+                                                        <th>Infraestructura</th>
+                                                        <th>Recursos humanos</th>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        @php
+                                                            $totalDinero = 0;
+                                                            $totalInfraestructura = 0;
+                                                            $totalRrhh = 0;
+                                                        @endphp
+                                                        @foreach ($entidades as $entidad)
+                                                            @php
+                                                                $entidadDinero = 0;
+                                                                $entidadInfraestructura = 0;
+                                                                $entidadRrhh = 0;
+                                                            @endphp
+
+                                                            <tr>
+                                                                <td>{{ $entidad->enti_nombre }}</td>
+                                                                <td>
+                                                                    @if (sizeof($recursoDinero) == 0)
+                                                                        $0
+                                                                    @else
+                                                                        @foreach ($recursoDinero as $dinero)
+                                                                            @if ($entidad->enti_codigo == $dinero->enti_codigo)
+                                                                                @php
+                                                                                    $entidadDinero = $dinero->suma_dinero;
+                                                                                @endphp
+                                                                                ${{ number_format($dinero->suma_dinero, 0, ',', '.') }}
                                                                             @endif
-                                                                        </td>
-
-                                                                        <td>
-                                                                            @if ($interno->pain_docentes_final != null)
-                                                                                {{ $interno->pain_docentes_final }}
-                                                                            @else
-                                                                                No registrado
+                                                                        @endforeach
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if (sizeof($recursoInfraestructura) == 0)
+                                                                        $0
+                                                                    @else
+                                                                        @foreach ($recursoInfraestructura as $infraestructura)
+                                                                            @if ($entidad->enti_codigo == $infraestructura->enti_codigo)
+                                                                                @php
+                                                                                    $entidadInfraestructura = $infraestructura->suma_infraestructura;
+                                                                                @endphp
+                                                                                ${{ number_format($infraestructura->suma_infraestructura, 0, ',', '.') }}
                                                                             @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if ($interno->pain_estudiantes != null)
-                                                                                {{ $interno->pain_estudiantes }}
-                                                                            @else
-                                                                                No registrado
+                                                                        @endforeach
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if (sizeof($recursoRrhh) == 0)
+                                                                        $0
+                                                                    @else
+                                                                        @foreach ($recursoRrhh as $rrhh)
+                                                                            @if ($entidad->enti_codigo == $rrhh->enti_codigo)
+                                                                                @php
+                                                                                    $entidadRrhh = $rrhh->suma_rrhh;
+                                                                                @endphp
+                                                                                ${{ number_format($rrhh->suma_rrhh, 0, ',', '.') }}
                                                                             @endif
-                                                                        </td>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            @php
+                                                                $totalDinero += $entidadDinero;
+                                                                $totalInfraestructura += $entidadInfraestructura;
+                                                                $totalRrhh += $entidadRrhh;
+                                                            @endphp
+                                                        @endforeach
+                                                        <tr>
+                                                            <td>Total General</td>
+                                                            <td>${{ number_format($totalDinero, 0, ',', '.') }}</td>
+                                                            <td>${{ number_format($totalInfraestructura, 0, ',', '.') }}
+                                                            </td>
+                                                            <td>${{ number_format($totalRrhh, 0, ',', '.') }}</td>
+                                                        </tr>
 
-                                                                        <td>
-                                                                            @if ($interno->pain_estudiantes_final != null)
-                                                                                {{ $interno->pain_estudiantes_final }}
-                                                                            @else
-                                                                                No registrado
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td><strong>Total de recursos invertidos</strong></td>
-                                                <td>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead>
-                                                                <th></th>
-                                                                <th>Dinero</th>
-                                                                <th>Infraestructura</th>
-                                                                <th>Recursos humanos</th>
-                                                            </thead>
-
-                                                            <tbody>
-                                                                @php
-                                                                    $totalDinero = 0;
-                                                                    $totalInfraestructura = 0;
-                                                                    $totalRrhh = 0;
-                                                                @endphp
-                                                                @foreach ($entidades as $entidad)
-                                                                    @php
-                                                                        $entidadDinero = 0;
-                                                                        $entidadInfraestructura = 0;
-                                                                        $entidadRrhh = 0;
-                                                                    @endphp
-
-                                                                    <tr>
-                                                                        <td>{{ $entidad->enti_nombre }}</td>
-                                                                        <td>
-                                                                            @if (sizeof($recursoDinero) == 0)
-                                                                                $0
-                                                                            @else
-                                                                                @foreach ($recursoDinero as $dinero)
-                                                                                    @if ($entidad->enti_codigo == $dinero->enti_codigo)
-                                                                                        @php
-                                                                                            $entidadDinero = $dinero->suma_dinero;
-                                                                                        @endphp
-                                                                                        ${{ number_format($dinero->suma_dinero, 0, ',', '.') }}
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if (sizeof($recursoInfraestructura) == 0)
-                                                                                $0
-                                                                            @else
-                                                                                @foreach ($recursoInfraestructura as $infraestructura)
-                                                                                    @if ($entidad->enti_codigo == $infraestructura->enti_codigo)
-                                                                                        @php
-                                                                                            $entidadInfraestructura = $infraestructura->suma_infraestructura;
-                                                                                        @endphp
-                                                                                        ${{ number_format($infraestructura->suma_infraestructura, 0, ',', '.') }}
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if (sizeof($recursoRrhh) == 0)
-                                                                                $0
-                                                                            @else
-                                                                                @foreach ($recursoRrhh as $rrhh)
-                                                                                    @if ($entidad->enti_codigo == $rrhh->enti_codigo)
-                                                                                        @php
-                                                                                            $entidadRrhh = $rrhh->suma_rrhh;
-                                                                                        @endphp
-                                                                                        ${{ number_format($rrhh->suma_rrhh, 0, ',', '.') }}
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                    @php
-                                                                        $totalDinero += $entidadDinero;
-                                                                        $totalInfraestructura += $entidadInfraestructura;
-                                                                        $totalRrhh += $entidadRrhh;
-                                                                    @endphp
-                                                                @endforeach
-                                                                <tr>
-                                                                    <td>Total General</td>
-                                                                    <td>${{ number_format($totalDinero, 0, ',', '.') }}</td>
-                                                                    <td>${{ number_format($totalInfraestructura, 0, ',', '.') }}
-                                                                    </td>
-                                                                    <td>${{ number_format($totalRrhh, 0, ',', '.') }}</td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
 
 
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
         </div>
     </section>
     <div class="modal fade" id="modalINVI" tabindex="-1" role="dialog" aria-labelledby="formModal"
@@ -538,7 +607,7 @@
                         </button>
                     </div>
                     <div class="modal-body text-center">
-                        <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
+                        <i class="fas fa-ban text-danger" style="font-size: 100px; color"></i>
                         <h6 class="mt-2">La iniciativa dejará de existir dentro del sistema. <br> ¿Desea continuar de
                             todos
                             modos?</h6>
@@ -558,6 +627,5 @@
             $('#inic_codigo').val(inic_codigo);
             $('#modalEliminaIniciativa').modal('show');
         }
-
     </script>
 @endsection
