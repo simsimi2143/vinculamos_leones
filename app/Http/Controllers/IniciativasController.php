@@ -194,9 +194,9 @@ class IniciativasController extends Controller
     public function mostrarDetalles($inic_codigo)
     {
 
-        $iniciativa = Iniciativas::join('convenios', 'convenios.conv_codigo', '=', 'iniciativas.conv_codigo')
-            ->join('tipo_actividades', 'tipo_actividades.tiac_codigo', '=', 'iniciativas.tiac_codigo')
-            ->join('mecanismos', 'mecanismos.meca_codigo', '=', 'iniciativas.meca_codigo')
+        $iniciativa = Iniciativas::leftjoin('convenios', 'convenios.conv_codigo', '=', 'iniciativas.conv_codigo')
+            ->leftjoin('tipo_actividades', 'tipo_actividades.tiac_codigo', '=', 'iniciativas.tiac_codigo')
+            ->leftjoin('mecanismos', 'mecanismos.meca_codigo', '=', 'iniciativas.meca_codigo')
             ->select(
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
@@ -211,8 +211,8 @@ class IniciativasController extends Controller
             ->first();
 
 
-        $participantes = ParticipantesInternos::join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
-            ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
+        $participantes = ParticipantesInternos::leftjoin('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
+            ->leftjoin('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
             ->select(
                 'participantes_internos.inic_codigo',
                 'participantes_internos.pain_docentes',
@@ -226,7 +226,7 @@ class IniciativasController extends Controller
             ->get();
 
         $ubicaciones = IniciativasComunas::join('comunas', 'comunas.comu_codigo', 'iniciativas_comunas.comu_codigo')
-            ->join('regiones', 'regiones.regi_codigo', 'comunas.regi_codigo')
+            ->leftjoin('regiones', 'regiones.regi_codigo', 'comunas.regi_codigo')
             ->select(
                 'iniciativas_comunas.inic_codigo',
                 'regiones.regi_codigo',
@@ -246,8 +246,8 @@ class IniciativasController extends Controller
             ->where('inic_codigo', $inic_codigo)->get();
 
         $participantes_externos = IniciativasParticipantes::join('sub_grupos_interes', 'sub_grupos_interes.sugr_codigo', 'iniciativas_participantes.sugr_codigo')
-            ->join('socios_comunitarios', 'socios_comunitarios.soco_codigo', 'iniciativas_participantes.soco_codigo')
-            ->join('grupos_interes', 'grupos_interes.grin_codigo', 'sub_grupos_interes.grin_codigo')
+            ->leftjoin('socios_comunitarios', 'socios_comunitarios.soco_codigo', 'iniciativas_participantes.soco_codigo')
+            ->leftjoin('grupos_interes', 'grupos_interes.grin_codigo', 'sub_grupos_interes.grin_codigo')
             ->where('iniciativas_participantes.inic_codigo', $inic_codigo)->get();
 
         $entidadesRecursos = Entidades::select('enti_codigo', 'enti_nombre')->get();
@@ -269,7 +269,6 @@ class IniciativasController extends Controller
             ->get();
 
         // return $costosDinero;
-
         return view('admin.iniciativas.mostrar', [
             'iniciativa' => $iniciativa,
             'ubicaciones' => $ubicaciones,
