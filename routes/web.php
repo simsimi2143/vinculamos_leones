@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlgoritmoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AutenticationController;
 use App\Http\Controllers\SuperadminController;
@@ -68,6 +69,9 @@ Route::middleware('verificar.superadmin')->group(function () {
     Route::post('superadmin/clave-usuario/{usua_nickname}', [SuperadminController::class, 'actualizarClaveUsuario'])->name('superadmin.claveusuario.actualizar');
     // fin rutas para gestionar usuarios
 });
+
+
+Route::get('/ods',[AlgoritmoController::class,'ejecutarAlgoritmoDesdeDescripcion'])->name('odstesting');
 
 Route::middleware('verificar.admin')->group(function () {
 
