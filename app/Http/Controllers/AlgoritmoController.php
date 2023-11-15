@@ -34,7 +34,7 @@ class AlgoritmoController extends Controller
         $mlbOdsPath = storage_path('python_scripts/mlb_ods.pkl');
         $mlbMetasPath = storage_path('python_scripts/mlb_metas.pkl');
 
-        $algoritmo = new Process(['python', 'public/python_scripts/script.py', $descripcionUtf8]);
+        $algoritmo = new Process(['python', 'public/js/python_scripts/script.py', $descripcionUtf8]);
 
         $algoritmo->run();
         $resAlgoritmo = $algoritmo->getOutput();
