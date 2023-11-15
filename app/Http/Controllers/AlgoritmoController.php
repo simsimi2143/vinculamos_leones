@@ -28,18 +28,16 @@ class AlgoritmoController extends Controller
         $descripcionUtf8 = mb_convert_encoding($descripcion[0]->inic_descripcion, 'UTF-8', 'UTF-8');
 
         // Rutas a los archivos pkl
-        $classifierOdsPath = storage_path('python_scripts/classifier_ods.pkl');
-        $classifierMetasPath = storage_path('python_scripts/classifier_metas.pkl');
-        $vectorizerPath = storage_path('python_scripts/vectorizer.pkl');
-        $mlbOdsPath = storage_path('python_scripts/mlb_ods.pkl');
-        $mlbMetasPath = storage_path('python_scripts/mlb_metas.pkl');
+        $classifierOdsPath = storage_path('public/python_scripts/classifier_ods.pkl');
+        $classifierMetasPath = storage_path('public/python_scripts/classifier_metas.pkl');
+        $vectorizerPath = storage_path('public/python_scripts/vectorizer.pkl');
+        $mlbOdsPath = storage_path('public/python_scripts/mlb_ods.pkl');
+        $mlbMetasPath = storage_path('public/python_scripts/mlb_metas.pkl');
 
-        $algoritmo = new Process(['python', 'public/js/python_scripts/script.py', $descripcionUtf8]);
+        $output = [];
+        $resultado = exec("python3 " . base_path('public/python_scripts/script.py') . " '{$descripcionUtf8}' '{$classifierOdsPath}' '{$classifierMetasPath}' '{$vectorizerPath}' '{$mlbOdsPath}' '{$mlbMetasPath}' 2>&1",$output);
 
-        $algoritmo->run();
-        $resAlgoritmo = $algoritmo->getOutput();
-
-        return response()->json(['result' => $resAlgoritmo]);
+        dd($resultado, $output);
     }
 }
 

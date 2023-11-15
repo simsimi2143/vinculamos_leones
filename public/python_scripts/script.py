@@ -7,11 +7,11 @@ from sklearn.svm import SVC
 import joblib
 
 # Cargar modelos y vectorizer desde archivos pkl
-classifier_ods = joblib.load('classifier_ods.pkl')
-classifier_metas = joblib.load('classifier_metas.pkl')
-vectorizer = joblib.load('vectorizer.pkl')
-mlb_ods = joblib.load('mlb_ods.pkl')
-mlb_metas = joblib.load('mlb_metas.pkl')
+classifier_ods = joblib.load('../public/python_scripts/classifier_ods.pkl')
+classifier_metas = joblib.load('../public/python_scripts/classifier_metas.pkl')
+vectorizer = joblib.load('../public/python_scripts/vectorizer.pkl')
+mlb_ods = joblib.load('../public/python_scripts/mlb_ods.pkl')
+mlb_metas = joblib.load('../public/python_scripts/mlb_metas.pkl')
 
 # Función para predecir las ODS y metas en una descripción
 def predict_ods_and_metas(description):
@@ -25,10 +25,7 @@ def predict_ods_and_metas(description):
     return ods_pred_labels, metas_pred_labels
 
 # Realizar pruebas con entradas personalizadas
-while True:
-    input_description = input("Ingresa una descripción (o escribe 'salir' para terminar): ")
-    if input_description.lower() == 'salir':
-        break
-    ods_predicted, metas_predicted = predict_ods_and_metas(input_description)
-    print("ODS predichos:", ods_predicted[0][0].decode('utf-8'))
-    print("Metas predichas:", metas_predicted[0][0].decode('utf-8'))
+input_description = input()
+ods_predicted, metas_predicted = predict_ods_and_metas(input_description)
+print("ODS predichos:", ods_predicted[0][0].decode('utf-8'))
+print("Metas predichas:", metas_predicted[0][0].decode('utf-8'))
