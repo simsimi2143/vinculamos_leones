@@ -215,7 +215,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-md-6 col-lg-6">
+                                {{-- <div class="col-xl-6 col-md-6 col-lg-6">
                                     <div class="table">
                                         <label for="ODS" style="display: block; text-align: center; width: 100%;">ODS abarcadas</label>
 
@@ -273,7 +273,7 @@
                                             </a>
                                             </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
 
 
